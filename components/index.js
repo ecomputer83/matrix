@@ -10,4 +10,5 @@ import Switch from './Switch';
 import Select from './Select';
 import ProductCard from './ProductCard';
 import DetailCard from './DetailCard';
-export { Button, Card, IconCard, DrawerItem, Icon, Input, Header, Switch, Select, ProductCard, DetailCard, GooglePlacesAutocomplete };
+import PriceCard from './PriceCard';
+export { Button, Card, IconCard, DrawerItem, Icon, Input, Header, Switch, Select, ProductCard, DetailCard, PriceCard, GooglePlacesAutocomplete };

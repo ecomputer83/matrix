@@ -81,15 +81,47 @@ class Header extends React.Component {
       )
     );
   };
+  renderButtons = () => {
+    const { navigation, User } = this.props;
+    return (<Block row style={{marginTop: 10, marginBottom:10 }}>
+      <Button
+        shadowless
+        style={styles.makebutton}
+        color={Theme.COLORS.PRIMARY}
+        onPress={() => navigation.navigate('Login')}
+      >
+        <Text
+          style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}
+          color={theme.COLORS.WHITE}
+        >
+          MAKE ORDER
+        </Text>
+      </Button>
+      <Button
+        shadowless
+        style={styles.trackbutton}
+        color={Theme.COLORS.PRIMARY}
+        onPress={() => navigation.navigate('Home')}
+      >
+        <Text
+          style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}
+          color={theme.COLORS.WHITE}
+        >
+          TRACK ORDER
+        </Text>
+      </Button>
+      </Block>);
+  }
   renderMessage = () => {
     const { navigation, User } = this.props;
 
     return (
       <Block row style={styles.options}>
-        <Block row middle>
+        <Block middle>
             <Text style={{ fontFamily: 'montserrat-regular' }} size={16} style={styles.tabTitle}>
-              Welcome, {User || 'Customer Name'}
+              Welcome to
             </Text>
+            <Image source={Images.Logo} style={{ width: 194, height: 78 }} />
         </Block>
       </Block>
     );
@@ -110,13 +142,14 @@ class Header extends React.Component {
     );
   };
   renderHeader = () => {
-    const { search, message, tabs } = this.props;
-    if (search || tabs || message) {
+    const { search, message, tabs, buttons } = this.props;
+    if (search || tabs || message || buttons) {
       return (
         <Block center>
           {message ? this.renderMessage() : null}
           {search ? this.renderSearch() : null}
           {tabs ? this.renderTabs() : null}
+          {buttons ? this.renderButtons() : null}
         </Block>
       );
     }
@@ -269,6 +302,21 @@ const styles = StyleSheet.create({
     height: 80,
     width: 88,
     marginRight: 15
+  },
+  makebutton: {
+    width: (width /2) - 7.5,
+    height: theme.SIZES.BASE * 3,
+    shadowRadius: 0,
+    shadowOpacity: 0,
+    marginRight: 5,
+    marginLeft: 5
+  },
+
+  trackbutton: {
+    width: (width /2) - 7.5,
+    height: theme.SIZES.BASE * 3,
+    shadowRadius: 0,
+    shadowOpacity: 0,
   }
 });
 
