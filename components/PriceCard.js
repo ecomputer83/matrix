@@ -43,7 +43,7 @@ export default class PriceCard extends React.Component {
                   zIndex: 2
                 }}
               >
-                {Value}
+                ₦{Value}
                   </Text>
             </Block>
           </Block>)

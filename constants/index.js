@@ -1,6 +1,6 @@
 import nowTheme from './Theme';
 import utils from './utils';
 import Images from './Images';
-import DailyPrices from './prices';
+import prod from './prices';
 
-export { nowTheme, utils, Images, DailyPrices };
+export { nowTheme, utils, Images, prod };

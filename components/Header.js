@@ -88,7 +88,7 @@ class Header extends React.Component {
         shadowless
         style={styles.makebutton}
         color={Theme.COLORS.PRIMARY}
-        onPress={() => navigation.navigate('Login')}
+        onPress={() => navigation.navigate('MakeOrder')}
       >
         <Text
           style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}
@@ -186,16 +186,16 @@ class Header extends React.Component {
           transparent={transparent}
           right={this.renderRight()}
           rightStyle={{ alignItems: 'center' }}
-          left={
-            <Icon
-              name={back ? 'arrow-back' : 'menu'}
-              family="NowExtra"
-              size={16}
-              onPress={this.handleLeftPress}
-              color={iconColor || Theme.COLORS.ICON}
-            />
-          }
-          leftStyle={{ paddingVertical: 12, flex: 0.2 }}
+          // left={
+          //   <Icon
+          //     name={back ? 'arrow-back' : 'menu'}
+          //     family="NowExtra"
+          //     size={16}
+          //     onPress={this.handleLeftPress}
+          //     color={iconColor || Theme.COLORS.ICON}
+          //   />
+          // }
+          // leftStyle={{ paddingVertical: 12, flex: 0.2 }}
           titleStyle={[
             styles.title,
             { color: Theme.COLORS[white ? 'WHITE' : 'HEADER'] },

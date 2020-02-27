@@ -9,7 +9,9 @@ import Home from '../screens/Home';
 import Login from '../screens/Login';
 import Register from '../screens/Register';
 import Onboarding from '../screens/Onboarding';
-
+import MakeOrder from '../screens/MakeOrder';
+import CardPayment from '../screens/CardPayment';
+import Programming from '../screens/Programming';
 // drawer
 import Menu from './Menu';
 import DrawerItem from '../components/DrawerItem';
@@ -55,14 +57,50 @@ const transitionConfig = (transitionProps, prevTransitionProps) => ({
   }
 });
 
-const HomeStack = createStackNavigator(
+const AppStack = createStackNavigator(
   {
+    Onboarding: {
+      screen: Onboarding,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
     Home: {
       screen: Home,
       navigationOptions: ({ navigation }) => ({
         header: <Header bgColor={nowTheme.COLORS.PRIMARY} message buttons iconColor={nowTheme.COLORS.WHITE} title="Home" navigation={navigation} />
       })
     },
+    MakeOrder: {
+      screen: MakeOrder,
+      navigationOptions: ({ navigation }) => ({
+        header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title="Make Order" navigation={navigation} />
+      })
+    },
+    CardPayment: {
+      screen: CardPayment,
+      navigationOptions: ({ navigation }) => ({
+        header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title="Card Payment" navigation={navigation} />
+      })
+    },
+    Programming: {
+      screen: Programming,
+      navigationOptions: ({ navigation }) => ({
+        header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title="Programming" navigation={navigation} />
+      })
+    },
+    Login: {
+      screen: Login,
+      navigationOptions: {
+        headerShown: false
+        }
+    },
+    Register: {
+      screen: Register,
+      navigationOptions: {
+        headerShown: false
+      }
+    }
     // Pro: {
     //   screen: Pro,
     //   navigationOptions: ({ navigation }) => ({
@@ -81,36 +119,36 @@ const HomeStack = createStackNavigator(
   }
 );
 
-const AppStack = createDrawerNavigator(
-  {
-    Onboarding: {
-      screen: Onboarding,
-      navigationOptions: {
-        drawerLabel: () => { }
-      }
-    },
-    Login: {
-      screen: Login,
-      navigationOptions: {
-        drawerLabel: () => { }
-      }
-    },
-    Register: {
-      screen: Register,
-      navigationOptions: {
-        drawerLabel: () => { }
-      }
-    },
-    Home: {
-      screen: HomeStack,
-      navigationOptions: navOpt => ({
-        drawerLabel: ({ focused }) => <DrawerItem focused={focused} title="Home" />
-      })
-    }
+// const AppStack = createDrawerNavigator(
+//   {
+//     Onboarding: {
+//       screen: Onboarding,
+//       navigationOptions: {
+//         drawerLabel: () => { }
+//       }
+//     },
+//     Login: {
+//       screen: Login,
+//       navigationOptions: {
+//         drawerLabel: () => { }
+//       }
+//     },
+//     Register: {
+//       screen: Register,
+//       navigationOptions: {
+//         drawerLabel: () => { }
+//       }
+//     },
+//     Home: {
+//       screen: HomeStack,
+//       navigationOptions: navOpt => ({
+//         drawerLabel: ({ focused }) => <DrawerItem focused={focused} title="Home" />
+//       })
+//     }
     
-  },
-  Menu
-);
+//   },
+//   Menu
+// );
 
 const AppContainer = createAppContainer(AppStack);
 export default AppContainer;

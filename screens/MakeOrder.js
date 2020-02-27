@@ -2,58 +2,80 @@ import React from 'react';
 import { StyleSheet,  Dimensions, Picker  } from 'react-native';
 import { Block, theme,Button as GaButton, Text } from "galio-framework";
 import { Input, Icon } from '../components';
-import { DailyPrices, nowTheme } from '../constants';
+import { prod, nowTheme } from '../constants';
 
 const { width } = Dimensions.get("screen");
 class MakeOrder extends React.Component {
     state = {
+        depot: null,
         product : null,
-        quantity: 0,
+        quantity: "0",
         unitPrice: null,
-        TotalAmount: 0
+        TotalAmount: "0"
     }
 
     constructor(props) {
         super(props);
-        
-        state = {
-            product : null,
-            quantity: 0,
-            unitPrice: null,
-            TotalAmount: 0
-        }
+
       }
-    pickerChange(index){
-        DailyPrices.map( (v,i)=>{
+    pickerProduct(index){
+        prod.DailyPrices.map( (v,i)=>{
          if( index === i ){
            this.setState({
-           product: DailyPrices[index]
+           product: prod.DailyPrices[index],
+           unitPrice: prod.DailyPrices[index].Price.toString(),
           })
          }
         })
     }
+    pickerDepot(index){
+      prod.Depots.map( (v,i)=>{
+       if( index === i ){
+         this.setState({
+         depot: prod.Depots[index]
+        })
+       }
+      })
+  }
     saveandnavigate = () => {
         if(this.state.TotalAmount != 0) {
-        this.props.navigation.navigate('Services', { vehicle: JSON.stringify(this.state.vehicle), jobType: this.state.jobType, service: null, scheduledate: null})
+        this.props.navigation.navigate('CardPayment', { product: JSON.stringify(this.state.product), quantity: this.state.quantity, unitPrice: this.state.unitPrice, TotalAmount: this.state.TotalAmount})
     };
 }
     render () {
-        const {product, quantity, unitPrice, TotalAmount} = this.state
+        const {depot, product, quantity, unitPrice, TotalAmount} = this.state
         return (
             <Block flex center>
                 <Block flex={1} space="between">
                         <Block center flex={0.9}>
                           <Block flex space="between">
                             <Block>
+                            <Block width={width * 0.8} style={{ marginBottom: 5, marginTop: 25 }}>
+                                <Text>Depots</Text>
+                                <Block  style={styles.picker}>
+                                <Picker
+                                    selectedValue={depot }
+                                    onValueChange={(itemValue, itemIndex) => this.pickerDepot(itemIndex)}>
+                                        <Picker.Item label='-- Select Depot --' value={null} />
+                                        {
+                                        prod.Depots.map( (v)=>{
+                                        return <Picker.Item label={v.Name} value={v} />
+                                        })
+                                    }
+                                </Picker>
+                                </Block>
+                              </Block>
+                              { (depot != null) ? (
+                                <Block>
                               <Block width={width * 0.8} style={{ marginBottom: 5, marginTop: 25 }}>
                                 <Text>Products</Text>
                                 <Block  style={styles.picker}>
                                 <Picker
                                     selectedValue={product }
-                                    onValueChange={(itemValue, itemIndex) => this.pickerChange(itemIndex)}>
+                                    onValueChange={(itemValue, itemIndex) => this.pickerProduct(itemIndex)}>
                                         <Picker.Item label='-- Select Product --' value={null} />
                                         {
-                                        DailyPrices.map( (v)=>{
+                                        prod.DailyPrices.map( (v)=>{
                                         return <Picker.Item label={v.Product} value={v} />
                                         })
                                     }
@@ -67,6 +89,14 @@ class MakeOrder extends React.Component {
                                   color="black"
                                   style={styles.inputs}
                                   value={quantity}
+                                  onChangeText={(text) => {
+                                    if(text != null || text != ''){
+                                    var _quantity = parseInt(text);
+                                    var _unitPrice = parseInt(this.state.unitPrice);
+                                    this.setState({TotalAmount: (_unitPrice * _quantity).toString(), quantity: text})
+                                    }
+                                  }}
+                                  keyboardType="numeric"
                                   noicon
                                 />
                               </Block>
@@ -82,7 +112,7 @@ class MakeOrder extends React.Component {
                                 />
                               </Block>
                               <Block width={width * 0.8} style={{ marginBottom: 5 }}>
-                              <Text>Unit Price</Text>
+                              <Text>Total Amount</Text>
                               <Input
                                   placeholder="Total Amount"
                                   color="black"
@@ -92,7 +122,9 @@ class MakeOrder extends React.Component {
                                   noicon
                                 />
                               </Block>
+                              </Block>) : (<Block />)}
                               <Block style={{marginBottom:  10}}></Block>
+                               
                               { (product != null) ?  (
                               <Block width={width * 0.8} center>
                                 <GaButton

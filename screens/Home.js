@@ -3,7 +3,7 @@ import { StyleSheet, FlatList, Dimensions} from "react-native";
 import { Block, theme, Text, Button } from "galio-framework";
 import { white } from "color-name";
 import {PriceCard } from "../components";
-import {DailyPrices, nowTheme} from "../constants";
+import {prod, nowTheme} from "../constants";
 
 const { width, height } = Dimensions.get("screen");
 const ratio = width / height;
@@ -12,7 +12,7 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      DailyPrices: DailyPrices
+      DailyPrices: prod.DailyPrices
     }
     
   }
