@@ -11,4 +11,5 @@ import ProductCard from './ProductCard';
 import DetailCard from './DetailCard';
 import PriceCard from './PriceCard';
 import AmountCard from './AmountCard';
-export { Button, Card, IconCard, DrawerItem, Icon, Input, Header, Switch, Select, ProductCard, DetailCard, PriceCard, AmountCard };
+import OrderCard from './OrderCard';
+export { Button, Card, IconCard, DrawerItem, Icon, Input, Header, Switch, Select, ProductCard, DetailCard, PriceCard, AmountCard, OrderCard };

@@ -101,7 +101,7 @@ class Header extends React.Component {
         shadowless
         style={styles.trackbutton}
         color={Theme.COLORS.PRIMARY}
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => navigation.navigate('TrackOrder')}
       >
         <Text
           style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}

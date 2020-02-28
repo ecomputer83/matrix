@@ -12,6 +12,7 @@ import Onboarding from '../screens/Onboarding';
 import MakeOrder from '../screens/MakeOrder';
 import CardPayment from '../screens/CardPayment';
 import Programming from '../screens/Programming';
+import TrackOrder from '../screens/TrackOrder';
 // drawer
 import Menu from './Menu';
 import DrawerItem from '../components/DrawerItem';
@@ -87,6 +88,12 @@ const AppStack = createStackNavigator(
       screen: Programming,
       navigationOptions: ({ navigation }) => ({
         header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title="Programming" navigation={navigation} />
+      })
+    },
+    TrackOrder: {
+      screen: TrackOrder,
+      navigationOptions: ({ navigation }) => ({
+        header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title="Track Order" navigation={navigation} />
       })
     },
     Login: {

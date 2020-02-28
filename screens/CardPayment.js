@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet,  Dimensions, Image, Alert  } from 'react-native';
 import { Block, theme,Button as GaButton, Text } from "galio-framework";
 import {AmountCard } from "../components";
-import { DailyPrices, Images, nowTheme } from '../constants';
+import { Images, nowTheme } from '../constants';
 import TextInputMask from 'react-native-text-input-mask';
 import Spinner from 'react-native-loading-spinner-overlay';
 
@@ -40,20 +40,11 @@ class CardPayment extends React.Component {
 
     renderPrices = () => {
       const {ActualAmount, Tax, TotalAmount} = this.state
-        return (<Block flex={0.3}>
+        return (<Block flex={0.3} style={styles.shadow, {margin: 10}}>
             <AmountCard Key="Amount" Value={ActualAmount} />
             <AmountCard Key="Tax" Value={Tax} />
             <AmountCard Key="Total" Value={TotalAmount} />
         </Block>);
-    }
-    pickerChange(index){
-        DailyPrices.map( (v,i)=>{
-         if( index === i ){
-           this.setState({
-           product: DailyPrices[index]
-          })
-         }
-        })
     }
     saveandnavigate = () => {
         if(this.state.TotalAmount != 0) {
@@ -81,11 +72,11 @@ class CardPayment extends React.Component {
                         <Block center flex={0.9}>
                           <Block flex space="between">
                             {this.renderPrices()}
-                            <Block flex={0.6}>
+                            <Block flex={0.6} middle>
                               <Block middle>
-                                <Image source={Images.paystack} style={{ width: 350, height: 102 }} />
+                                <Image source={Images.paystack} style={{ width: 340, height: 99 }} />
                               </Block>
-                              <Block width={width * 0.97} style={{ marginBottom: 5, marginLeft: 5, marginTop: 25 }}>
+                              <Block width={width * 0.9} style={{ marginBottom: 5, marginLeft: 5, marginTop: 25 }}>
                                 <Text>Card Number</Text>
                                 <TextInputMask
                                     refInput={ref => { this.input = ref }}
@@ -98,8 +89,8 @@ class CardPayment extends React.Component {
                                     keyboardType="numeric"
                                 />
                               </Block>
-                              <Block width={width * 0.97} row style={{ marginBottom: 5, marginLeft: 5, }} space="between">
-                              <Block width={width * 0.55}>
+                              <Block width={width * 0.9} row style={{ marginBottom: 5, marginLeft: 5, }} space="between">
+                              <Block width={width * 0.48}>
                               <Text>Expiry Date</Text>
                               <TextInputMask
                                     refInput={ref => { this.input = ref }}
@@ -169,6 +160,13 @@ const styles = StyleSheet.create({
         height: nowTheme.SIZES.BASE * 3,
         shadowRadius: 0,
         shadowOpacity: 0
-      }
+      },
+      shadow: {
+        shadowColor: '#8898AA',
+        shadowOffset: { width: 0, height: 1 },
+        shadowRadius: 6,
+        shadowOpacity: 0.1,
+        elevation: 5
+      },
 })
 export default CardPayment
