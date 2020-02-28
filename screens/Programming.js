@@ -218,6 +218,7 @@ class Programming extends React.Component {
             rippleColor={nowTheme.COLORS.BACKGROUND}
             onPress = {() => this.setModalVisible(true)}
           /> : <Block />}
+          {props.navigation.state.params.programs == null ?
           <FloatingActionButton
             iconName="check"
             iconType="AntDesign"
@@ -226,7 +227,7 @@ class Programming extends React.Component {
             rippleColor={nowTheme.COLORS.BACKGROUND}
             
             onPress = {() => this.saveandnavigate()}
-          />
+          /> : <Block />} 
                </Block> 
         </Block>)
     }
