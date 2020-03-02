@@ -18,9 +18,10 @@ export default class OrderCard extends React.Component {
           return ( 
               <Block flex style={{width: (width -20)}}>
                 <Block row>
-            <Block style={{width:(width - 20) * 0.5}}>
+            <Block style={{width:(width - 20) * 0.6}}>
             <Text
                 style={{
+                  color: BlackColor,
                   fontSize: 14,
                   fontFamily: 'montserrat-bold',
                   marginTop: 5,
@@ -32,7 +33,7 @@ export default class OrderCard extends React.Component {
                   </Text>
             <Text
                 style={{
-                  color: PrimaryColor,
+                  color: BlackColor,
                   fontWeight: 'bold',
                   fontSize: 16,
                   fontFamily: 'montserrat-bold',
@@ -43,6 +44,24 @@ export default class OrderCard extends React.Component {
               >
                 {item.ProductName}
                   </Text>
+                  
+            </Block>
+            <Block style={{width: (width - 20) * 0.4}}>
+            
+            <Text
+                style={{
+                  color: BlackColor,
+                  fontWeight: 'bold',
+                  fontSize: 18,
+                  fontFamily: 'montserrat-bold',
+                  marginTop: 5,
+                  marginBottom: 5,
+                  zIndex: 2,
+                  textAlign: 'right'
+                }}
+              >
+                {item.Quantity}
+                  </Text>
                   <Text
                 style={{
                   color: nowTheme.COLORS.BACKGROUND,
@@ -50,31 +69,16 @@ export default class OrderCard extends React.Component {
                   fontFamily: 'montserrat-bold',
                   marginTop: 5,
                   marginBottom: 5,
-                  zIndex: 2
+                  zIndex: 2,
+                  textAlign: 'right'
                 }}
               >
                 {item.Status}
                   </Text>
-            </Block>
-            <Block style={{width: (width - 20) * 0.5}}>
-            
-            <Text
-                style={{
-                  color: PrimaryColor,
-                  fontWeight: 'bold',
-                  fontSize: 18,
-                  fontFamily: 'montserrat-bold',
-                  marginTop: 5,
-                  marginBottom: 5,
-                  zIndex: 2
-                }}
-              >
-                {item.Quantity}
-                  </Text>
             {item.Status != "Closed" ?
             <Button
             shadowless
-            style={{height: 30,width: (width - 20) * 0.5,
+            style={{height: 30,width: (width - 30) * 0.5,
               shadowRadius: 0,
               shadowOpacity: 0}}
             color={nowTheme.COLORS.PRIMARY}

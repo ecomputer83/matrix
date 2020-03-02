@@ -207,7 +207,8 @@ class Programming extends React.Component {
                   textStyle={styles.spinnerTextStyle}
                 />
             {this.renderPrograms()}
-            {this.renderModal()}
+            {remainQuantity != 0 ?
+            this.renderModal() : <Block />}
             <Block row style={{zIndex: 3, position: 'absolute', top: 600}}>
           {remainQuantity != 0 ?
           <FloatingActionButton
@@ -218,7 +219,7 @@ class Programming extends React.Component {
             rippleColor={nowTheme.COLORS.BACKGROUND}
             onPress = {() => this.setModalVisible(true)}
           /> : <Block />}
-          {props.navigation.state.params.programs == null ?
+          {this.props.navigation.state.params.programs == null ?
           <FloatingActionButton
             iconName="check"
             iconType="AntDesign"
