@@ -1,7 +1,7 @@
 // local imgs
 const Onboarding = require('../assets/imgs/background.png');
 const Logo = require('../assets/imgs/icon.png');
-const HeaderBackground = require('../assets/imgs/header.jpg');
+const HeaderBackground = require('../assets/imgs/header.png');
 const paystack = require('../assets/imgs/secured_by_paystack.png');
 
 // const Viewed = [

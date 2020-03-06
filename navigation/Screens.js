@@ -58,18 +58,12 @@ const transitionConfig = (transitionProps, prevTransitionProps) => ({
   }
 });
 
-const AppStack = createStackNavigator(
+const HomeStack = createStackNavigator(
   {
-    Onboarding: {
-      screen: Onboarding,
-      navigationOptions: {
-        headerShown: false
-      }
-    },
     Home: {
       screen: Home,
       navigationOptions: ({ navigation }) => ({
-        header: <Header bgColor={nowTheme.COLORS.PRIMARY} message buttons iconColor={nowTheme.COLORS.WHITE} title="Home" navigation={navigation} />
+        header: <Header transparent message buttons iconColor={nowTheme.COLORS.WHITE} title="Home" navigation={navigation} />
       })
     },
     MakeOrder: {
@@ -95,18 +89,6 @@ const AppStack = createStackNavigator(
       navigationOptions: ({ navigation }) => ({
         header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title="Track Order" navigation={navigation} />
       })
-    },
-    Login: {
-      screen: Login,
-      navigationOptions: {
-        headerShown: false
-        }
-    },
-    Register: {
-      screen: Register,
-      navigationOptions: {
-        headerShown: false
-      }
     }
     // Pro: {
     //   screen: Pro,
@@ -126,36 +108,36 @@ const AppStack = createStackNavigator(
   }
 );
 
-// const AppStack = createDrawerNavigator(
-//   {
-//     Onboarding: {
-//       screen: Onboarding,
-//       navigationOptions: {
-//         drawerLabel: () => { }
-//       }
-//     },
-//     Login: {
-//       screen: Login,
-//       navigationOptions: {
-//         drawerLabel: () => { }
-//       }
-//     },
-//     Register: {
-//       screen: Register,
-//       navigationOptions: {
-//         drawerLabel: () => { }
-//       }
-//     },
-//     Home: {
-//       screen: HomeStack,
-//       navigationOptions: navOpt => ({
-//         drawerLabel: ({ focused }) => <DrawerItem focused={focused} title="Home" />
-//       })
-//     }
+const AppStack = createDrawerNavigator(
+  {
+    Onboarding: {
+      screen: Onboarding,
+      navigationOptions: {
+        drawerLabel: () => { }
+      }
+    },
+    Login: {
+      screen: Login,
+      navigationOptions: {
+        drawerLabel: () => { }
+      }
+    },
+    Register: {
+      screen: Register,
+      navigationOptions: {
+        drawerLabel: () => { }
+      }
+    },
+    Home: {
+      screen: HomeStack,
+      navigationOptions: navOpt => ({
+        drawerLabel: ({ focused }) => <DrawerItem focused={focused} title="Home" />
+      })
+    }
     
-//   },
-//   Menu
-// );
+  },
+  Menu
+);
 
 const AppContainer = createAppContainer(AppStack);
 export default AppContainer;

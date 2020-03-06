@@ -26,38 +26,24 @@ class Register extends React.Component {
     return (
       <DismissKeyboard>
         <Block flex middle  style={styles.container}>
-          {/* <ImageBackground
+          <ImageBackground
             source={Images.Onboarding}
             style={styles.imageBackgroundContainer}
             imageStyle={styles.imageBackground}
-          > */}
+          >
             <Block flex middle>
             <Block middle>
                 <Image source={Images.Logo} style={{ width: 194, height: 78, bottom: 10 }} />
               </Block>
               <Block style={styles.registerContainer}>
                 <Block flex space="evenly">
-                  <Block flex={0.1} middle style={styles.socialConnect}>
-                    <Block flex={0.5} middle>
-                      <Text
-                        style={{
-                          fontFamily: 'montserrat-regular',
-                          textAlign: 'center'
-                        }}
-                        color="#333"
-                        size={24}
-                      >
-                        Register
-                      </Text>
-                    </Block>
-                  </Block>
                   <Block flex={1} middle space="between">
                     <Block center flex={0.9}>
                       <Block flex space="between">
                         <Block>
                           <Block width={width * 0.8} style={{ marginBottom: 5, marginTop: 5 }}>
                             <Input
-                              placeholder="Phone"
+                              placeholder="Phone Number"
                               color="black"
                               style={styles.inputs}
                               iconContent={
@@ -69,6 +55,14 @@ class Register extends React.Component {
                                   style={styles.inputIcons}
                                 />
                               }
+                            />
+                          </Block>
+                          <Block width={width * 0.8} style={{ marginBottom: 5, marginTop: 5 }}>
+                            <Input
+                              placeholder="Personal Name or Company Name"
+                              color="black"
+                              style={styles.inputs}
+                              noicon
                             />
                           </Block>
                           <Block width={width * 0.8}>
@@ -160,7 +154,7 @@ class Register extends React.Component {
                 </Block>
               </Block>
             </Block>
-          {/* </ImageBackground> */}
+          </ImageBackground>
         </Block>
       </DismissKeyboard>
     );
@@ -175,7 +169,7 @@ const styles = StyleSheet.create({
     zIndex: 1
   },
   container: {
-    backgroundColor: nowTheme.COLORS.BACKGROUND
+    //backgroundColor: nowTheme.COLORS.BACKGROUND
   },
   imageBackground: {
     width: width,
@@ -185,18 +179,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     width: width * 0.9,
     height: height < 812 ? height * 0.6 : height * 0.6,
-    //backgroundColor: nowTheme.COLORS.WHITE,
-    opacity: 0.7,
-    borderRadius: 4,
-    shadowColor: nowTheme.COLORS.BLACK,
-    shadowOffset: {
-      width: 0,
-      height: 4
-    },
-    shadowRadius: 8,
-    shadowOpacity: 0.1,
-    elevation: 1,
-    overflow: 'hidden'
+
   },
   socialConnect: {
     backgroundColor: nowTheme.COLORS.WHITE

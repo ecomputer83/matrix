@@ -14,10 +14,10 @@ export default class Onboarding extends React.Component {
       <Block flex style={styles.container}>
         <StatusBar barStyle="light-content" />
         <Block flex>
-        {/* <ImageBackground
+        <ImageBackground
             source={Images.Onboarding}
             style={{ flex: 1, height: height, width, zIndex: 1 }}
-          /> */}
+          />
           <Block space="between" style={styles.padded}>
             <Block>
               <Block middle>

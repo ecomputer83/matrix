@@ -20,10 +20,10 @@ export default class Login extends React.Component {
       <Block flex style={styles.container}>
         <StatusBar barStyle="light-content" />
         <Block flex>
-        {/* <ImageBackground
+        <ImageBackground
             source={Images.Onboarding}
             style={{ flex: 1, height: height, width, zIndex: 1 }}
-          /> */}
+          />
           <Block space="between" style={styles.padded}>
             <Block>
               <Block middle>
@@ -38,7 +38,7 @@ export default class Login extends React.Component {
                     left
                     color="black"
                     style={styles.input}
-                    placeholder="UserName"
+                    placeholder="Phone Number"
                     placeholderTextColor={'#8898AA'}
                     iconContent={
                       <Icon size={18} color={theme.COLORS.MUTED} name="photo" family="NowExtra" />

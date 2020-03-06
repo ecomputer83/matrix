@@ -180,22 +180,27 @@ class Header extends React.Component {
     return (
 
       <Block style={headerStyles}>
+        <ImageBackground
+          source={Images.HeaderBackground}
+          style={styles.profileContainer}
+          imageStyle={styles.profileBackground}
+        >
         <NavBar
           title={title}
           style={navbarStyles}
           transparent={transparent}
           right={this.renderRight()}
           rightStyle={{ alignItems: 'center' }}
-          // left={
-          //   <Icon
-          //     name={back ? 'arrow-back' : 'menu'}
-          //     family="NowExtra"
-          //     size={16}
-          //     onPress={this.handleLeftPress}
-          //     color={iconColor || Theme.COLORS.ICON}
-          //   />
-          // }
-          // leftStyle={{ paddingVertical: 12, flex: 0.2 }}
+          left={
+            <Icon
+              name={back ? 'arrow-back' : 'menu'}
+              family="NowExtra"
+              size={16}
+              onPress={this.handleLeftPress}
+              color={iconColor || Theme.COLORS.ICON}
+            />
+          }
+          leftStyle={{ paddingVertical: 12, flex: 0.2 }}
           titleStyle={[
             styles.title,
             { color: Theme.COLORS[white ? 'WHITE' : 'HEADER'] },
@@ -203,7 +208,9 @@ class Header extends React.Component {
           ]}
           {...props}
         />
+
         {this.renderHeader()}
+        </ImageBackground>
       </Block>
     );
   }
