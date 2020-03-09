@@ -82,7 +82,7 @@ export default class OrderCard extends React.Component {
               shadowRadius: 0,
               shadowOpacity: 0}}
             color={nowTheme.COLORS.PRIMARY}
-            onPress={() => Navigation.navigate('Programming', { product: null, quantity: item.Quantity, programs: item.Programing})}
+            onPress={() => Navigation.navigate('Dispatch', { product: null, quantity: item.Quantity, programs: item.Programing})}
           >
             <Text
               style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}

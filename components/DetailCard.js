@@ -22,6 +22,7 @@ export default class DetailCard extends React.Component {
             <Block style={{width:(width - 10) * 0.7}}>
             <Text
                 style={{
+                  color: BlackColor,
                   fontSize: 16,
                   fontFamily: 'montserrat-bold',
                   marginTop: 5,

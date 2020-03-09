@@ -124,7 +124,7 @@ class DrawerItem extends React.Component {
             color={focused ? nowTheme.COLORS.PRIMARY : 'white'}
           />
         );
-        case 'Accredited Dealers':
+        case 'FAQs':
         return (
           <Icon
             name="mouse"
@@ -134,10 +134,10 @@ class DrawerItem extends React.Component {
             color={focused ? nowTheme.COLORS.PRIMARY : 'white'}
           />
         );
-        case 'Chat with an Agent':
+        case 'Contact us':
         return (
           <Icon
-            name="mouse"
+            name="phone"
             family="NowExtra"
             size={18}
             style={{ borderColor: 'rgba(0,0,0,0.5)' }}

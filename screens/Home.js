@@ -64,7 +64,7 @@ class Home extends React.Component {
             DAILY PRICE
         </Text>
       {this.renderPrices()}
-      {this.renderButtons()}
+      {/* {this.renderButtons()} */}
     </Block>);
   }
 }

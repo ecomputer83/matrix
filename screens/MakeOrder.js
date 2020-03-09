@@ -50,9 +50,9 @@ class MakeOrder extends React.Component {
                         <Block center flex={0.9}>
                           <Block flex space="between">
                             <Block>
-                            <Block width={width * 0.8} style={{ marginBottom: 5, marginTop: 25 }}>
-                                <Text>Depots</Text>
-                                <Block  style={styles.picker}>
+                            <Block width={width * 0.9} style={{ marginTop: 20 }}>
+                                {/* <Text>Depots</Text> */}
+                                <Block style={styles.picker}>
                                 <Picker
                                     selectedValue={depot }
                                     onValueChange={(itemValue, itemIndex) => this.pickerDepot(itemIndex)}>
@@ -67,9 +67,9 @@ class MakeOrder extends React.Component {
                               </Block>
                               { (depot != null) ? (
                                 <Block>
-                              <Block width={width * 0.8} style={{ marginBottom: 5, marginTop: 25 }}>
-                                <Text>Products</Text>
-                                <Block  style={styles.picker}>
+                              <Block width={width * 0.9} style={{ marginBottom: 5, marginTop: 25 }}>
+                                {/* <Text>Products</Text> */}
+                                <Block style={styles.picker}>
                                 <Picker
                                     selectedValue={product }
                                     onValueChange={(itemValue, itemIndex) => this.pickerProduct(itemIndex)}>
@@ -82,8 +82,8 @@ class MakeOrder extends React.Component {
                                 </Picker>
                                 </Block>
                               </Block>
-                              <Block width={width * 0.8} style={{ marginBottom: 5 }}>
-                              <Text>Quantity</Text>
+                              <Block width={width * 0.9} style={{ marginBottom: 5 }}>
+                              {/* <Text>Quantity</Text> */}
                               <Input
                                   placeholder="Quantity"
                                   color="black"
@@ -100,10 +100,10 @@ class MakeOrder extends React.Component {
                                   noicon
                                 />
                               </Block>
-                              <Block width={width * 0.8} style={{ marginBottom: 5 }}>
-                              <Text>Unit Price</Text>
+                              <Block width={width * 0.9} style={{ marginBottom: 5 }}>
+                              {/* <Text>Unit Price</Text> */}
                               <Input
-                                  placeholder="unit price"
+                                  placeholder="Unit Price"
                                   color="black"
                                   style={styles.inputs}
                                   value={unitPrice}
@@ -111,8 +111,8 @@ class MakeOrder extends React.Component {
                                   noicon
                                 />
                               </Block>
-                              <Block width={width * 0.8} style={{ marginBottom: 5 }}>
-                              <Text>Total Amount</Text>
+                              <Block width={width * 0.9} style={{ marginBottom: 5 }}>
+                              {/* <Text>Total Amount</Text> */}
                               <Input
                                   placeholder="Total Amount"
                                   color="black"
@@ -126,7 +126,7 @@ class MakeOrder extends React.Component {
                               <Block style={{marginBottom:  10}}></Block>
                                
                               { (product != null) ?  (
-                              <Block width={width * 0.8} center>
+                              <Block width={width * 0.9} center>
                                 <GaButton
                                     shadowless
                                     style={styles.loginbutton}
@@ -154,17 +154,20 @@ class MakeOrder extends React.Component {
 const styles = StyleSheet.create({
     inputs: {
         borderWidth: 1,
-        borderColor: '#E3E3E3',
-        borderRadius: 0
+        borderColor: nowTheme.COLORS.SECONDARY,
+        borderRadius: 0,
+        height: 64
       },
       picker: {
         borderWidth: 1,
-        borderColor: '#E3E3E3',
-        borderRadius: 0
+        borderColor: nowTheme.COLORS.SECONDARY,
+        borderRadius: 0,
+        height: 64,
+        paddingTop: 5
       },
       loginbutton: {
-        width: ((width * 0.8) /2),
-        height: nowTheme.SIZES.BASE * 3,
+        width: ((width * 0.9)),
+        height: 64,
         shadowRadius: 0,
         shadowOpacity: 0
       }

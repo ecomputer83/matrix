@@ -14,19 +14,26 @@ const Drawer = props => (
   <Block style={styles.container} forceInset={{ top: 'always', horizontal: 'never' }}>
     <Block style={styles.header}>
       <Image style={styles.logo} source={Images.Logo} />
+      <TouchableOpacity onPress={() => props.navigation.navigate.closeDrawer()}
+        >
       <Block right style={styles.headerIcon}>
         <Icon name="arrow-back" family="NowExtra" size={15} color={'white'} />
       </Block>
+      </TouchableOpacity>
     </Block>
 
     <Block flex>
       <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
         <DrawerNavigatorItems {...props} />
-
         <TouchableOpacity onPress={() => props.navigation.navigate('Onboarding')}
           style={{ marginLeft: 10, fontFamily: 'montserrat-regular' }}
         >
-          <DrawerItem {...props} title="Chat with an Agent" />
+          <DrawerItem {...props} title="FAQs" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => props.navigation.navigate('Onboarding')}
+          style={{ marginLeft: 10, fontFamily: 'montserrat-regular' }}
+        >
+          <DrawerItem {...props} title="Contact us" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => props.navigation.navigate('Onboarding')}
           style={{ marginLeft: 10, fontFamily: 'montserrat-regular' }}

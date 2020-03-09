@@ -41,7 +41,7 @@ class Register extends React.Component {
                     <Block center flex={0.9}>
                       <Block flex space="between">
                         <Block>
-                          <Block width={width * 0.8} style={{ marginBottom: 5, marginTop: 5 }}>
+                          <Block width={width * 0.8}>
                             <Input
                               placeholder="Phone Number"
                               color="black"
@@ -57,12 +57,20 @@ class Register extends React.Component {
                               }
                             />
                           </Block>
-                          <Block width={width * 0.8} style={{ marginBottom: 5, marginTop: 5 }}>
+                          <Block width={width * 0.8}>
                             <Input
                               placeholder="Personal Name or Company Name"
                               color="black"
                               style={styles.inputs}
-                              noicon
+                              iconContent={
+                                <Icon
+                                  size={16}
+                                  color="#ADB5BD"
+                                  name="person"
+                                  family="NowExtra"
+                                  style={styles.inputIcons}
+                                />
+                              }
                             />
                           </Block>
                           <Block width={width * 0.8}>
@@ -74,14 +82,14 @@ class Register extends React.Component {
                                 <Icon
                                   size={16}
                                   color="#ADB5BD"
-                                  name="email-852x"
+                                  name="email"
                                   family="NowExtra"
                                   style={styles.inputIcons}
                                 />
                               }
                             />
                           </Block>
-                          <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                          <Block width={width * 0.8}>
                             <Input
                               placeholder="Password"
                               noicon
@@ -91,7 +99,7 @@ class Register extends React.Component {
                               viewPass
                             />
                           </Block>
-                          <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                          <Block width={width * 0.8}>
                             <Input
                               placeholder="Confirm Password"
                               noicon

@@ -107,15 +107,15 @@ class Programming extends React.Component {
               Alert.alert('Modal has been closed.');
             }}>
             <Block  flex center style={{marginTop: 100, marginBottom: 20, backgroundColor: nowTheme.COLORS.WHITE}}>
-              <Block flex={1}  width={width * 0.9} space="between" style={{ padding: 10 }}>
+              <Block flex={1}  width={width * 0.9} space="between" style={{ padding: 2 }}>
                 <Block flex={0.1}>
                 <Text style={{ fontFamily: 'montserrat-bold', fontSize: 18 }}>Add New Programming</Text>
                 </Block>
                 <Block flex={0.6}>
-                <Block width={width * 0.8} style={{ marginBottom: 5 }}>
-                              <Text>Truck No</Text>
+                <Block width={width * 0.9} style={{ marginBottom: 5 }}>
+                              {/* <Text>Truck No</Text> */}
                               <Input
-                                  placeholder="TruckNo"
+                                  placeholder="Truck No"
                                   color="black"
                                   style={styles.inputs}
                                   value={this.state.TruckNo}
@@ -132,8 +132,8 @@ class Programming extends React.Component {
                                   noicon
                                 />
                               </Block>
-                <Block width={width * 0.8} style={{ marginBottom: 5 }}>
-                              <Text>Quantity</Text>
+                <Block width={width * 0.9} style={{ marginBottom: 5 }}>
+                              {/* <Text>Quantity</Text> */}
                               <Input
                                   placeholder="Quantity"
                                   color="black"
@@ -146,8 +146,8 @@ class Programming extends React.Component {
                                   noicon
                                 />
                               </Block>
-                <Block width={width * 0.8} style={{ marginBottom: 5 }}>
-                              <Text>Destination</Text>
+                <Block width={width * 0.9} style={{ marginBottom: 5 }}>
+                              {/* <Text>Destination</Text> */}
                               <Input
                                   placeholder="Destination"
                                   color="black"
@@ -235,16 +235,19 @@ class Programming extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    inputs: {
-        borderWidth: 1,
-        borderColor: '#E3E3E3',
-        borderRadius: 0
-      },
-      picker: {
-        borderWidth: 1,
-        borderColor: '#E3E3E3',
-        borderRadius: 0
-      },
+  inputs: {
+    borderWidth: 1,
+    borderColor: nowTheme.COLORS.SECONDARY,
+    borderRadius: 0,
+    height: 64
+  },
+  picker: {
+    borderWidth: 1,
+    borderColor: nowTheme.COLORS.SECONDARY,
+    borderRadius: 0,
+    height: 64,
+    alignItems:'center'
+  },
       button: {
         width: (width * 0.32),
         height: nowTheme.SIZES.BASE * 3,

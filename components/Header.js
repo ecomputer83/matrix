@@ -195,12 +195,12 @@ class Header extends React.Component {
             <Icon
               name={back ? 'arrow-back' : 'menu'}
               family="NowExtra"
-              size={16}
+              size={18}
               onPress={this.handleLeftPress}
               color={iconColor || Theme.COLORS.ICON}
             />
           }
-          leftStyle={{ paddingVertical: 12, flex: 0.2 }}
+          leftStyle={{ paddingVertical: 6, flex: 0.2 }}
           titleStyle={[
             styles.title,
             { color: Theme.COLORS[white ? 'WHITE' : 'HEADER'] },
@@ -223,14 +223,14 @@ const styles = StyleSheet.create({
   },
   title: {
     width: '100%',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     fontFamily: 'montserrat-regular'
   },
   navbar: {
     paddingVertical: 0,
     paddingBottom: theme.SIZES.BASE * 1.5,
-    paddingTop: iPhoneX ? theme.SIZES.BASE * 3 : theme.SIZES.BASE,
+    paddingTop: iPhoneX ? theme.SIZES.BASE * 2 : theme.SIZES.BASE,
     zIndex: 5
   },
   avatar: {

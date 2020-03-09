@@ -4,6 +4,8 @@ import { Easing, Animated } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
 import { createDrawerNavigator } from 'react-navigation-drawer';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 // screens
 import Home from '../screens/Home';
 import Login from '../screens/Login';
@@ -63,9 +65,20 @@ const HomeStack = createStackNavigator(
     Home: {
       screen: Home,
       navigationOptions: ({ navigation }) => ({
-        header: <Header transparent message buttons iconColor={nowTheme.COLORS.WHITE} title="Home" navigation={navigation} />
+        header: <Header transparent message iconColor={nowTheme.COLORS.WHITE} title="Home" navigation={navigation} />
       })
+    }
+  },
+  {
+    cardStyle: {
+      backgroundColor: '#FFFFFF'
     },
+    transitionConfig
+  }
+);
+
+const MakeOrderStack = createStackNavigator(
+  {
     MakeOrder: {
       screen: MakeOrder,
       navigationOptions: ({ navigation }) => ({
@@ -83,22 +96,7 @@ const HomeStack = createStackNavigator(
       navigationOptions: ({ navigation }) => ({
         header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title="Programming" navigation={navigation} />
       })
-    },
-    TrackOrder: {
-      screen: TrackOrder,
-      navigationOptions: ({ navigation }) => ({
-        header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title="Track Order" navigation={navigation} />
-      })
     }
-    // Pro: {
-    //   screen: Pro,
-    //   navigationOptions: ({ navigation }) => ({
-    //     header: (
-    //       <Header left={<Block />} white transparent title="" navigation={navigation} />
-    //     ),
-    //     headerTransparent: true
-    //   })
-    // }
   },
   {
     cardStyle: {
@@ -107,6 +105,66 @@ const HomeStack = createStackNavigator(
     transitionConfig
   }
 );
+
+const TrackOrderStack = createStackNavigator(
+  {
+    TrackOrder: {
+      screen: TrackOrder,
+      navigationOptions: ({ navigation }) => ({
+        header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title="Track Order" navigation={navigation} />
+      })
+    },
+    Dispatch: {
+      screen: Programming,
+      navigationOptions: ({ navigation }) => ({
+        header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title="Dispatch Info" navigation={navigation} />
+      })
+    }
+  },
+  {
+    cardStyle: {
+      backgroundColor: '#FFFFFF'
+    },
+    transitionConfig
+  }
+);
+
+const TabStack = createBottomTabNavigator(
+  {
+    Home: { screen: HomeStack },
+    MakeOrder: { screen: MakeOrderStack },
+    TrackOrder: { screen: TrackOrderStack }
+  },
+  {
+    defaultNavigationOptions: ({ navigation }) => ({
+      tabBarLabel: (navigation.state.routeName == 'MakeOrder') ? 'Make Order' : (navigation.state.routeName == 'TrackOrder') ? 'Track Order' : 'Home',
+      tabBarIcon: ({ focused, horizontal, tintColor }) => {
+        const { routeName } = navigation.state;
+        let IconComponent = Ionicons;
+        let iconName;
+        if (routeName === 'Home') {
+          iconName = `ios-home`;
+        } else if (routeName === 'TrackOrder') {
+          iconName = `ios-analytics`;
+        }
+        else if (routeName === 'MakeOrder') {
+          iconName = `ios-card`;
+        }
+        return <IconComponent name={iconName} size={25} color={tintColor} />;
+      },
+    }),
+    tabBarOptions: {
+      activeTintColor: `${nowTheme.COLORS.PRIMARY}`,
+      inactiveTintColor: `${nowTheme.COLORS.SECONDARY}`,
+      style: {
+        paddingTop:10,
+        paddingBottom: 10,
+        height: 65,
+        
+    }
+    },
+  }
+)
 
 const AppStack = createDrawerNavigator(
   {
@@ -129,7 +187,7 @@ const AppStack = createDrawerNavigator(
       }
     },
     Home: {
-      screen: HomeStack,
+      screen: TabStack,
       navigationOptions: navOpt => ({
         drawerLabel: ({ focused }) => <DrawerItem focused={focused} title="Home" />
       })
