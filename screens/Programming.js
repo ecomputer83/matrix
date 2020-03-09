@@ -113,7 +113,7 @@ class Programming extends React.Component {
                 </Block>
                 <Block flex={0.6}>
                 <Block width={width * 0.9} style={{ marginBottom: 5 }}>
-                              {/* <Text>Truck No</Text> */}
+                              <Text style={{fontSize: 12}}>Truck No</Text>
                               <Input
                                   placeholder="Truck No"
                                   color="black"
@@ -133,7 +133,7 @@ class Programming extends React.Component {
                                 />
                               </Block>
                 <Block width={width * 0.9} style={{ marginBottom: 5 }}>
-                              {/* <Text>Quantity</Text> */}
+                              <Text style={{fontSize: 12}}>Quantity</Text>
                               <Input
                                   placeholder="Quantity"
                                   color="black"
@@ -147,7 +147,7 @@ class Programming extends React.Component {
                                 />
                               </Block>
                 <Block width={width * 0.9} style={{ marginBottom: 5 }}>
-                              {/* <Text>Destination</Text> */}
+                              <Text style={{fontSize: 12}}>Destination</Text>
                               <Input
                                   placeholder="Destination"
                                   color="black"

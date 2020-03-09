@@ -51,7 +51,7 @@ class MakeOrder extends React.Component {
                           <Block flex space="between">
                             <Block>
                             <Block width={width * 0.9} style={{ marginTop: 20 }}>
-                                {/* <Text>Depots</Text> */}
+                                <Text style={{fontSize: 12}}>Depots</Text>
                                 <Block style={styles.picker}>
                                 <Picker
                                     selectedValue={depot }
@@ -68,7 +68,7 @@ class MakeOrder extends React.Component {
                               { (depot != null) ? (
                                 <Block>
                               <Block width={width * 0.9} style={{ marginBottom: 5, marginTop: 25 }}>
-                                {/* <Text>Products</Text> */}
+                                <Text style={{fontSize: 12}}>Products</Text>
                                 <Block style={styles.picker}>
                                 <Picker
                                     selectedValue={product }
@@ -83,7 +83,7 @@ class MakeOrder extends React.Component {
                                 </Block>
                               </Block>
                               <Block width={width * 0.9} style={{ marginBottom: 5 }}>
-                              {/* <Text>Quantity</Text> */}
+                              <Text style={{fontSize: 12}}>Quantity</Text>
                               <Input
                                   placeholder="Quantity"
                                   color="black"
@@ -101,7 +101,7 @@ class MakeOrder extends React.Component {
                                 />
                               </Block>
                               <Block width={width * 0.9} style={{ marginBottom: 5 }}>
-                              {/* <Text>Unit Price</Text> */}
+                              <Text style={{fontSize: 12}}>Unit Price</Text>
                               <Input
                                   placeholder="Unit Price"
                                   color="black"
@@ -112,7 +112,7 @@ class MakeOrder extends React.Component {
                                 />
                               </Block>
                               <Block width={width * 0.9} style={{ marginBottom: 5 }}>
-                              {/* <Text>Total Amount</Text> */}
+                              <Text style={{fontSize: 12}}>Total Amount</Text>
                               <Input
                                   placeholder="Total Amount"
                                   color="black"

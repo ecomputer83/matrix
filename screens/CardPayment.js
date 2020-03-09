@@ -42,7 +42,7 @@ class CardPayment extends React.Component {
       const {ActualAmount, Tax, TotalAmount} = this.state
         return (<Block flex={0.3} style={styles.shadow, {margin: 10}}>
             <AmountCard Key="Amount" Value={ActualAmount} />
-            <AmountCard Key="Tax" Value={Tax} />
+            <AmountCard Key="Payment Charges" Value={Tax} />
             <AmountCard Key="Total" Value={TotalAmount} />
         </Block>);
     }
