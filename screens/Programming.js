@@ -107,11 +107,11 @@ class Programming extends React.Component {
               Alert.alert('Modal has been closed.');
             }}>
             <Block  flex center style={{marginTop: 100, marginBottom: 20, backgroundColor: nowTheme.COLORS.WHITE}}>
-              <Block flex={1}  width={width * 0.9} space="between" style={{ padding: 2 }}>
+              <Block flex={1}  width={width * 0.9} style={{ padding: 2 }}>
                 <Block flex={0.1}>
                 <Text style={{ fontFamily: 'montserrat-bold', fontSize: 18 }}>Add New Programming</Text>
                 </Block>
-                <Block flex={0.6}>
+                <Block flex={0.8}>
                 <Block width={width * 0.9} style={{ marginBottom: 5 }}>
                               <Text style={{fontSize: 12}}>Truck No</Text>
                               <Input
@@ -161,9 +161,7 @@ class Programming extends React.Component {
                                   noicon
                                 />
                               </Block>
-                </Block>
-                <Block flex={0.2}>
-                <Block style={{marginBottom:  10}}></Block>
+                              <Block style={{marginBottom:  10}}></Block>
                               <Block row width={width * 0.7} center>
                               <GaButton
                                     shadowless
@@ -192,6 +190,7 @@ class Programming extends React.Component {
                                     </Text>
                                 </GaButton>
                               </Block>
+                
                 </Block>
                 
               </Block>

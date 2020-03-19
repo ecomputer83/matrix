@@ -116,12 +116,24 @@ class Header extends React.Component {
     const { navigation, User } = this.props;
 
     return (
-      <Block row style={styles.options}>
+      <Block style={styles.options}>
         <Block middle>
-            <Text style={{ fontFamily: 'montserrat-regular' }} size={16} style={styles.tabTitle}>
-              Welcome to
+        <Image source={Images.Logo} style={{ width: 72, height: 29, marginBottom: 20 }} />
+        </Block>
+        <Block row space="between" > 
+          <Block>
+            <Text style={{ fontFamily: 'montserrat-regular' }} size={24} style={{lineHeight: 32,fontWeight: '600', color: Theme.COLORS.HEADER}}>
+              Good Morning,
             </Text>
-            <Image source={Images.Logo} style={{ width: 194, height: 78 }} />
+            <Text style={{ fontFamily: 'montserrat-regular' }} size={20} style={{lineHeight: 22,fontWeight: '300', color: Theme.COLORS.HEADER}}>
+              Customer Name
+            </Text>
+            </Block>
+        <Block>
+          <Image source={Images.Profile} style={{ width: 56, height: 55, borderRadius: 50}} />
+        </Block>
+        
+            
         </Block>
       </Block>
     );
@@ -180,11 +192,6 @@ class Header extends React.Component {
     return (
 
       <Block style={headerStyles}>
-        <ImageBackground
-          source={Images.HeaderBackground}
-          style={styles.profileContainer}
-          imageStyle={styles.profileBackground}
-        >
         <NavBar
           title={title}
           style={navbarStyles}
@@ -210,7 +217,6 @@ class Header extends React.Component {
         />
 
         {this.renderHeader()}
-        </ImageBackground>
       </Block>
     );
   }
@@ -272,9 +278,11 @@ const styles = StyleSheet.create({
     borderColor: Theme.COLORS.BORDER
   },
   options: {
-    marginBottom: 24,
-    marginTop: 10,
-    elevation: 4
+    marginBottom: 32,
+    elevation: 4,
+    width:width - 30,
+    marginLeft: 15,
+    marginRight: 15
   },
   tab: {
     backgroundColor: theme.COLORS.TRANSPARENT,

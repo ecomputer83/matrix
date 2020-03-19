@@ -1,6 +1,6 @@
 const COLORS = {
   DEFAULT: '#1E1E1E',
-  PRIMARY: '#60C6EC',
+  PRIMARY: '#23C9F1',
   BACKGROUND: '#60C6EC',
   LABEL: '#FE2472',
   INFO: '#2CA8FF',
@@ -31,7 +31,7 @@ const COLORS = {
   ICON_INPUT: '#555555',
   HEADER: '#FFFFFF',
   BORDER: '#CAD1D7',
-  WHITE: '#FFFFFF',
+  WHITE: '#FAFAFA',
   BLACK: '#000000',
   TWITTER: '#55acee',
   FACEBOOK: '#3b5998',

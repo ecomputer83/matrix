@@ -12,6 +12,11 @@ const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
 );
 export default class Login extends React.Component {
+
+  handleLeftPress = () => {
+    const { navigation } = this.props;
+    return navigation.navigate('Onboarding');
+  };
   render() {
     const { navigation } = this.props;
 
@@ -20,38 +25,47 @@ export default class Login extends React.Component {
       <Block flex style={styles.container}>
         <StatusBar barStyle="light-content" />
         <Block flex>
-        <ImageBackground
-            source={Images.Onboarding}
-            style={{ flex: 1, height: height, width, zIndex: 1 }}
-          />
+          <Block style={{marginLeft: 16, marginTop: 10}}>
+          <Icon
+              name={'arrow-back'}
+              family="Ionicons"
+              size={20}
+              onPress={this.handleLeftPress}
+              color={nowTheme.COLORS.ICON}
+            />
+          </Block>
           <Block space="between" style={styles.padded}>
             <Block>
-              <Block middle>
-                <Image source={Images.Logo} style={{ width: 194, height: 78, bottom: 40, position: 'absolute' }} />
-              </Block>
-              
+            <Block>
+            <Text style={{ fontFamily: 'HK Grotesk' }} size={28} style={{marginLeft: 21, marginBottom:10}}>
+            Log In to continue
+            </Text>
+            </Block>
               <Block style={{
-                  marginTop: theme.SIZES.BASE * 1.5,
+                  marginTop: theme.SIZES.BASE * 1.5, marginLeft:20
                 }}>
                 <Block style={{marginVertical: 2.5}}>
+                <Text style={{ fontFamily: 'HK Grotesk' }} size={14}>
+                  Email
+                  </Text>
                 <Input
                     left
                     color="black"
                     style={styles.input}
-                    placeholder="Phone Number"
-                    placeholderTextColor={'#8898AA'}
-                    iconContent={
-                      <Icon size={18} color={theme.COLORS.MUTED} name="photo" family="NowExtra" />
-                    }
+                    placeholder="Enter email here"
+                    noicon
                 />
                 </Block>
                 <Block style={{marginVertical: 2.5}}>
+                <Text style={{ fontFamily: 'HK Grotesk' }} size={14}>
+                  Password
+                  </Text>
                 <Input
+                    placeholder="Enter password here"
                     noicon
                     color="black"
                     style={styles.input}
-                    password 
-                    viewPass
+                    password
                 />
                 </Block>
               </Block>
@@ -68,46 +82,18 @@ export default class Login extends React.Component {
                 <Button
                   shadowless
                   style={styles.button}
-                  color={nowTheme.COLORS.DEFAULT}
+                  color={nowTheme.COLORS.PRIMARY}
                   onPress={() => navigation.navigate('Home')}
                 >
                   <Text
-                    style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}
+                    style={{ fontFamily: 'HK Grotesk', fontSize: 16 }}
                     color={theme.COLORS.WHITE}
                   >
-                    Login
+                    Log In
                   </Text>
                 </Button>
                 </Block>
-                <Block row>
-                <Button
-                  shadowless
-                  style={styles.loginbutton}
-                  color={nowTheme.COLORS.DEFAULT}
-                  onPress={() => navigation.navigate('Register')}
-                >
-                  <Text
-                    style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}
-                    color={theme.COLORS.WHITE}
-                  >
-                    Create Account
-                  </Text>
-                </Button>
-                <Button
-                  shadowless
-                  style={styles.registerbutton}
-                  color={nowTheme.COLORS.DEFAULT}
-                  onPress={() => navigation.navigate('Home')}
-                >
-                  <Text
-                    style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}
-                    color={theme.COLORS.WHITE}
-                  >
-                    No Thanks
-                  </Text>
-                </Button>
                 </Block>
-              </Block>
             </Block>
           </Block>
         </Block>
@@ -119,20 +105,19 @@ export default class Login extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: nowTheme.COLORS.BACKGROUND,
+    backgroundColor: nowTheme.COLORS.WHITE,
     marginTop: Platform.OS === 'android' ? 0 : 0
   },
   padded: {
-    paddingHorizontal: theme.SIZES.BASE * 1.5,
-    zIndex: 3,
-    position: 'absolute',
-    bottom: Platform.OS === 'android' ? theme.SIZES.BASE * 2 : theme.SIZES.BASE * 3
+    marginTop: 179
   },
   button: {
-    width: width - theme.SIZES.BASE * 4,
-    height: theme.SIZES.BASE * 3,
+    width: width - 40,
+    height: 40,
     shadowRadius: 0,
     shadowOpacity: 0,
+    marginLeft: 20,
+    marginRight: 20,
     marginBottom: 5
   },
 
@@ -160,8 +145,10 @@ const styles = StyleSheet.create({
     height: 66
   },
   input: {
-    height: 50,
-    width:  width - theme.SIZES.BASE * 4,
-    marginHorizontal: 4
+    height: 38,
+    width:  width - 42,
+    marginLeft: 1,
+    marginRight: 1,
+    borderRadius: 0
   },
 });

@@ -14,16 +14,17 @@ export default class Onboarding extends React.Component {
       <Block flex style={styles.container}>
         <StatusBar barStyle="light-content" />
         <Block flex>
-        <ImageBackground
-            source={Images.Onboarding}
-            style={{ flex: 1, height: height, width, zIndex: 1 }}
-          />
+          <Block middle>
+                <Image source={Images.Logo} style={{ width: 72, height: 29 }} />
+              </Block>
           <Block space="between" style={styles.padded}>
             <Block>
-              <Block middle>
-                <Image source={Images.Logo} style={{ width: 294, height: 119, bottom: 200, position: 'absolute' }} />
-              </Block>
               
+            <Block middle>
+            <Text style={{ fontFamily: 'HK Grotesk' }} size={22} style={{marginBottom:10}}>
+              Welcome to Matrix Energy
+            </Text>
+            </Block>
               
 
               <Block
@@ -33,31 +34,31 @@ export default class Onboarding extends React.Component {
                   marginBottom: theme.SIZES.BASE * 2
                 }}
               >
-                <Block row>
+                <Block>
                 <Button
                   shadowless
                   style={styles.loginbutton}
-                  color={nowTheme.COLORS.DEFAULT}
+                  color={nowTheme.COLORS.PRIMARY}
                   onPress={() => navigation.navigate('Login')}
                 >
                   <Text
-                    style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}
+                    style={{ fontFamily: 'HK Grotesk', fontSize: 16 }}
                     color={theme.COLORS.WHITE}
                   >
-                    Login
+                    Log In
                   </Text>
                 </Button>
                 <Button
                   shadowless
                   style={styles.registerbutton}
-                  color={nowTheme.COLORS.DEFAULT}
+                  color={nowTheme.COLORS.BODY}
                   onPress={() => navigation.navigate('Register')}
                 >
                   <Text
-                    style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}
+                    style={{ fontFamily: 'HK Grotesk', fontSize: 16 }}
                     color={theme.COLORS.WHITE}
                   >
-                    Create Account
+                    Register
                   </Text>
                 </Button>
                 </Block>
@@ -75,14 +76,11 @@ export default class Onboarding extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: nowTheme.COLORS.BACKGROUND,
+    backgroundColor: nowTheme.COLORS.WHITE,
     marginTop: Platform.OS === 'android' ? 0 : 0
   },
   padded: {
-    paddingHorizontal: theme.SIZES.BASE * 1.5,
-    zIndex: 3,
-    position: 'absolute',
-    bottom: Platform.OS === 'android' ? theme.SIZES.BASE * 2 : theme.SIZES.BASE * 3
+    marginTop: 263
   },
   button: {
     width: width - theme.SIZES.BASE * 4,
@@ -93,18 +91,23 @@ const styles = StyleSheet.create({
   },
 
   loginbutton: {
-    width: (width /2) - (theme.SIZES.BASE * 2 + 2.5),
-    height: theme.SIZES.BASE * 3,
+    width: (width - 40),
+    height: 40,
     shadowRadius: 0,
     shadowOpacity: 0,
-    marginRight: 5
+    marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 10
   },
 
   registerbutton: {
-    width: (width /2) - (theme.SIZES.BASE * 2 + 2.5),
-    height: theme.SIZES.BASE * 3,
+    width: (width - 40),
+    height: 40,
     shadowRadius: 0,
     shadowOpacity: 0,
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 10
   },
 
   gradient: {
