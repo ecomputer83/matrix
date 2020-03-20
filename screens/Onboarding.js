@@ -21,7 +21,7 @@ export default class Onboarding extends React.Component {
             <Block>
               
             <Block middle>
-            <Text style={{ fontFamily: 'HK Grotesk' }} size={22} style={{marginBottom:10}}>
+            <Text size={22} style={{marginBottom:10, fontFamily: 'HKGrotesk-Bold'}}>
               Welcome to Matrix Energy
             </Text>
             </Block>
@@ -42,7 +42,7 @@ export default class Onboarding extends React.Component {
                   onPress={() => navigation.navigate('Login')}
                 >
                   <Text
-                    style={{ fontFamily: 'HK Grotesk', fontSize: 16 }}
+                    style={{ fontFamily: 'HKGrotesk-BoldLegacy', fontSize: 16 }}
                     color={theme.COLORS.WHITE}
                   >
                     Log In
@@ -55,7 +55,7 @@ export default class Onboarding extends React.Component {
                   onPress={() => navigation.navigate('Register')}
                 >
                   <Text
-                    style={{ fontFamily: 'HK Grotesk', fontSize: 16 }}
+                    style={{ fontFamily: 'HKGrotesk-BoldLegacy', fontSize: 16 }}
                     color={theme.COLORS.WHITE}
                   >
                     Register

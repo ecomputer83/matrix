@@ -111,7 +111,7 @@ const TrackOrderStack = createStackNavigator(
     TrackOrder: {
       screen: TrackOrder,
       navigationOptions: ({ navigation }) => ({
-        header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title="Track Order" navigation={navigation} />
+        header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title="Orders" navigation={navigation} />
       })
     },
     Dispatch: {

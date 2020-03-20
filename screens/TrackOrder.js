@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet,  Dimensions, Image, Alert  } from 'react-native';
+import { StyleSheet,  Dimensions, Image, Alert, FlatList  } from 'react-native';
 import { Block, theme,Button, Text } from "galio-framework";
 import {OrderCard, Input } from "../components";
 import { prod, Images, nowTheme } from '../constants';
@@ -9,22 +9,7 @@ const { width } = Dimensions.get("screen");
 class TrackOrder extends React.Component {
 
     state = {
-        OrderId: null,
-        Order: null,
-        spinner: false
-    }
-
-    SearchByID = () => {
-        if(this.state.OrderId != null){
-            this.setState({
-                spinner: true
-              });
-              setTimeout(() => {
-                this.setState({ spinner: false });
-            var Order = prod.Orders.find(o=>o.OrderId == this.state.OrderId);
-            this.setState({Order: Order});
-            }, 2000);
-        }
+        Orders: prod.Orders
     }
 
     render () {
@@ -37,38 +22,11 @@ class TrackOrder extends React.Component {
                 />
 
                     <Block flex={1} space="between">
-                        <Block row center flex={0.2} style={{ marginBottom: 5 }}>
-                            <Block width={width * 0.7} style={{ marginBottom: 5 }}>
-                              <Input
-                                  placeholder="Search by Order ID"
-                                  color="black"
-                                  style={styles.search}
-                                  value={this.state.OrderId}
-                                  onChangeText={(text) => this.setState({OrderId: text})}
-                                  noicon
-                                />
-                            </Block>
-                            <Block width={width * 0.2} style={{ marginBottom: 5 }}>
-                            <Button
-        shadowless
-        style={styles.searchbutton}
-        color={nowTheme.COLORS.PRIMARY}
-        onPress={() => this.SearchByID()}
-      >
-        <Text
-          style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}
-          color={theme.COLORS.WHITE}
-        >
-          Search
-        </Text>
-      </Button>
-                                
-                            </Block>
-                        </Block>
-                        <Block flex={0.7} style={{ margin: 10 }}>
-                            {this.state.Order ?
-                            <OrderCard item={this.state.Order} Navigation={this.props.navigation} />
-                            : <Block />}
+                        <Block flex={0.1}></Block>
+                        <Block flex={0.9}>
+                        <FlatList data={this.state.Orders} keyExtractor={(item, index )=> index.toString()} extraData={this.state} ListHeaderComponent={null} renderItem={({item}) => {
+                            return <OrderCard item={item} />
+                        }}/>
                         </Block>
                     </Block>
             </Block>

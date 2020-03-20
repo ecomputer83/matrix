@@ -22,48 +22,34 @@ class Card extends React.Component {
 
     const imageStyles = [full ? styles.fullImage : styles.horizontalImage, imageStyle];
     const titleStyles = [styles.cardTitle, titleStyle];
-    const cardContainer = [styles.card, styles.shadow, style];
+    const cardContainer = [styles.card, style];
     const imgContainer = [
       styles.imageContainer,
       horizontal ? styles.horizontalStyles : styles.verticalStyles,
-      styles.shadow
+      //styles.shadow
     ];
 
     return (
       <Block row={horizontal} card flex style={cardContainer}>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('Product', { product: item })}>
-          <Block flex style={imgContainer}>
+        <TouchableWithoutFeedback onPress={() => {}}>
+          <Block style={imgContainer}>
             <Image resizeMode="cover" source={item.image} style={imageStyles} />
           </Block>
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('Product', { product: item })}>
+        <TouchableWithoutFeedback onPress={() => {}}>
           <Block flex space="between" style={styles.cardDescription}>
             <Block flex>
               <Text
-                style={{ fontFamily: 'montserrat-regular' }}
+                style={titleStyles, { fontFamily: 'HKGrotesk-Medium', paddingBottom: 15 }}
                 size={14}
-                style={titleStyles}
-                color={nowTheme.COLORS.SECONDARY}
+                color={nowTheme.COLORS.BLACK}
               >
                 {item.title}
               </Text>
-              {item.subtitle ? (
-                <Block flex center>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={32}
-                    color={nowTheme.COLORS.BLACK}
-                  >
-                    {item.subtitle}
-                  </Text>
-                </Block>
-              ) : (
-                  <Block />
-                )}
               {item.description ? (
                 <Block flex center>
                   <Text
-                    style={{ fontFamily: 'montserrat-regular', textAlign: 'center', padding: 15 }}
+                    style={{ fontFamily: 'HKGrotesk-Regular', textAlign: 'center', padding: 15 }}
                     size={14}
                     color={"#9A9A9A"}
                   >
@@ -76,8 +62,8 @@ class Card extends React.Component {
               {item.body ? (
                 <Block flex left>
                   <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={12}
+                    style={{ fontFamily: 'HKGrotesk-Regular' }}
+                    size={10}
                     color={nowTheme.COLORS.TEXT}
                   >
                     {item.body}
@@ -87,18 +73,7 @@ class Card extends React.Component {
                   <Block />
                 )}
             </Block>
-            <Block right={ctaRight ? true : false}>
-              <Text
-                style={styles.articleButton}
-                size={12}
-                muted={!ctaColor}
-                color={ctaColor || nowTheme.COLORS.ACTIVE}
-                bold
-              >
-                {item.cta}
-              </Text>
             </Block>
-          </Block>
         </TouchableWithoutFeedback>
       </Block>
     );
@@ -119,10 +94,8 @@ Card.propTypes = {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: theme.COLORS.WHITE,
-    marginVertical: theme.SIZES.BASE,
     borderWidth: 0,
     minHeight: 114,
-    marginBottom: 4
   },
   cardTitle: {
     paddingHorizontal: 9,
@@ -133,16 +106,14 @@ const styles = StyleSheet.create({
     padding: theme.SIZES.BASE / 2
   },
   imageContainer: {
-    borderRadius: 3,
-    elevation: 1,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   image: {
     // borderRadius: 3,
   },
   horizontalImage: {
-    height: 122,
-    width: 'auto'
+    height: 125,
+    width: 125
   },
   horizontalStyles: {
     borderTopRightRadius: 0,

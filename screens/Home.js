@@ -1,9 +1,9 @@
 import React from "react";
-import { StyleSheet, FlatList, Dimensions} from "react-native";
+import { StyleSheet, ScrollView, Dimensions, Picker, FlatList} from "react-native";
 import { Block, theme, Text, Button } from "galio-framework";
 import { white } from "color-name";
-import {PriceCard } from "../components";
-import {prod, nowTheme} from "../constants";
+import {Card } from "../components";
+import {prod, Article, nowTheme} from "../constants";
 
 const { width, height } = Dimensions.get("screen");
 const ratio = width / height;
@@ -12,59 +12,100 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      DailyPrices: prod.DailyPrices
+      DailyPrices: prod.DailyPrices,
+      Articles: Article,
+      depot: prod.Depots[0]
     }
     
   }
-  renderPrices = () => {
-    return (<Block>
-    <FlatList data={this.state.DailyPrices} keyExtractor={item => item.Id.toString()} extraData={this.state} ListHeaderComponent={null} renderItem={({item}) => {
-      return <PriceCard Key={item.Product} Value={item.Price} />
-    }}/></Block>)
+
+  pickerDepot(index){
+    prod.Depots.map( (v,i)=>{
+     if( index === i ){
+       this.setState({
+       depot: prod.Depots[index]
+      })
+     }
+    })
+
   }
-  renderButtons = () => {
-    const { navigation } = this.props;
+
+  loadPrices = () => {
+    return this.state.DailyPrices.map((s,i) => {
+        return (<Block style={{paddingTop: 10,
+          paddingBottom: 10, paddingRight: 35,
+          paddingLeft: 15, margin: 10, backgroundColor: "#ffffff"}}>
+          <Text
+                style={{
+                  color: nowTheme.COLORS.BLACK,
+                  fontSize: 14,
+                  fontFamily: 'HKGrotesk-Light',
+                  lineHeight: 20,
+                  paddingBottom:5
+                }}
+              >
+                {s.Product}
+                  </Text>
+          <Text
+                style={{
+                  color: nowTheme.COLORS.BLACK,
+                  fontSize: 18,
+                  fontFamily: 'HKGrotesk-Bold',
+                  lineHeight: 26,
+                  paddingBottom:5
+                }}
+              >
+                {s.Price}
+                  </Text>
+        </Block>)
+    })
+  }
+
+
+  renderPrices = () => {
+    return ( <Block>
+    <ScrollView horizontal={true}>
+      {this.loadPrices()}
+    </ScrollView>
+    </Block>)
+  }
+  renderArticles = () => {
     return (
-      <Block row style={{marginTop: 10}}>
-                <Button
-                  shadowless
-                  style={styles.loginbutton}
-                  color={nowTheme.COLORS.PRIMARY}
-                  onPress={() => navigation.navigate('Login')}
-                >
-                  <Text
-                    style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}
-                    color={theme.COLORS.WHITE}
-                  >
-                    Login
-                  </Text>
-                </Button>
-                <Button
-                  shadowless
-                  style={styles.registerbutton}
-                  color={nowTheme.COLORS.PRIMARY}
-                  onPress={() => navigation.navigate('Home')}
-                >
-                  <Text
-                    style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}
-                    color={theme.COLORS.WHITE}
-                  >
-                    Create Account
-                  </Text>
-                </Button>
-                </Block>
-    );
+      <Block>
+        <Block style={{ margin: 10 }}>
+        <Text style={{ fontFamily: 'HKGrotesk-SemiBold', fontSize: 14 }} color={theme.COLORS.DEFAULT}>
+            NEWS HIGHLIGHTS
+        </Text>
+        </Block>
+        <FlatList data={this.state.Articles} keyExtractor={(item, index )=> index.toString()} extraData={this.state} ListHeaderComponent={null} renderItem={({item}) => {
+          return <Card item={item} horizontal />
+        }}/></Block>
+    )
   }
   componentDidMount(){
   }
 
   render() {
-    return (<Block>
-        <Text style={{ fontFamily: 'montserrat-bold', fontSize: 16, padding: 10 }} color={theme.COLORS.DEFAULT}>
-            DAILY PRICE
+    return (<Block style={{backgroundColor: nowTheme.COLORS.WHITE}}>
+      <Block row space="between" style={{padding: 10}}>
+      <Block>
+        <Text style={{ fontFamily: 'HKGrotesk-Light', fontSize: 14 }} color={theme.COLORS.DEFAULT}>
+            TODAYS PRICES
         </Text>
+      </Block>
+      <Picker
+          style={styles.selectBox}
+          selectedValue={this.state.depot }
+          onValueChange={(itemValue, itemIndex) => this.pickerDepot(itemIndex)}>
+            {
+                prod.Depots.map( (v)=>{
+                  return <Picker.Item label={v.Name} value={v} />
+                })
+            }
+            </Picker>
+      </Block>
       {this.renderPrices()}
-      {/* {this.renderButtons()} */}
+      {this.renderArticles()}
     </Block>);
   }
 }
@@ -84,6 +125,12 @@ const styles = StyleSheet.create({
     height: theme.SIZES.BASE * 3,
     shadowRadius: 0,
     shadowOpacity: 0,
+  },
+
+  selectBox: {
+    width: 72,
+    height: 19,
+    color: nowTheme.COLORS.PRIMARY
   }
 });
 

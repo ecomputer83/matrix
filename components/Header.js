@@ -81,37 +81,6 @@ class Header extends React.Component {
       )
     );
   };
-  renderButtons = () => {
-    const { navigation, User } = this.props;
-    return (<Block row style={{marginTop: 10, marginBottom:10 }}>
-      <Button
-        shadowless
-        style={styles.makebutton}
-        color={Theme.COLORS.PRIMARY}
-        onPress={() => navigation.navigate('MakeOrder')}
-      >
-        <Text
-          style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}
-          color={theme.COLORS.WHITE}
-        >
-          MAKE ORDER
-        </Text>
-      </Button>
-      <Button
-        shadowless
-        style={styles.trackbutton}
-        color={Theme.COLORS.PRIMARY}
-        onPress={() => navigation.navigate('TrackOrder')}
-      >
-        <Text
-          style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}
-          color={theme.COLORS.WHITE}
-        >
-          TRACK ORDER
-        </Text>
-      </Button>
-      </Block>);
-  }
   renderMessage = () => {
     const { navigation, User } = this.props;
 
@@ -122,10 +91,10 @@ class Header extends React.Component {
         </Block>
         <Block row space="between" > 
           <Block>
-            <Text style={{ fontFamily: 'montserrat-regular' }} size={24} style={{lineHeight: 32,fontWeight: '600', color: Theme.COLORS.HEADER}}>
+            <Text size={24} style={{ fontFamily: 'HKGrotesk-Bold', lineHeight: 32,fontWeight: '600', color: Theme.COLORS.HEADER}}>
               Good Morning,
             </Text>
-            <Text style={{ fontFamily: 'montserrat-regular' }} size={20} style={{lineHeight: 22,fontWeight: '300', color: Theme.COLORS.HEADER}}>
+            <Text size={20} style={{ fontFamily: 'HKGrotesk-Light', lineHeight: 22,fontWeight: '300', color: Theme.COLORS.HEADER}}>
               Customer Name
             </Text>
             </Block>
@@ -154,14 +123,13 @@ class Header extends React.Component {
     );
   };
   renderHeader = () => {
-    const { search, message, tabs, buttons } = this.props;
-    if (search || tabs || message || buttons) {
+    const { search, message, tabs } = this.props;
+    if (search || tabs || message) {
       return (
         <Block center>
           {message ? this.renderMessage() : null}
           {search ? this.renderSearch() : null}
           {tabs ? this.renderTabs() : null}
-          {buttons ? this.renderButtons() : null}
         </Block>
       );
     }

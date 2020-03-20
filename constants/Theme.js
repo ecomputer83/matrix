@@ -1,5 +1,5 @@
 const COLORS = {
-  DEFAULT: '#1E1E1E',
+  DEFAULT: '#191718',
   PRIMARY: '#23C9F1',
   BACKGROUND: '#60C6EC',
   LABEL: '#FE2472',
@@ -10,7 +10,7 @@ const COLORS = {
   SECONDARY: '#444444',
   NEUTRAL: 'rgba(255, 255, 255, 0.2)',
   TABS: 'rgba(222, 222, 222, 0.3)',
-  TEXT: '#32325D',
+  TEXT: '#3B3B3B',
   MUTED: '#8898AA',
   INPUT: '#DCDCDC',
   INPUT_SUCCESS: '#1be611',

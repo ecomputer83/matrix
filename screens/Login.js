@@ -37,7 +37,7 @@ export default class Login extends React.Component {
           <Block space="between" style={styles.padded}>
             <Block>
             <Block>
-            <Text style={{ fontFamily: 'HK Grotesk' }} size={28} style={{marginLeft: 21, marginBottom:10}}>
+            <Text size={28} style={{marginLeft: 21, marginBottom:10, fontFamily: 'HKGrotesk-Bold'}}>
             Log In to continue
             </Text>
             </Block>
@@ -45,7 +45,7 @@ export default class Login extends React.Component {
                   marginTop: theme.SIZES.BASE * 1.5, marginLeft:20
                 }}>
                 <Block style={{marginVertical: 2.5}}>
-                <Text style={{ fontFamily: 'HK Grotesk' }} size={14}>
+                <Text style={{ fontFamily: 'HKGrotesk-Regular' }} size={14}>
                   Email
                   </Text>
                 <Input
@@ -57,7 +57,7 @@ export default class Login extends React.Component {
                 />
                 </Block>
                 <Block style={{marginVertical: 2.5}}>
-                <Text style={{ fontFamily: 'HK Grotesk' }} size={14}>
+                <Text style={{ fontFamily: 'HKGrotesk-Regular' }} size={14}>
                   Password
                   </Text>
                 <Input
@@ -86,7 +86,7 @@ export default class Login extends React.Component {
                   onPress={() => navigation.navigate('Home')}
                 >
                   <Text
-                    style={{ fontFamily: 'HK Grotesk', fontSize: 16 }}
+                    style={{ fontFamily: 'HKGrotesk-BoldLegacy', fontSize: 16 }}
                     color={theme.COLORS.WHITE}
                   >
                     Log In
@@ -149,6 +149,7 @@ const styles = StyleSheet.create({
     width:  width - 42,
     marginLeft: 1,
     marginRight: 1,
-    borderRadius: 0
+    borderRadius: 0,
+    fontFamily: 'HKGrotesk-Regular'
   },
 });
