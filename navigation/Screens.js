@@ -15,6 +15,7 @@ import MakeOrder from '../screens/MakeOrder';
 import CardPayment from '../screens/CardPayment';
 import Programming from '../screens/Programming';
 import TrackOrder from '../screens/TrackOrder';
+import Insight from '../screens/Insight'
 // drawer
 import Menu from './Menu';
 import DrawerItem from '../components/DrawerItem';
@@ -77,13 +78,22 @@ const HomeStack = createStackNavigator(
   }
 );
 
-const MakeOrderStack = createStackNavigator(
+
+const TrackOrderStack = createStackNavigator(
   {
+    TrackOrder: {
+      screen: TrackOrder,
+      navigationOptions: ({ navigation }) => ({
+        header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title="Orders" navigation={navigation} />
+      })
+    },
     MakeOrder: {
       screen: MakeOrder,
-      navigationOptions: ({ navigation }) => ({
-        header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title="Make Order" navigation={navigation} />
-      })
+      navigationOptions: ({ navigation }) => {
+        const { state } = navigation;
+        let title = `${navigation.state.params && state.params.title ? state.params.title : 'Make Order'}`;
+        header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title={title} navigation={navigation} />
+      }
     },
     CardPayment: {
       screen: CardPayment,
@@ -94,7 +104,7 @@ const MakeOrderStack = createStackNavigator(
     Programming: {
       screen: Programming,
       navigationOptions: ({ navigation }) => ({
-        header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title="Programming" navigation={navigation} />
+        header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title="Program" navigation={navigation} />
       })
     }
   },
@@ -106,20 +116,31 @@ const MakeOrderStack = createStackNavigator(
   }
 );
 
-const TrackOrderStack = createStackNavigator(
+const InsightsStack = createStackNavigator(
   {
-    TrackOrder: {
-      screen: TrackOrder,
+    Insights: {
+      screen: Insight,
       navigationOptions: ({ navigation }) => ({
-        header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title="Orders" navigation={navigation} />
+        header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title="Insights" navigation={navigation} />
       })
     },
+  },
+  {
+    cardStyle: {
+      backgroundColor: '#FFFFFF'
+    },
+    transitionConfig
+  }
+);
+
+const DispatchStack = createStackNavigator(
+  {
     Dispatch: {
       screen: Programming,
       navigationOptions: ({ navigation }) => ({
-        header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title="Dispatch Info" navigation={navigation} />
+        header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title="Program" navigation={navigation} />
       })
-    }
+    },
   },
   {
     cardStyle: {
@@ -132,22 +153,22 @@ const TrackOrderStack = createStackNavigator(
 const TabStack = createBottomTabNavigator(
   {
     Home: { screen: HomeStack },
-    MakeOrder: { screen: MakeOrderStack },
-    TrackOrder: { screen: TrackOrderStack }
+    Insights: { screen: InsightsStack },
+    Orders: { screen: TrackOrderStack },
+    Program: { screen: DispatchStack }
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
-      tabBarLabel: (navigation.state.routeName == 'MakeOrder') ? 'Make Order' : (navigation.state.routeName == 'TrackOrder') ? 'Track Order' : 'Home',
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
         let IconComponent = Ionicons;
         let iconName;
         if (routeName === 'Home') {
           iconName = `ios-home`;
-        } else if (routeName === 'TrackOrder') {
+        } else if (routeName === 'Orders') {
           iconName = `ios-analytics`;
         }
-        else if (routeName === 'MakeOrder') {
+        else if (routeName === 'Insights') {
           iconName = `ios-card`;
         }
         return <IconComponent name={iconName} size={25} color={tintColor} />;
@@ -166,31 +187,31 @@ const TabStack = createBottomTabNavigator(
   }
 )
 
-const AppStack = createDrawerNavigator(
+const AppStack = createStackNavigator(
   {
     Onboarding: {
       screen: Onboarding,
       navigationOptions: {
-        drawerLabel: () => { }
-      }
+        header: null,
+    },
     },
     Login: {
       screen: Login,
       navigationOptions: {
-        drawerLabel: () => { }
-      }
+        header: null,
+    },
     },
     Register: {
       screen: Register,
       navigationOptions: {
-        drawerLabel: () => { }
-      }
+        header: null,
+    },
     },
     Home: {
       screen: TabStack,
-      navigationOptions: navOpt => ({
-        drawerLabel: ({ focused }) => <DrawerItem focused={focused} title="Home" />
-      })
+      navigationOptions: {
+        header: null,
+    },
     }
     
   },

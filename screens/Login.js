@@ -27,8 +27,8 @@ export default class Login extends React.Component {
         <Block flex>
           <Block style={{marginLeft: 16, marginTop: 10}}>
           <Icon
-              name={'arrow-back'}
-              family="Ionicons"
+              name={'chevron-left'}
+              family="octicon"
               size={20}
               onPress={this.handleLeftPress}
               color={nowTheme.COLORS.ICON}

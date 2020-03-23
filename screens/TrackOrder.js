@@ -9,7 +9,26 @@ const { width } = Dimensions.get("screen");
 class TrackOrder extends React.Component {
 
     state = {
+        Filters: prod.Filters,
         Orders: prod.Orders
+    }
+    renderChildFilter = () => {
+        return this.state.Filters.map((v,i) => {
+            let Background = (v.Status == 1) ? '#FFFFFF': '';
+            return(<Block style={{ backgroundColor: Background, width: 115, borderRadius: 10, height: 26, alignItems: 'center', justifyContent: 'center'}}>
+                <Text size={12} style={{color: '#2C4453', lineHeight: 12, fontFamily: 'HKGrotesk-Medium'}}>
+                    {v.Name}
+                </Text>
+            </Block>)
+        })
+    }
+    renderFilter = () => {
+        return (
+            <Block row style={{margin: 10, padding: 1, backgroundColor: '#EDEDED', borderRadius: 10, height: 28}}>
+                { this.renderChildFilter()
+                }
+            </Block>
+        )
     }
 
     render () {
@@ -22,8 +41,10 @@ class TrackOrder extends React.Component {
                 />
 
                     <Block flex={1} space="between">
-                        <Block flex={0.1}></Block>
-                        <Block flex={0.9}>
+                        <Block flex={0.08}>
+                            {this.renderFilter()}
+                        </Block>
+                        <Block flex={0.92}>
                         <FlatList data={this.state.Orders} keyExtractor={(item, index )=> index.toString()} extraData={this.state} ListHeaderComponent={null} renderItem={({item}) => {
                             return <OrderCard item={item} />
                         }}/>
