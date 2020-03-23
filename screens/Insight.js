@@ -74,10 +74,7 @@ class Insight extends React.Component {
     render () {
         return (
             <Block center>
-                <StatusBar
-                    backgroundColor={nowTheme.COLORS.PRIMARY}
-                    barStyle="light-content"
-                />
+            
                 <Spinner
                   visible={this.state.spinner}
                   textContent={'Searching...'}

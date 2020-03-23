@@ -3,6 +3,7 @@ const Onboarding = require('../assets/imgs/background.png');
 const Logo = require('../assets/imgs/icon.png');
 const HeaderBackground = require('../assets/imgs/header.png');
 const Profile = require('../assets/imgs/profile.png');
+const ProgramCard = require('../assets/imgs/ProgramCard.png');
 const paystack = require('../assets/imgs/secured_by_paystack.png');
 
 // const Viewed = [
@@ -18,6 +19,7 @@ export default {
   Onboarding,
   Logo,
   Profile,
+  ProgramCard,
   HeaderBackground,
   paystack
 };

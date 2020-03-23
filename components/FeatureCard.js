@@ -1,10 +1,10 @@
 import React from 'react';
 import { Block, Text, theme, Button as GaButton } from 'galio-framework';
-import { nowTheme } from '../constants';
-import { Dimensions, StyleSheet } from 'react-native';
+import { nowTheme, Images } from '../constants';
+import { Dimensions, StyleSheet, ImageBackground } from 'react-native';
 
 const { width } = Dimensions.get('screen');
-export default class DetailCard extends React.Component {
+export default class FeatureCard extends React.Component {
 
     render(){
         const {
@@ -14,12 +14,11 @@ export default class DetailCard extends React.Component {
             ...props
           } = this.props;
             const PrimaryColor = nowTheme.COLORS.PRIMARY;
-            const BlackColor = nowTheme.COLORS.BLACK;
+            const BlackColor = nowTheme.COLORS.WHITE;
           return ( 
-              <Block flex style={styles.shadow, {width:(width - 20), padding:10, marginBottom:10, backgroundColor: '#ffffff'
-            }}>
+            <ImageBackground source={Images.ProgramCard} style={{width: 315, height: 105, margin: 10,padding: 15}}>
                 <Block>
-            <Block row space='between' style={{width:(width - 10) * 0.9}}>
+            <Block row space='between' style={{width:285}}>
             <Text
                 style={{
                   color: BlackColor,
@@ -31,7 +30,7 @@ export default class DetailCard extends React.Component {
                   </Text>
             <Text
                 style={{
-                  color: '#B4B4B4',
+                  color: '#C4F4FF',
                   fontSize: 16,
                   fontFamily: 'HKGrotesk-SemiBoldLegacy'
                 }}
@@ -39,11 +38,11 @@ export default class DetailCard extends React.Component {
                 #{index}
                   </Text>
             </Block>
-            <Block row space='between' style={{width: (width - 10) * 0.8, marginTop: 15}}>
-            <Text size={10} style={{fontFamily: 'HKGrotesk-Regular', lineHeight: 14, color: '#919191'}}>Destination</Text>
-            <Text size={10} style={{fontFamily: 'HKGrotesk-Regular', lineHeight: 14, color: '#919191'}}>Quantity</Text>
+            <Block row space='between' style={{width:260, marginTop: 5}}>
+            <Text size={10} style={{fontFamily: 'HKGrotesk-Regular', lineHeight: 14, color: '#C4F4FF'}}>Destination</Text>
+            <Text size={10} style={{fontFamily: 'HKGrotesk-Regular', lineHeight: 14, color: '#C4F4FF'}}>Quantity</Text>
             </Block>
-            <Block row space='between' style={{width:(width - 10) * 0.9}}>
+            <Block row space='between' style={{width:295, paddingTop: 5}}>
             <Text
                 style={{
                   color: BlackColor,
@@ -64,7 +63,7 @@ export default class DetailCard extends React.Component {
                   </Text>
                 </Block>
                   </Block>
-          </Block>)
+          </ImageBackground>)
     }
 }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { withNavigation } from 'react-navigation';
-import { ImageBackground, TouchableOpacity, StyleSheet, Image, Platform, Dimensions } from 'react-native';
+import { ImageBackground, TouchableOpacity, StyleSheet, Image, Platform, Dimensions, StatusBar } from 'react-native';
 import { Button, Block, NavBar, Text, theme, Button as GaButton } from 'galio-framework';
 
 import Icon from './Icon';
@@ -160,22 +160,16 @@ class Header extends React.Component {
     return (
 
       <Block style={headerStyles}>
+        <StatusBar
+                    backgroundColor={Theme.COLORS.PRIMARY}
+                    barStyle="light-content"
+                />
         <NavBar
           title={title}
           style={navbarStyles}
           transparent={transparent}
           right={this.renderRight()}
           rightStyle={{ alignItems: 'center' }}
-          left={
-            <Icon
-              name={back ? 'arrow-back' : 'menu'}
-              family="NowExtra"
-              size={18}
-              onPress={this.handleLeftPress}
-              color={iconColor || Theme.COLORS.ICON}
-            />
-          }
-          leftStyle={{ paddingVertical: 6, flex: 0.2 }}
           titleStyle={[
             styles.title,
             { color: Theme.COLORS[white ? 'WHITE' : 'HEADER'] },
@@ -198,8 +192,8 @@ const styles = StyleSheet.create({
   title: {
     width: '100%',
     fontSize: 18,
-    fontWeight: 'bold',
-    fontFamily: 'montserrat-regular'
+    fontFamily: 'HKGrotesk-Bold',
+    textAlign: 'center'
   },
   navbar: {
     paddingVertical: 0,

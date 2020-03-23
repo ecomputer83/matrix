@@ -54,7 +54,7 @@ class CardPayment extends React.Component {
           setTimeout(() => {
             this.setState({ spinner: false });
             //Alert.alert('Congratulation!', "Payment has been successful, Kindly continue with Programming");
-            this.props.navigation.navigate('Programming', { product: JSON.stringify(this.state.product), quantity: this.state.quantity})
+            this.props.navigation.navigate('Programming', { isNew: true, quantity: this.state.quantity})
           }, 3000);
         
     };
