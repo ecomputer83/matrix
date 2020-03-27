@@ -99,7 +99,7 @@ class Home extends React.Component {
           onValueChange={(itemValue, itemIndex) => this.pickerDepot(itemIndex)}>
             {
                 prod.Depots.map( (v)=>{
-                  return <Picker.Item label={v.Name} value={v} />
+                  return <Picker.Item label={v.Name} value={v}  />
                 })
             }
             </Picker>
@@ -128,9 +128,14 @@ const styles = StyleSheet.create({
   },
 
   selectBox: {
-    width: 72,
+    width: 122,
     height: 19,
-    color: nowTheme.COLORS.PRIMARY
+    color: nowTheme.COLORS.PRIMARY,
+    textTransform: 'uppercase',
+    fontFamily: 'HKGrotesk-Bold',
+    fontSize: 14,
+    lineHeight: 16,
+    padding: 0
   }
 });
 

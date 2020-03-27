@@ -2,27 +2,26 @@ import React from 'react';
 import { withNavigation } from 'react-navigation';
 import { ImageBackground, TouchableOpacity, StyleSheet, Image, Platform, Dimensions, StatusBar } from 'react-native';
 import { Button, Block, NavBar, Text, theme, Button as GaButton } from 'galio-framework';
-
+import { createIconSetFromFontello } from 'react-native-vector-icons';
+import fontelloConfig from '../config.json';
 import Icon from './Icon';
 import Input from './Input';
 import Tabs from './Tabs';
 import Theme from '../constants/Theme';
 import Images from '../constants/Images';
 
+const Fontello = createIconSetFromFontello(fontelloConfig);
 const { height, width } = Dimensions.get('window');
 const iPhoneX = () =>
   Platform.OS === 'ios' && (height === 812 || width === 812 || height === 896 || width === 896);
 
-const AddButton = ({ isWhite, style, navigation, link }) => (
+const AddButton = ({ isWhite, style, navigation, link, iconName }) => (
   <TouchableOpacity
     style={[styles.button, style]}
     onPress={() => navigation.navigate(link)}
   >
-    <Icon
-      family="NowExtra"
-      size={16}
-      name="add"
-      color={Theme.COLORS[isWhite ? 'WHITE' : 'ICON']}
+   <Fontello name={iconName} size={16}
+      color="#ffffff"
     />
   </TouchableOpacity>
 );
@@ -39,13 +38,10 @@ class Header extends React.Component {
     const { routeName } = navigation.state;
 
     switch (routeName) {
-      case 'MyVehicles':
+      case 'TrackOrder':
         return [
-          <AddButton key="add-vehicle" navigation={navigation} isWhite={white} link="AddVehicle" />
-        ];
-      case 'MyAppointments':
-        return [
-          <AddButton key="add-appointment" navigation={navigation} isWhite={white} link="BookOption"/>
+          <AddButton key="sort" iconName="sort" navigation={navigation} isWhite={white} />,
+          <AddButton key="filter" iconName="filter" navigation={navigation} isWhite={white} />
         ];
       default:
         break;

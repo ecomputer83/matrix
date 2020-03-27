@@ -17,7 +17,7 @@ export default class Login extends React.Component {
   }
   handleLeftPress = () => {
     const { navigation } = this.props;
-    return navigation.navigate('Onboarding');
+    return navigation.goBack(null);
   };
   render() {
     const { navigation } = this.props;

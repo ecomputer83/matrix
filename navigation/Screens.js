@@ -5,7 +5,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { createIconSetFromFontello } from 'react-native-vector-icons';
 // screens
 import Home from '../screens/Home';
 import Login from '../screens/Login';
@@ -19,11 +19,13 @@ import Insight from '../screens/Insight'
 // drawer
 import Menu from './Menu';
 import DrawerItem from '../components/DrawerItem';
+import fontelloConfig from '../config.json';
 import nowTheme from '../constants/Theme';
 
 // header for screens
 import Header from '../components/Header';
 
+const Fontello = createIconSetFromFontello(fontelloConfig);
 const transitionConfig = (transitionProps, prevTransitionProps) => ({
   transitionSpec: {
     duration: 400,
@@ -161,17 +163,19 @@ const TabStack = createBottomTabNavigator(
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
-        let IconComponent = Ionicons;
+        let IconComponent = Fontello;
         let iconName;
         if (routeName === 'Home') {
-          iconName = `ios-home`;
+          iconName = `home`;
         } else if (routeName === 'Orders') {
-          iconName = `ios-analytics`;
+          iconName = `credit-card`;
+        } else if (routeName === 'Program'){
+          iconName = `truck`
         }
         else if (routeName === 'Insights') {
-          iconName = `ios-card`;
+          iconName = `analytics`;
         }
-        return <IconComponent name={iconName} size={25} color={tintColor} />;
+        return <IconComponent name={iconName} size={20} color={tintColor} />;
       },
     }),
     tabBarOptions: {
@@ -179,10 +183,19 @@ const TabStack = createBottomTabNavigator(
       inactiveTintColor: `${nowTheme.COLORS.SECONDARY}`,
       style: {
         paddingTop:10,
-        paddingBottom: 10,
-        height: 65,
-        
-    }
+        paddingBottom: 5,
+        height: 50,
+        borderWidth: 0 
+      },      
+      labelStyle: {        
+       fontSize: 10,        
+       lineHeight: 16,        
+       fontFamily: "HKGrotesk-Regular",
+       textTransform: 'uppercase'   
+      },
+      tabStyle: {
+        borderWidth: 0
+      }
     },
   }
 )

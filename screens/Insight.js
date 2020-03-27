@@ -1,15 +1,29 @@
 import React from 'react';
-import { StyleSheet,  Dimensions, Image, Alert, FlatList, StatusBar  } from 'react-native';
+import { StyleSheet,  Dimensions, Image, Alert, FlatList, ScrollView  } from 'react-native';
 import { Block, theme,Button, Text } from "galio-framework";
-import {OrderCard, Input } from "../components";
+import { BarChart } from 'react-native-chart-kit'
 import { prod, Images, nowTheme } from '../constants';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 const { width } = Dimensions.get("screen");
+const chartConfigs = {
+    backgroundColor: '#ffffff',
+    backgroundGradientFrom: '#ffffff',
+    backgroundGradientTo: '#ffffff',
+    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`
+  };
 class Insight extends React.Component {
-
+    
     state = {
-        Orders: prod.Orders
+        Orders: prod.Orders,
+        Data: {
+            labels: ["Confirmed Order", "Unconfirmed Order"],
+            datasets: [
+              {
+                data: [prod.Orders.filter(c=>c.Status == "Confirmed").length, prod.Orders.filter(c=>c.Status == "Unconfirmed").length]
+              }
+            ]
+          }
     }
     renderChildFilter = () => {
         return this.state.Filters.map((v,i) => {
@@ -72,7 +86,12 @@ class Insight extends React.Component {
     }
 
     render () {
+        const graphStyle = {
+            marginVertical: 8,
+            ...chartConfigs.style
+          }
         return (
+            <ScrollView>
             <Block center>
             
                 <Spinner
@@ -85,11 +104,19 @@ class Insight extends React.Component {
                         <Block>
                             {this.renderTable()}
                         </Block>
-                        <Block>
-                        
+                        <Block style={{margin: 12, padding: 4}}>
+                        <BarChart
+                            width={width-40}
+                            height={200}
+                            data={this.state.Data}
+                            fromZero={true}
+                            chartConfig={chartConfigs}
+                            style={graphStyle}
+                        />
                         </Block>
                     </Block>
             </Block>
+            </ScrollView>
         )
     }
 

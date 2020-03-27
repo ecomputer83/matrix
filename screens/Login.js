@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, Image, StyleSheet, StatusBar, Dimensions, Platform, TouchableWithoutFeedback } from 'react-native';
+import { ImageBackground, Image, StyleSheet, StatusBar, Dimensions, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Block, Button, Text, theme } from 'galio-framework';
 
 const { height, width } = Dimensions.get('screen');
@@ -15,7 +15,7 @@ export default class Login extends React.Component {
 
   handleLeftPress = () => {
     const { navigation } = this.props;
-    return navigation.navigate('Onboarding');
+    return navigation.goBack(null);
   };
   render() {
     const { navigation } = this.props;

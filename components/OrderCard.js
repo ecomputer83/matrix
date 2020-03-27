@@ -68,7 +68,7 @@ export default class OrderCard extends React.Component {
                   zIndex: 2
                 }}
               >
-                {item.DepotName}
+                {item.OrderId}
                   </Text>
                   </Block>
                   <Block style={{alignItems: 'center', justifycentent: 'center'}}>

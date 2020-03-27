@@ -20,7 +20,8 @@ class Programming extends React.Component {
         LGA: '',
         modalVisible: false,
         spinner: false,
-        currentState: 0
+        currentState: 0,
+        isNew: false
     }
 
     constructor(props) {
@@ -41,13 +42,14 @@ class Programming extends React.Component {
         LGA: '',
         modalVisible: false,
         spinner: false,
-        currentState: 0
+        currentState: 0,
+        isNew: false
         }
       }else{
         this.state = {
-          totalquantity: Params.Quantity,
-          remainQuantity: Params.Quantity,
-          programs: this.getPrograms(),
+          totalquantity: Params.quantity,
+          remainQuantity: Params.quantity,
+          programs: [],
           TruckNo: null,
           Quantity: "0",
         Destination: null,
@@ -55,7 +57,8 @@ class Programming extends React.Component {
         LGA: '',
         modalVisible: false,
         spinner: false,
-        currentState: 0
+        currentState: 0,
+        isNew: Params.isNew
       }
       }
       }
@@ -81,7 +84,6 @@ class Programming extends React.Component {
         let results = [];
         for (let c = 0; c<prod.Orders.length; c++) {
           results.concat(prod.Orders[c].Programing);
-          console.log(prod.Orders[c].Programing)
         }
 
         return prod.Orders[0].Programing
@@ -101,7 +103,7 @@ class Programming extends React.Component {
         if(existingIndex > -1){
                 remainQuantity += programs[existingIndex].Quantity;
                 programs[existingIndex].Quantity = obj.Quantity;
-                programs[existingIndex].Destination = obj.Destination;
+                programs[existingIndex].Destination = obj.Destination + ', ' + obj.LGA + ', '+ obj.State;
                 remainQuantity -= obj.Quantity;
             
         }else{
@@ -115,8 +117,7 @@ class Programming extends React.Component {
             this.setState({programs: programs, remainQuantity: remainQuantity, TruckNo: null, Quantity: 0, Destination: null});
         }
         }else{
-            console.log(remainQuantity)
-            console.log(obj.Quantity)
+
             if(remainQuantity >= obj.Quantity){
                 programs.push(obj)
             }else{
@@ -172,7 +173,7 @@ class Programming extends React.Component {
     renderModal = () => {
 
       const {currentState} = this.state;
-      console.log(currentState)
+
         return (<Modal
             animationType="slide"
             transparent={false}
@@ -338,10 +339,10 @@ class Programming extends React.Component {
                 />
             {this.renderFeatures()}
             {this.renderPrograms()}
-            {remainQuantity == 0 ?
+            {remainQuantity != 0 ?
             this.renderModal() : <Block />}
             <Block row style={{zIndex: 3, position: 'absolute', top: 500, right: '5%'}}>
-          {remainQuantity == 0 ?
+          {remainQuantity != 0 ?
           <FloatingActionButton
             iconName="plus"
             iconType="AntDesign"
@@ -351,7 +352,7 @@ class Programming extends React.Component {
             iconColor={nowTheme.COLORS.WHITE}
             onPress = {() => this.setModalVisible(true)}
           /> : <Block />}
-          {this.state.programs == null ?
+          {(this.state.programs.length != 0 && this.state.isNew) ?
           <FloatingActionButton
             iconName="check"
             iconType="AntDesign"
