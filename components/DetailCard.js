@@ -51,7 +51,7 @@ export default class DetailCard extends React.Component {
                   fontFamily: 'HKGrotesk-SemiBoldLegacy',
                 }}
               >
-                {item.Destination}
+                {item.Destination.substring(0, 24)}
                   </Text>
             <Text
                 style={{

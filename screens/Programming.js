@@ -16,12 +16,13 @@ class Programming extends React.Component {
         TruckNo: null,
         Quantity: "0",
         Destination: null,
-        State: '',
-        LGA: '',
+        State: null,
+        LGA: null,
         modalVisible: false,
         spinner: false,
         currentState: 0,
-        isNew: false
+        isNew: false,
+        LGAs: []
     }
 
     constructor(props) {
@@ -38,12 +39,13 @@ class Programming extends React.Component {
             TruckNo: null,
           Quantity: "0",
         Destination: null,
-        State: '',
-        LGA: '',
+        State: null,
+        LGA: null,
         modalVisible: false,
         spinner: false,
         currentState: 0,
-        isNew: false
+        isNew: false,
+        LGAs: []
         }
       }else{
         this.state = {
@@ -53,11 +55,12 @@ class Programming extends React.Component {
           TruckNo: null,
           Quantity: "0",
         Destination: null,
-        State: '',
-        LGA: '',
+        State: null,
+        LGA: null,
         modalVisible: false,
         spinner: false,
         currentState: 0,
+        LGAs: [],
         isNew: Params.isNew
       }
       }
@@ -73,6 +76,15 @@ class Programming extends React.Component {
       setDecrease(){
         var quantity = parseInt(this.state.Quantity) - 100
         this.setState({Quantity: quantity.toString()})
+      }
+
+      setStates(v){
+        var LGAs = ST.LGA.filter(c=>c.stateIndex == v.index);
+        this.setState({LGAs: LGAs, State: v})
+      }
+
+      setLGA(v){
+        this.setState({LGA: v})
       }
 
       Next(){
@@ -91,21 +103,22 @@ class Programming extends React.Component {
     
       AddProgram = () => {
         let obj = {
-            TruckNo: this.state.TruckNo,
-            Quantity: parseInt(this.state.Quantity),
-            Destination: this.state.Destination,
-            Status: 'New'
-        };
-        let programs = this.state.programs;
-        let remainQuantity = this.state.remainQuantity;
-        if(programs.length > 0){
-        let existingIndex = programs.findIndex(c=>c.TruckNo == obj.TruckNo);
-        if(existingIndex > -1){
-                remainQuantity += programs[existingIndex].Quantity;
-                programs[existingIndex].Quantity = obj.Quantity;
-                programs[existingIndex].Destination = obj.Destination + ', ' + obj.LGA + ', '+ obj.State;
-                remainQuantity -= obj.Quantity;
-            
+          TruckNo: this.state.TruckNo,
+          Quantity: parseInt(this.state.Quantity),
+          Destination: this.state.Destination + ', ' + this.state.LGA.Name + ', ' + this.state.State.Name,
+          Status: 'New'
+      };
+      console.log(obj)
+      let programs = this.state.programs;
+      let remainQuantity = this.state.remainQuantity;
+      if(programs.length > 0){
+      let existingIndex = programs.findIndex(c=>c.TruckNo == obj.TruckNo);
+      if(existingIndex > -1){
+              remainQuantity += programs[existingIndex].Quantity;
+              programs[existingIndex].Quantity = obj.Quantity;
+              programs[existingIndex].Destination = obj.Destination;
+              remainQuantity -= obj.Quantity;
+          
         }else{
             if(remainQuantity >= obj.Quantity){
                 programs.push(obj)
@@ -234,16 +247,22 @@ class Programming extends React.Component {
                                 <Picker
                                     selectedValue={this.state.State }
                                     style={styles.pickerStyle}
-                                    onValueChange={(itemValue, itemIndex) => this.pickerDepot(itemIndex)}>
-                                        <Picker.Item label='-- Select State --' value='' />
+                                    onValueChange={(itemValue, itemIndex) => this.setStates(itemValue)}>
+                                        <Picker.Item label='-- Select State --' value={null} />
+                                        {ST.States.map( (v)=>{
+                                        return <Picker.Item label={v.Name} value={v}  />
+                                        })}
                                 </Picker>
                                 </Block>
                                 <Block style={styles.picker}>
                                 <Picker
                                     selectedValue={this.state.LGA }
                                     style={styles.pickerStyle}
-                                    onValueChange={(itemValue, itemIndex) => this.pickerDepot(itemIndex)}>
-                                        <Picker.Item label='-- Select LGA --' value='' />
+                                    onValueChange={(itemValue, itemIndex) => this.setLGA(itemValue)}>
+                                        <Picker.Item label='-- Select LGA --' value={null} />
+                                        {LGAs.map( (v)=>{
+                                        return <Picker.Item label={v.Name} value={v}  />
+                                        })}
                                 </Picker>
                                 </Block>
                               </Block>
