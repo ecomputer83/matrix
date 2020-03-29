@@ -15,10 +15,11 @@ import MakeOrder from '../screens/MakeOrder';
 import CardPayment from '../screens/CardPayment';
 import Programming from '../screens/Programming';
 import TrackOrder from '../screens/TrackOrder';
-import Insight from '../screens/Insight'
+import Insight from '../screens/Insight';
+import RegReview from '../screens/RegReview';
 // drawer
 import Menu from './Menu';
-import DrawerItem from '../components/DrawerItem';
+
 import fontelloConfig from '../config.json';
 import nowTheme from '../constants/Theme';
 
@@ -68,7 +69,7 @@ const HomeStack = createStackNavigator(
     Home: {
       screen: Home,
       navigationOptions: ({ navigation }) => ({
-        header: <Header bgColor={nowTheme.COLORS.PRIMARY} message iconColor={nowTheme.COLORS.WHITE} title="" navigation={navigation} />
+        header: <Header bgColor={nowTheme.COLORS.PRIMARY} noNav message iconColor={nowTheme.COLORS.WHITE} title="" navigation={navigation} />
       })
     }
   },
@@ -216,6 +217,12 @@ const AppStack = createStackNavigator(
     },
     Register: {
       screen: Register,
+      navigationOptions: {
+        header: null,
+    },
+    },
+    RegReview: {
+      screen: RegReview,
       navigationOptions: {
         header: null,
     },

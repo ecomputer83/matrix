@@ -38,7 +38,7 @@ const IndicatorStyles = {
     currentStepLabelColor: '#7eaec4'
   }
 
-class TrackOrder extends React.Component {
+  class TrackOrder extends React.Component {
     
     state = {
         Filters: prod.Filters,
@@ -66,7 +66,7 @@ class TrackOrder extends React.Component {
          if( index === i ){
            this.setState({
            product: prod.DailyPrices[index],
-           unitPrice: prod.DailyPrices[index].Price.toString(),
+           unitPrice: prod.DailyPrices[index].Price,
           })
          }
         })
@@ -140,6 +140,7 @@ class TrackOrder extends React.Component {
 
       saveandnavigate = () => {
           this.setModalPaymentVisible(false);
+          this.setModalCreateVisible(false);
             this.props.navigation.navigate('Programming', { isNew: true, quantity: this.state.quantity})
     }
     backHome = () => {
@@ -175,11 +176,12 @@ class TrackOrder extends React.Component {
     }
 
     renderProducts = () => {
+      let bgColor = ["#303E4F", "#437FB4", "#909090", "#909090", "#E37E2E"]
         return prod.DailyPrices.map((p, i)=>{
             const productStyle = [styles.product, (this.state.productIndex == i) && styles.selected]
             return (<TouchableHighlight onPress={() => this.setProduct(p, i)}>
                 <Block width={width * 0.9} row space='between' style={productStyle}>
-                    <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16 }}>{p.Product}</Text>
+                    <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16, }}>{p.Product}</Text>
                     <Text style={{ fontFamily: 'HKGrotesk-MediumLegacy', fontSize: 16, color: '#AAAAAA' }}>₦{p.Price}/{p.Unit}</Text>
                 </Block>
             </TouchableHighlight>)
@@ -187,11 +189,12 @@ class TrackOrder extends React.Component {
     }
 
     renderDepots = () => {
+      
         return prod.Depots.map((p, i)=>{
             const productStyle = [styles.product, (this.state.depotIndex == i) && styles.selected]
             return (<TouchableHighlight onPress={() => this.setDepot(p, i)}>
                 <Block width={width * 0.9} middle style={productStyle}>
-                    <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16 }}>Matrix Depot {p.Name}</Text>
+                    <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16 }}>{p.Name}</Text>
                 </Block>
             </TouchableHighlight>)
         })
@@ -204,9 +207,27 @@ class TrackOrder extends React.Component {
           this.setModalPaymentVisible(true);
       }
 
+      GenerateTitle = (currentPosition) => {
+        switch(currentPosition) {
+          case 0:
+            return 'Creating New Order - Step 1';
+          case 1:
+            return 'Creating New Order - Step 2';
+          case 2:
+            return 'Creating New Order - Step 3';
+          case 3:
+            return 'Creating New Order - Step 4';
+          case 4:
+            return 'New Order Summary'
+          
+        }
+      }
+
+
+
       renderCreateModal = () => {
 
-        const {currentPosition, phoneNumber, TotalAmount, product, depot, quantity, ifInputupdated} = this.state;
+        const {currentPosition, unitPrice, TotalAmount, product, depot, quantity, ifInputupdated} = this.state;
           return (<Modal
               animationType="slide"
               transparent={false}
@@ -214,9 +235,9 @@ class TrackOrder extends React.Component {
               onRequestClose={() => {
                 Alert.alert('Modal has been closed.');
               }}>
-              <Block  flex center style={{backgroundColor: nowTheme.COLORS.WHITE}}>
+              <Block  flex center style={{backgroundColor: '#FAFAFA'}}>
                 <Block row space='between' style={{width: width, padding: 10, alignItems:'center', marginBottom: 20, borderBottomColor: '#1D1D1D24', borderBottomWidth: 1}}>
-                  <Text style={{ fontFamily: 'HKGrotesk-Bold', fontSize: 20 }}> Step 01/02 Create New Order</Text>
+                  <Text style={{ fontFamily: 'HKGrotesk-Bold', fontSize: 20 }}> {this.GenerateTitle(this.state.currentPosition)}</Text>
                   <Icon
                     name={'x'}
                     family="octicon"
@@ -254,7 +275,7 @@ class TrackOrder extends React.Component {
           <GaButton
                           shadowless
                           style={styles.increbutton}
-                          color='#23C9F1'
+                          color='#4161A1'
                           onPress={() => this.setIncrease()}
                       >
                           <Text
@@ -291,23 +312,66 @@ class TrackOrder extends React.Component {
                       </GaButton>
                     </Block>
                     </Block>
-                    : 
+                    : (currentPosition == 3) ?
                     <Block width={width * 0.9} style={{ marginBottom: 5 }}>
-      <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>How can we reach you?</Text>
-      <PhoneInput
-                      initialCountry="ng"
-                      allowZeroAfterCountryCode={false}
-                      autoFormat={true}
-                      value={phoneNumber}
-                      textProps={{placeholder: 'Telephone number'}}
-                      style={styles.custominput}
-                      onChangePhoneNumber={value => this.setState({phoneNumber: value})}/>
+      <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>Do you have a discount Code? Enter here...</Text>
+      <Input
+                    left
+                    color="black"
+                    style={styles.custominput}
+                    noicon
+                />
+      <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>Enter your IPMAN Membership Code here</Text>
+      <Input
+                    left
+                    color="black"
+                    style={styles.custominput}
+                    noicon
+                />
 
                         <Block center style={{width: (width * 0.9), marginTop: 25, padding: 10, backgroundColor: '#121112'}}>
                     <Text style={{fontSize: 14, lineHeight: 16, fontFamily: 'HKGrotesk-BoldLegacy', color: '#FFFFFF', marginTop: 5}}>₦{TotalAmount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
                     <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-BoldLegacy', color: '#FFFFFF', marginTop: 5}}>{quantity} Litres</Text>
-                    <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-BoldLegacy', color: '#FFFFFF', marginTop: 5}}>{product.Product} (ex Matrix Depot {depot.Name})</Text>
+                    <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-BoldLegacy', color: '#FFFFFF', marginTop: 5}}>{product.Product} (ex Nepal Depot {depot.Name})</Text>
                     <TouchableHighlight onPress={() => this.edit()}><Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'ProductSans-Medium', color: '#23C9F1', marginTop: 15}}>Edit</Text></TouchableHighlight>
+
+                        </Block>
+                    </Block>
+                    : 
+                    <Block middle width={width * 0.9} style={{ marginBottom: 5 }}>
+                      <Block width={47} height={47} style={{ backgroundColor: '#121112', marginBottom: 13, marginTop: 33, borderRadius: 50}}>
+                      </Block>
+
+                      <Text style={{fontSize: 14, lineHeight: 24, fontFamily: 'ProductSans-Bold', textAlign: 'center'}}>Congratulations! Your Order has been submitted Successfully.</Text>
+
+
+                        <Block style={{width: (width * 0.9), marginTop: 25, paddingVertical: 10, paddingHorizontal: '23%', backgroundColor: '#121112'}}>
+                        <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-Regular', color: '#FFFFFF', marginTop: 5, textAlign: 'center'}}>{product.Product} (ex {depot.Name})</Text>
+                    
+                    <Block row space='between'>
+                    <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-Regular', color: '#FFFFFF'}}>Order Quantity:</Text>
+                      <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-Regular', color: '#FFFFFF'}}>{quantity} Litres</Text>
+                    </Block>
+                    <Block row space='between'>
+                    <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-Regular', color: '#FFFFFF'}}>List Unit Price:</Text>
+                      <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-Regular', color: '#FFFFFF'}}>{product.Price}</Text>
+                    </Block>
+                    <Block row space='between'>
+                    <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-Regular', color: '#FFFFFF'}}>Discount Offered:</Text>
+                      <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-Regular', color: '#FFFFFF'}}>0.5</Text>
+                    </Block>
+                    <Block row space='between'>
+                    <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-Regular', color: '#FFFFFF'}}>IPMAN Discount:</Text>
+                      <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-Regular', color: '#FFFFFF'}}>0.5</Text>
+                    </Block>
+                    <Block row space='between'>
+                    <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-Regular', color: '#FFFFFF'}}>Net Unit Price:</Text>
+                      <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-Regular', color: '#FFFFFF'}}>{product.Price - 1}</Text>
+                    </Block>
+                    <Text style={{fontSize: 14, lineHeight: 15, fontFamily: 'HKGrotesk-BoldLegacy', color: '#FFFFFF', marginTop: 5, textAlign: 'center'}}>Total Order Amount</Text>
+                    <Text style={{fontSize: 14, lineHeight: 16, fontFamily: 'HKGrotesk-BoldLegacy', color: '#FFFFFF', marginTop: 5, textAlign: 'center'}}>₦{TotalAmount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
+                    
+                    <TouchableHighlight onPress={() => this.edit()}><Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'ProductSans-Medium', color: '#23C9F1', marginTop: 15, textAlign: 'center'}}>Edit</Text></TouchableHighlight>
 
                         </Block>
                     </Block>
@@ -348,23 +412,64 @@ class TrackOrder extends React.Component {
                   
                 </Block>
               </Block>
-              { (currentPosition > 2) ?  (
+              { (currentPosition == 3) ?  (
                               <Block width={width * 0.9} center style={{position: 'absolute', bottom: 50}}>
                                 <GaButton
                                     shadowless
                                     style={styles.button}
                                     color={nowTheme.COLORS.PRIMARY}
-                                    onPress={() => this.proceedToPayment()}
+                                    onPress={() => this.Next()}
                                 >
                                     <Text
                                         style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16 }}
                                         color={theme.COLORS.WHITE}
                                     >
-                                        PROCEED TO PAYMENT
+                                        Submit Your Order
                                     </Text>
                                 </GaButton>
                               </Block>)
-                               : (<Block />)}
+                               : (currentPosition > 3) ? (
+                                <Block width={width * 0.9} center style={{position: 'absolute', bottom: 50}}>
+                                  <GaButton
+                                      shadowless
+                                      style={styles.button}
+                                      color={nowTheme.COLORS.PRIMARY}
+                                      onPress={() => {}}
+                                  >
+                                      <Text
+                                          style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16 }}
+                                          color={theme.COLORS.WHITE}
+                                      >
+                                          Share Order Details
+                                      </Text>
+                                  </GaButton>
+                                  <GaButton
+                                      shadowless
+                                      style={styles.button}
+                                      color={nowTheme.COLORS.PRIMARY}
+                                      onPress={() => this.saveandnavigate()}
+                                  >
+                                      <Text
+                                          style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 14 }}
+                                          color={theme.COLORS.WHITE}
+                                      >
+                                          Credit Customer? Proceed to Truck programming
+                                      </Text>
+                                  </GaButton>
+                                  <GaButton
+                                      shadowless
+                                      style={styles.button}
+                                      color={nowTheme.COLORS.PRIMARY}
+                                      onPress={() => this.proceedToPayment()}
+                                  >
+                                      <Text
+                                          style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16 }}
+                                          color={theme.COLORS.WHITE}
+                                      >
+                                          PROCEED TO PAYMENT
+                                      </Text>
+                                  </GaButton>
+                                </Block>) : (<Block />)}
             </Modal>);
       }
 
@@ -379,9 +484,9 @@ class TrackOrder extends React.Component {
                 Alert.alert('Modal has been closed.');
               }}>
             { (!CompletePayment) ?  
-              <Block  flex center style={{backgroundColor: nowTheme.COLORS.WHITE}}>
+              <Block  flex center style={{backgroundColor: '#FAFAFA'}}>
                 <Block row space='between' style={{width: width, padding: 10, alignItems:'center', marginBottom: 20, borderBottomColor: '#1D1D1D24', borderBottomWidth: 1}}>
-                  <Text style={{ fontFamily: 'HKGrotesk-Bold', fontSize: 20 }}> Step 02/02 Create New Order</Text>
+            <Text style={{ fontFamily: 'HKGrotesk-Bold', fontSize: 20 }}> Make Payment - Step {currentState + 1}</Text>
                   <Icon
                     name={'x'}
                     family="octicon"
@@ -501,7 +606,7 @@ class TrackOrder extends React.Component {
                 </Block>
                 <Block style={{marginTop: 10}}>
                 <Text size={19} style={{color: '#2C4453', lineHeight: 26, fontFamily: 'ProductSans-Bold'}}>
-                    Great work Ismail
+                    Great work Business Name
                 </Text>
                 </Block>
                 <Block style={{marginTop: 10}}>

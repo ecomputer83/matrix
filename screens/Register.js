@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, Image, StyleSheet, StatusBar, Dimensions, Platform, TouchableWithoutFeedback } from 'react-native';
+import { ScrollView, StyleSheet, StatusBar, Dimensions, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Block, Button, Text, theme } from 'galio-framework';
 import PhoneInput from 'react-native-phone-input'
 const { height, width } = Dimensions.get('screen');
@@ -37,19 +37,68 @@ export default class Login extends React.Component {
               color={nowTheme.COLORS.ICON}
             />
           </Block>
+          <ScrollView>
           <Block space="between" style={styles.padded}>
             <Block>
             <Block>
-            <Text size={28} style={{marginLeft: 21, marginBottom:10, fontFamily: 'HKGrotesk-Bold'}}>
-            Register to continue
+            <Text size={20} style={{marginLeft: 21, marginBottom:5, fontFamily: 'HKGrotesk-Bold'}}>
+            We are glad to take you on board!
             </Text>
             </Block>
               <Block style={{
-                  marginTop: theme.SIZES.BASE * 1.5, marginLeft:20
+                  marginTop: 5, marginLeft:20
                 }}>
-                <Block style={{marginVertical: 2.5}}>
+                <Block style={{marginVertical: 1}}>
                 <Text style={{ fontFamily: 'HKGrotesk-Regular' }} size={14}>
-                  Phone Number
+                  Business Name
+                  </Text>
+                <Input
+                    left
+                    color="black"
+                    style={styles.input}
+                    placeholder="Enter  business name here"
+                    noicon
+                />
+                </Block>
+                <Block style={{marginVertical: 1}}>
+                <Text style={{ fontFamily: 'HKGrotesk-Regular' }} size={14}>
+                  CAC RC Number
+                  </Text>
+                <Input
+                    left
+                    color="black"
+                    style={styles.input}
+                    placeholder="Enter cac number here"
+                    noicon
+                />
+                </Block>
+                <Block style={{marginVertical: 1}}>
+                <Text style={{ fontFamily: 'HKGrotesk-Regular' }} size={14}>
+                  Business Address
+                  </Text>
+                <Input
+                    left
+                    color="black"
+                    style={styles.input}
+                    placeholder="Enter business address"
+                    noicon
+                />
+                </Block>
+                <Block style={{marginVertical: 1}}>
+                <Text style={{ fontFamily: 'HKGrotesk-Regular' }} size={14}>
+                  Contact Person's Name
+                  </Text>
+                <Input
+                    left
+                    color="black"
+                    style={styles.input}
+                    placeholder="Enter name here"
+                    noicon
+                />
+                </Block>
+                <Block style={{marginVertical: 1}}>
+                <Text style={{ fontFamily: 'HKGrotesk-Regular' }} size={14}>
+                  Contact Phone Number
                   </Text>
                   <PhoneInput
                       initialCountry="ng"
@@ -60,21 +109,9 @@ export default class Login extends React.Component {
                       style={styles.custominput}
                       onChangePhoneNumber={value => this.setState({phoneNumber: value})}/>
                 </Block>
-                <Block style={{marginVertical: 2.5}}>
+                <Block style={{marginVertical: 1}}>
                 <Text style={{ fontFamily: 'HKGrotesk-Regular' }} size={14}>
-                  Personal / Organization Name
-                  </Text>
-                <Input
-                    left
-                    color="black"
-                    style={styles.input}
-                    placeholder="Enter name here"
-                    noicon
-                />
-                </Block>
-                <Block style={{marginVertical: 2.5}}>
-                <Text style={{ fontFamily: 'HKGrotesk-Regular' }} size={14}>
-                  Email
+                  Email Address
                   </Text>
                 <Input
                     left
@@ -84,7 +121,7 @@ export default class Login extends React.Component {
                     noicon
                 />
                 </Block>
-                <Block style={{marginVertical: 2.5}}>
+                <Block style={{marginVertical: 1}}>
                 <Text style={{ fontFamily: 'HKGrotesk-Regular' }} size={14}>
                   Password
                   </Text>
@@ -96,7 +133,7 @@ export default class Login extends React.Component {
                     password
                 />
                 </Block>
-                <Block style={{marginVertical: 2.5}}>
+                <Block style={{marginVertical: 1}}>
                 <Text style={{ fontFamily: 'HKGrotesk-Regular' }} size={14}>
                   Confirm Password
                   </Text>
@@ -123,7 +160,7 @@ export default class Login extends React.Component {
                   shadowless
                   style={styles.button}
                   color={nowTheme.COLORS.PRIMARY}
-                  onPress={() => navigation.navigate('Home')}
+                  onPress={() => navigation.navigate('RegReview')}
                 >
                   <Text
                     style={{ fontFamily: 'HKGrotesk-BoldLegacy', fontSize: 16 }}
@@ -136,6 +173,7 @@ export default class Login extends React.Component {
                 </Block>
             </Block>
           </Block>
+          </ScrollView>
         </Block>
       </Block>
       </DismissKeyboard>
@@ -145,11 +183,11 @@ export default class Login extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: nowTheme.COLORS.WHITE,
+    backgroundColor: nowTheme.COLORS.SCREEN,
     marginTop: Platform.OS === 'android' ? 0 : 0
   },
   padded: {
-    marginTop: 89
+    marginTop: 9
   },
   button: {
     width: width - 40,
@@ -199,6 +237,7 @@ const styles = StyleSheet.create({
     marginLeft: 1,
     marginRight: 1,
     borderRadius: 0,
-    fontFamily: 'HKGrotesk-Regular'
+    fontFamily: 'HKGrotesk-Regular',
+    borderColor: nowTheme.COLORS.BORDER
   },
 });

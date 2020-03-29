@@ -3,7 +3,7 @@ import { Modal, StyleSheet, TouchableHighlight, Dimensions, FlatList, Alert, Scr
 import { Block, theme,Button as GaButton, Text } from "galio-framework";
 import { Input, Icon, DetailCard, FeatureCard } from '../components';
 import FloatingActionButton from "react-native-floating-action-button";
-import { prod, Images, nowTheme } from '../constants';
+import { prod, ST, nowTheme } from '../constants';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 const { width, height } = Dimensions.get("screen");
@@ -26,83 +26,83 @@ class Programming extends React.Component {
     }
 
     constructor(props) {
-        super(props);
-        const Params = props.navigation.state.params
-        console.log(Params)
-        if(Params == null){
+      super(props);
+      const Params = props.navigation.state.params
+      console.log(Params)
+      if(Params == null){
 
 
-        this.state = {
-            totalquantity: prod.Orders.map(o=>o.Quantity).reduce((a,c)=>a+c),
-            remainQuantity: 0,
-            programs: this.getPrograms(),
-            TruckNo: null,
-          Quantity: "0",
-        Destination: null,
-        State: null,
-        LGA: null,
-        modalVisible: false,
-        spinner: false,
-        currentState: 0,
-        isNew: false,
-        LGAs: []
-        }
-      }else{
-        this.state = {
-          totalquantity: Params.quantity,
-          remainQuantity: Params.quantity,
-          programs: [],
+      this.state = {
+          totalquantity: prod.Orders.map(o=>o.Quantity).reduce((a,c)=>a+c),
+          remainQuantity: 0,
+          programs: this.getPrograms(),
           TruckNo: null,
-          Quantity: "0",
-        Destination: null,
-        State: null,
-        LGA: null,
-        modalVisible: false,
-        spinner: false,
-        currentState: 0,
-        LGAs: [],
-        isNew: Params.isNew
+        Quantity: "0",
+      Destination: null,
+      State: null,
+      LGA: null,
+      modalVisible: false,
+      spinner: false,
+      currentState: 0,
+      isNew: false,
+      LGAs: []
       }
-      }
-      }
-      setModalVisible(visible) {
-        this.setState({modalVisible: visible});
-      }
-      setIncrease(){
-        var quantity = parseInt(this.state.Quantity) + 100
-        this.setState({Quantity: quantity.toString()})
+    }else{
+      this.state = {
+        totalquantity: Params.quantity,
+        remainQuantity: Params.quantity,
+        programs: [],
+        TruckNo: null,
+        Quantity: "0",
+      Destination: null,
+      State: null,
+      LGA: null,
+      modalVisible: false,
+      spinner: false,
+      currentState: 1,
+      LGAs: [],
+      isNew: Params.isNew
+    }
+    }
+    }
+    setModalVisible(visible) {
+      this.setState({modalVisible: visible});
+    }
+    setIncrease(){
+      var quantity = parseInt(this.state.Quantity) + 1000
+      this.setState({Quantity: quantity.toString()})
+    }
+
+    setDecrease(){
+      var quantity = parseInt(this.state.Quantity) - 1000
+      this.setState({Quantity: quantity.toString()})
+    }
+
+    setStates(v){
+      var LGAs = ST.LGA.filter(c=>c.stateIndex == v.index);
+      this.setState({LGAs: LGAs, State: v})
+    }
+
+    setLGA(v){
+      this.setState({LGA: v})
+    }
+
+    Next(){
+      var currentState = this.state.currentState + 1
+      this.setState({currentState: currentState})
+    }
+
+    getPrograms(){
+      let results = [];
+      for (let c = 0; c<prod.Orders.length; c++) {
+        results.concat(prod.Orders[c].Programing);
       }
 
-      setDecrease(){
-        var quantity = parseInt(this.state.Quantity) - 100
-        this.setState({Quantity: quantity.toString()})
-      }
-
-      setStates(v){
-        var LGAs = ST.LGA.filter(c=>c.stateIndex == v.index);
-        this.setState({LGAs: LGAs, State: v})
-      }
-
-      setLGA(v){
-        this.setState({LGA: v})
-      }
-
-      Next(){
-        var currentState = this.state.currentState + 1
-        this.setState({currentState: currentState})
-      }
-
-      getPrograms(){
-        let results = [];
-        for (let c = 0; c<prod.Orders.length; c++) {
-          results.concat(prod.Orders[c].Programing);
-        }
-
-        return prod.Orders[0].Programing
-      }
-    
-      AddProgram = () => {
-        let obj = {
+      return prod.Orders[0].Programing
+    }
+  
+    AddProgram = () => {
+      let obj = {
           TruckNo: this.state.TruckNo,
           Quantity: parseInt(this.state.Quantity),
           Destination: this.state.Destination + ', ' + this.state.LGA.Name + ', ' + this.state.State.Name,
@@ -119,271 +119,298 @@ class Programming extends React.Component {
               programs[existingIndex].Destination = obj.Destination;
               remainQuantity -= obj.Quantity;
           
-        }else{
-            if(remainQuantity >= obj.Quantity){
-                programs.push(obj)
-            }else{
-                Alert.alert("Oops!", "Input quantity is beyond the remain quantity, remain quantity is "+ remainQuantity)
-                return;
-            }
-            remainQuantity -= obj.Quantity
-            this.setState({programs: programs, remainQuantity: remainQuantity, TruckNo: null, Quantity: 0, Destination: null});
-        }
-        }else{
-
-            if(remainQuantity >= obj.Quantity){
-                programs.push(obj)
-            }else{
-                Alert.alert("Oops!", "Input quantity is beyond the remain quantity, remain quantity is "+ remainQuantity)
-                return;
-            }
-            remainQuantity -= obj.Quantity
-            this.setState({programs: programs, remainQuantity: remainQuantity,TruckNo: null, Quantity: 0, Destination: null});
-        }
-        this.setModalVisible(false);
+      }else{
+          if(remainQuantity >= obj.Quantity){
+              programs.push(obj)
+          }else{
+              Alert.alert("Oops!", "Input quantity is beyond the remain quantity, remain quantity is "+ remainQuantity)
+              return;
+          }
+          remainQuantity -= obj.Quantity
+          this.setState({programs: programs, remainQuantity: remainQuantity, TruckNo: null, Quantity: 0, Destination: null});
       }
+      }else{
 
-      saveandnavigate = () => {
-        if(this.state.programs.length != 0) {
-            this.setState({
-              spinner: true
-            });
-            setTimeout(() => {
-              this.setState({ spinner: false });
-              Alert.alert('Congratulation!', "Dispatch information has been programmed successfully.");
-              this.props.navigation.navigate('Home')
-            }, 3000);
-          
-      };
+          if(remainQuantity >= obj.Quantity){
+              programs.push(obj)
+          }else{
+              Alert.alert("Oops!", "Input quantity is beyond the remain quantity, remain quantity is "+ remainQuantity)
+              return;
+          }
+          remainQuantity -= obj.Quantity
+          this.setState({programs: programs, remainQuantity: remainQuantity,TruckNo: null, Quantity: 0, Destination: null});
       }
-
-    renderFeatures = () => {
-      return (
-        <Block>
-          <Text size={10} style={{fontFamily: 'HKGrotesk-SemiBoldLegacy', lineHeight: 14, color: '#919191', margin: 10}}>My Trucks</Text>
-        <ScrollView horizontal={true}>
-          {this.renderFeature()}
-        </ScrollView>
-        </Block>
-      )
+      this.setModalVisible(false);
     }
 
-    renderFeature = () => {
-      return this.state.programs.map((v,i) => {
-        let index = i++
-        return (<FeatureCard item={v} index={index} />)
-      })
+    setOrder = (p, remain) => {
+      this.setState({totalquantity: p.Quantity,
+        remainQuantity: remain, currentState: 1})
     }
-    renderPrograms = () => {
-        let index = 0;
-        return (<Block style={{ zIndex: 1, margin: 10 }}>
-          <Text size={10} style={{fontFamily: 'HKGrotesk-SemiBoldLegacy', lineHeight: 14, color: '#919191', marginBottom: 10}}>General Program</Text>
-        <FlatList data={this.state.programs} keyExtractor={(item, index )=> index.toString()} extraData={this.state} ListHeaderComponent={null} renderItem={({item}) => {
-          index++
-          return <DetailCard item={item} index={index} />
-        }}/></Block>)
+
+    saveandnavigate = () => {
+      if(this.state.programs.length != 0) {
+          this.setState({
+            spinner: true
+          });
+          setTimeout(() => {
+            this.setState({ spinner: false });
+            Alert.alert('Congratulation!', "Dispatch information has been programmed successfully.");
+            this.props.navigation.navigate('Home')
+          }, 3000);
+        
+    };
     }
-    renderModal = () => {
 
-      const {currentState} = this.state;
+  renderFeatures = () => {
+    return (
+      <Block>
+        <Text size={10} style={{fontFamily: 'HKGrotesk-SemiBoldLegacy', lineHeight: 14, color: '#919191', margin: 10}}>My Trucks</Text>
+      <ScrollView horizontal={true}>
+        {this.renderFeature()}
+      </ScrollView>
+      </Block>
+    )
+  }
 
-        return (<Modal
-            animationType="slide"
-            transparent={false}
-            visible={this.state.modalVisible}
-            onRequestClose={() => {
-              Alert.alert('Modal has been closed.');
-            }}>
-            <Block  flex center style={{backgroundColor: nowTheme.COLORS.WHITE}}>
-              <Block row space='between' style={{width: width, padding: 10, alignItems:'center', marginBottom: 20, borderBottomColor: '#1D1D1D24', borderBottomWidth: 1}}>
-                <Text style={{ fontFamily: 'HKGrotesk-Bold', fontSize: 20 }}>Program Truck</Text>
-                <Icon
-                  name={'x'}
-                  family="octicon"
-                  size={20}
-                  onPress={() => this.setModalVisible(false)}
-                  color={nowTheme.COLORS.ICON}
-                />
+  renderFeature = () => {
+    return this.state.programs.map((v,i) => {
+      let index = i++
+      return (<FeatureCard item={v} index={index} />)
+    })
+  }
+
+  renderOrders =() => {
+    return prod.Orders.filter(c=> c.Quantity > ((c.Programing.length > 0) ? c.Programing.map(o=>o.Quantity).reduce((a,c)=>a+c) : 0)).map((v, i) => {
+      var remainquantity = v.Quantity - ((v.Programing.length > 0) ? v.Programing.map(o=>o.Quantity).reduce((a,c)=>a+c) : 0)
+      return (<TouchableHighlight onPress={() => this.setOrder(v, remainquantity)}>
+              <Block width={width * 0.9} row space='between' style={styles.product}>
+                  <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16 }}>{v.OrderId}</Text>
+                  <Text style={{ fontFamily: 'HKGrotesk-MediumLegacy', fontSize: 16, color: '#AAAAAA' }}>{remainquantity}</Text>
               </Block>
-              <Block  width={width * 0.9} style={{ padding: 2 }}>
-                <Block>
-                { (currentState == 0) ?
-                <Block width={width * 0.9} style={{ marginBottom: 5 }}>
-                              <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>Please Enter Your Truck Number</Text>
-                              <Input
-                                  placeholder="Enter Truck Number"
-                                  color="black"
-                                  style={styles.inputs}
-                                  value={this.state.TruckNo}
-                                  onChangeText={(text) => {
-                                    if(text.length >= 7){
-                                    var program = this.state.programs.find(c=>c.TruckNo == text)
-                                    if(program != null){
-                                        this.setState({TruckNo: text, Quantity: program.Quantity.toString(), Destination: program.Destination})
-                                    }else{
-                                    this.setState({TruckNo: text})
-                                    }
+          </TouchableHighlight>)
+    })
+  }
+  renderPrograms = () => {
+      let index = 0;
+      return (<Block style={{ zIndex: 1, margin: 10 }}>
+        <Text size={10} style={{fontFamily: 'HKGrotesk-SemiBoldLegacy', lineHeight: 14, color: '#919191', marginBottom: 10}}>General Program</Text>
+      <FlatList data={this.state.programs} keyExtractor={(item, index )=> index.toString()} extraData={this.state} ListHeaderComponent={null} renderItem={({item}) => {
+        index++
+        return <DetailCard item={item} index={index} />
+      }}/></Block>)
+  }
+  renderModal = () => {
+
+    const {currentState, LGAs} = this.state;
+
+      return (<Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {
+            if(this.state.currentState > 0){
+              this.setState({currentState: this.state.currentState - 1})
+              }else{
+                this.setModalVisible(false)
+              }
+          }}>
+          <Block  flex center style={{backgroundColor: '#FAFAFA'}}>
+            <Block row space='between' style={{width: width, padding: 10, alignItems:'center', marginBottom: 20, borderBottomColor: '#1D1D1D24', borderBottomWidth: 1}}>
+              <Text style={{ fontFamily: 'HKGrotesk-Bold', fontSize: 20 }}>Program Truck</Text>
+              <Icon
+                name={'x'}
+                family="octicon"
+                size={20}
+                onPress={() => this.setModalVisible(false)}
+                color={nowTheme.COLORS.ICON}
+              />
+            </Block>
+            <Block  width={width * 0.9} style={{ padding: 2 }}>
+              <Block>
+              { (currentState == 0) ?
+              <Block width={width * 0.9} style={{ marginBottom: 5 }}>
+              <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>What Order Do you want to load?</Text>  
+                    {this.renderOrders()}
+                              
+                            </Block>
+              : (currentState == 1) ?
+              <Block width={width * 0.9} style={{ marginBottom: 5 }}>
+                            <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>Please Enter Your Truck Number</Text>
+                            <Input
+                                placeholder="Enter Truck Number"
+                                color="black"
+                                style={styles.inputs}
+                                value={this.state.TruckNo}
+                                onChangeText={(text) => {
+                                  if(text.length >= 7){
+                                  var program = this.state.programs.find(c=>c.TruckNo == text)
+                                  if(program != null){
+                                      this.setState({TruckNo: text, Quantity: program.Quantity.toString(), Destination: program.Destination})
+                                  }else{
+                                  this.setState({TruckNo: text})
                                   }
-                                  }}
-                                  noicon
-                                />
+                                }
+                                }}
+                                noicon
+                              />
+                            </Block>
+              : (currentState == 2) ?
+              <Block width={width * 0.9} style={{ marginBottom: 5 }}>
+              <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>Please enter Destination details</Text>  
+                            <Input
+                                placeholder="Enter Street Name"
+                                color="black"
+                                style={styles.inputs}
+                                value={this.state.Destination}
+                                onChangeText={(text) => {
+                                  this.setState({Destination: text})
+                                }}
+                                multiline={true}
+                                numberOfLines={3}
+                                noicon
+                              />
+                              <Block style={styles.picker}>
+                              <Picker
+                                  selectedValue={this.state.State }
+                                  style={styles.pickerStyle}
+                                  onValueChange={(itemValue, itemIndex) => this.setStates(itemValue)}>
+                                      <Picker.Item label='-- Select State --' value={null} />
+                                      {ST.States.map( (v)=>{
+                                      return <Picker.Item label={v.Name} value={v}  />
+                                      })}
+                              </Picker>
                               </Block>
-                : (currentState == 1) ?
-                <Block width={width * 0.9} style={{ marginBottom: 5 }}>
-                <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>Please enter Destination details</Text>  
-                              <Input
-                                  placeholder="Destination"
-                                  color="black"
-                                  style={styles.inputs}
-                                  value={this.state.Destination}
-                                  onChangeText={(text) => {
-                                    this.setState({Destination: text})
-                                  }}
-                                  multiline={true}
-                                  numberOfLines={3}
-                                  noicon
-                                />
-                                <Block style={styles.picker}>
-                                <Picker
-                                    selectedValue={this.state.State }
-                                    style={styles.pickerStyle}
-                                    onValueChange={(itemValue, itemIndex) => this.setStates(itemValue)}>
-                                        <Picker.Item label='-- Select State --' value={null} />
-                                        {ST.States.map( (v)=>{
-                                        return <Picker.Item label={v.Name} value={v}  />
-                                        })}
-                                </Picker>
-                                </Block>
-                                <Block style={styles.picker}>
-                                <Picker
-                                    selectedValue={this.state.LGA }
-                                    style={styles.pickerStyle}
-                                    onValueChange={(itemValue, itemIndex) => this.setLGA(itemValue)}>
-                                        <Picker.Item label='-- Select LGA --' value={null} />
-                                        {LGAs.map( (v)=>{
-                                        return <Picker.Item label={v.Name} value={v}  />
-                                        })}
-                                </Picker>
-                                </Block>
+                              <Block style={styles.picker}>
+                              <Picker
+                                  selectedValue={this.state.LGA }
+                                  style={styles.pickerStyle}
+                                  onValueChange={(itemValue, itemIndex) => this.setLGA(itemValue)}>
+                                      <Picker.Item label='-- Select LGA --' value={null} />
+                                      {LGAs.map( (v)=>{
+                                      return <Picker.Item label={v.Name} value={v}  />
+                                      })}
+                              </Picker>
                               </Block>
-                :                 
-                <Block width={width * 0.9} style={{ marginBottom: 5 }}>
-    <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>Quantity to Load</Text>
-        <Block row>
-        <GaButton
-                        shadowless
-                        style={styles.increbutton}
-                        color='#23C9F1'
-                        onPress={() => this.setIncrease()}
-                    >
-                        <Text
-                            style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}
-                            color={theme.COLORS.WHITE}
-                        >
-                            +
-                        </Text>
-                    </GaButton>   
-                  <Input
-                      placeholder="Quantity"
-                      color="black"
-                      style={styles.Qtyinputs}
-                      value={this.state.Quantity}
-                      onChangeText={(text) => {
-                        this.setState({Quantity: text})
-                      }}
-                      keyboardType="numeric"
-                      noicon
-                    />
+                              
+                            </Block>
+              :                 
+              <Block width={width * 0.9} style={{ marginBottom: 5 }}>
+  <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>Quantity to Load</Text>
+      <Block row>
+      <GaButton
+                      shadowless
+                      style={styles.increbutton}
+                      color='#23C9F1'
+                      onPress={() => this.setIncrease()}
+                  >
+                      <Text
+                          style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}
+                          color={theme.COLORS.WHITE}
+                      >
+                          +
+                      </Text>
+                  </GaButton>   
+                <Input
+                    placeholder="Quantity"
+                    color="black"
+                    style={styles.Qtyinputs}
+                    value={this.state.Quantity}
+                    onChangeText={(text) => {
+                      this.setState({Quantity: text})
+                    }}
+                    keyboardType="numeric"
+                    noicon
+                  />
 
 <GaButton
-                        shadowless
-                        style={styles.increbutton}
-                        color='#D9D9D9'
-                        onPress={() => this.setDecrease()}
-                    >
-                        <Text
-                            style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}
-                            color={theme.COLORS.WHITE}
-                        >
-                            -
-                        </Text>
-                    </GaButton>
-                  </Block>
-                  </Block>
-    }
-                <Block style={{marginBottom:  10}}></Block>
-                              <Block width={width * 0.7} center>
-                              { (currentState < 2) ?
-                              <GaButton
-                                    shadowless
-                                    style={styles.button}
-                                    color={nowTheme.COLORS.PRIMARY}
-                                    onPress={() => this.Next()}
-                                >
-                                    <Text
-                                        style={{ fontFamily: 'HKGrotesk-Medium', fontSize: 14 }}
-                                        color={theme.COLORS.WHITE}
-                                    >
-                                        Next
-                                    </Text>
-                              </GaButton> : 
-                                <GaButton
-                                    shadowless
-                                    style={styles.button}
-                                    color={nowTheme.COLORS.PRIMARY}
-                                    onPress={() => this.AddProgram()}
-                                >
-                                    <Text
-                                        style={{ fontFamily: 'HKGrotesk-Medium', fontSize: 14 }}
-                                        color={theme.COLORS.WHITE}
-                                    >
-                                        Confirm
-                                    </Text>
-                                </GaButton> }
-                              </Block>
-                
+                      shadowless
+                      style={styles.increbutton}
+                      color='#D9D9D9'
+                      onPress={() => this.setDecrease()}
+                  >
+                      <Text
+                          style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}
+                          color={theme.COLORS.WHITE}
+                      >
+                          -
+                      </Text>
+                  </GaButton>
                 </Block>
-                
+                </Block>
+  }
+              <Block style={{marginBottom:  10}}></Block>
+                            <Block width={width * 0.7} center>
+                            { (currentState > 0 && currentState < 3) ?
+                            <GaButton
+                                  shadowless
+                                  style={styles.button}
+                                  color={nowTheme.COLORS.PRIMARY}
+                                  onPress={() => this.Next()}
+                              >
+                                  <Text
+                                      style={{ fontFamily: 'HKGrotesk-Medium', fontSize: 14 }}
+                                      color={theme.COLORS.WHITE}
+                                  >
+                                      Next
+                                  </Text>
+                            </GaButton> : (currentState >= 3) ?
+                              <GaButton
+                                  shadowless
+                                  style={styles.button}
+                                  color={nowTheme.COLORS.PRIMARY}
+                                  onPress={() => this.AddProgram()}
+                              >
+                                  <Text
+                                      style={{ fontFamily: 'HKGrotesk-Medium', fontSize: 14 }}
+                                      color={theme.COLORS.WHITE}
+                                  >
+                                      Confirm
+                                  </Text>
+                              </GaButton>
+                            : <Block />}
+                            </Block>
+              
               </Block>
+              
             </Block>
-          </Modal>);
-    }
-    render () {
-      const {remainQuantity} = this.state;
-        return (<Block style={{width: width, height: height, backgroundColor: nowTheme.COLORS.WHITE}}>
-            <Spinner
-                  visible={this.state.spinner}
-                  textContent={'Saving...'}
-                  textStyle={styles.spinnerTextStyle}
-                />
-            {this.renderFeatures()}
-            {this.renderPrograms()}
-            {remainQuantity != 0 ?
-            this.renderModal() : <Block />}
-            <Block row style={{zIndex: 3, position: 'absolute', top: 500, right: '5%'}}>
-          {remainQuantity != 0 ?
-          <FloatingActionButton
-            iconName="plus"
-            iconType="AntDesign"
-            textDisable
-            backgroundColor={nowTheme.COLORS.BACKGROUND}
-            rippleColor={nowTheme.COLORS.WHITE}
-            iconColor={nowTheme.COLORS.WHITE}
-            onPress = {() => this.setModalVisible(true)}
-          /> : <Block />}
-          {(this.state.programs.length != 0 && this.state.isNew) ?
-          <FloatingActionButton
-            iconName="check"
-            iconType="AntDesign"
-            textDisable
-            backgroundColor={nowTheme.COLORS.BACKGROUND}
-            rippleColor={nowTheme.COLORS.WHITE}
-            iconColor={nowTheme.COLORS.WHITE}
-            
-            onPress = {() => this.saveandnavigate()}
-          /> : <Block />} 
-               </Block> 
-        </Block>)
+          </Block>
+        </Modal>);
+  }
+  render () {
+    const {remainQuantity} = this.state;
+      return (<Block style={{width: width, height: height, backgroundColor: '#FAFAFA'}}>
+          <Spinner
+                visible={this.state.spinner}
+                textContent={'Saving...'}
+                textStyle={styles.spinnerTextStyle}
+              />
+          {this.renderFeatures()}
+          {this.renderPrograms()}
+          {this.renderModal()}
+          <Block row style={{zIndex: 3, position: 'absolute', top: 500, right: '5%'}}>
+        <FloatingActionButton
+          iconName="plus"
+          iconType="AntDesign"
+          textDisable
+          backgroundColor={nowTheme.COLORS.BACKGROUND}
+          rippleColor={nowTheme.COLORS.WHITE}
+          iconColor={nowTheme.COLORS.WHITE}
+          onPress = {() => this.setModalVisible(true)}
+        />
+        {(this.state.programs.length != 0 && this.state.isNew) ?
+        <FloatingActionButton
+          iconName="check"
+          iconType="AntDesign"
+          textDisable
+          backgroundColor={nowTheme.COLORS.BACKGROUND}
+          rippleColor={nowTheme.COLORS.WHITE}
+          iconColor={nowTheme.COLORS.WHITE}
+          
+          onPress = {() => this.saveandnavigate()}
+        /> : <Block />} 
+             </Block> 
+      </Block>)
     }
 }
 
@@ -414,6 +441,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#191718',
     justifyContent: 'center',  
+  },
+  product: {
+    height: 40,
+    marginBottom: 5, 
+    paddingHorizontal: 20, 
+    borderWidth: 1, 
+    borderRadius: 5, 
+    borderColor: '#E3E2E3', 
+    backgroundColor: '#FFFFFF', 
+    alignItems: 'center'
   },
       button: {
         width: (width * 0.7),

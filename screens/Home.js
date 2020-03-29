@@ -34,7 +34,7 @@ class Home extends React.Component {
     return this.state.DailyPrices.map((s,i) => {
         return (<Block style={{paddingTop: 10,
           paddingBottom: 10, paddingRight: 35,
-          paddingLeft: 15, margin: 10, backgroundColor: "#ffffff"}}>
+          paddingLeft: 15, margin: 5, backgroundColor: "#ffffff"}}>
           <Text
                 style={{
                   color: nowTheme.COLORS.BLACK,

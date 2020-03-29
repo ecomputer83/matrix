@@ -18,7 +18,6 @@ const iPhoneX = () =>
 const AddButton = ({ isWhite, style, navigation, link, iconName }) => (
   <TouchableOpacity
     style={[styles.button, style]}
-    onPress={() => navigation.navigate(link)}
   >
    <Fontello name={iconName} size={16}
       color="#ffffff"
@@ -83,7 +82,7 @@ class Header extends React.Component {
     return (
       <Block style={styles.options}>
         <Block middle>
-        <Image source={Images.Logo} style={{ width: 72, height: 29, marginBottom: 20 }} />
+        <Image source={Images.Logo} style={{ width: 72, height: 29, marginBottom: 20, marginTop: 10  }} />
         </Block>
         <Block row space="between" > 
           <Block>
@@ -138,6 +137,7 @@ class Header extends React.Component {
       white,
       transparent,
       bgColor,
+      noNav,
       iconColor,
       titleColor,
       navigation,
@@ -160,7 +160,11 @@ class Header extends React.Component {
                     backgroundColor={Theme.COLORS.PRIMARY}
                     barStyle="light-content"
                 />
-        <NavBar
+        {(noNav) ? 
+        <Block />
+        :
+      
+        (<NavBar
           title={title}
           style={navbarStyles}
           transparent={transparent}
@@ -172,8 +176,8 @@ class Header extends React.Component {
             titleColor && { color: titleColor }
           ]}
           {...props}
-        />
-
+        />)
+        }
         {this.renderHeader()}
       </Block>
     );

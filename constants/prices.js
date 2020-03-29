@@ -3,13 +3,12 @@ const DailyPrices = [
     {Id:2, Product: "DPK", Price: 220.00, Unit: "ltr"},
     {Id:3, Product: "AGO", Price: 210.00, Unit: "ltr"},
     {Id:3, Product: "ATK", Price: 156.00, Unit: "ltr"},
-    {Id:4, Product: "Bitumen", Price: 47000.00, Unit: "drum"},
     {Id:5, Product: "LPG", Price: 3000.00, Unit: "kg"}
 ]
 
-const Depots = [{Id: 1, Name: "Oghere"}, {Id: 2, Name: "Apapa"}, {Id: 2, Name: "Port Harcourt"}]
+const Depots = [{Id: 2, Name: "Lagos"}, {Id: 3, Name: "Warri"}]
 
-const Orders = [{OrderId: "PO68876", Quantity: 33000, Price: 6550500.00, ProductId: 1, ProductName: "PMS", DepositDate: '12/03/2020', Depot: 1, DepotName: "Oghere", Status:"Unconifrmed",
+const Orders = [{OrderId: "PO68876", Quantity: 35000, Price: 6550500.00, ProductId: 1, ProductName: "PMS", DepositDate: '12/03/2020', Depot: 1, DepotName: "Oghere", Status:"Unconifrmed",
  Programing: [{TruckNo: "KYF34534", Quantity: 10000, Destination: "24, Old Yaba road, Yaba, Lagos", Status: "Waybill"},
  {TruckNo: "WER23D3", Quantity: 10000, Destination: "24, Old Yaba road, Yaba, Lagos", Status: "Dispatch"},
  {TruckNo: "GDR5642", Quantity: 10000, Destination: "24, Old Yaba road, Yaba, Lagos", Status: "Ticket"},
@@ -28,4 +27,7 @@ const Orders = [{OrderId: "PO68876", Quantity: 33000, Price: 6550500.00, Product
  Programing: []}]
 
  const Filters = [{Name: "All", Status: 1}, {Name: "Unconfirmed", Status: 0}, {Name: "Confirmed", Status: 0}]
-export default {DailyPrices, Depots, Orders, Filters}
+
+ const Marketers = [{Name: "BKO Olatunde Enterprises", Quantity: 233000}, {Name: "HARTIZ Global", Quantity: 203000},{Name: "Fuel4All International", Quantity: 183000},{Name: "Olaoluwa & Sons", Quantity: 166000},{Name: "God is Good Energy Services", Quantity: 124000}]
+
+ export default {DailyPrices, Depots, Orders, Filters, Marketers}
