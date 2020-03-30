@@ -55,7 +55,7 @@ class Home extends React.Component {
                   paddingBottom:5
                 }}
               >
-                {s.Price}
+                ₦{s.Price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
                   </Text>
         </Block>)
     })
@@ -90,7 +90,7 @@ class Home extends React.Component {
       <Block row space="between" style={{padding: 10}}>
       <Block>
         <Text style={{ fontFamily: 'HKGrotesk-Light', fontSize: 14 }} color={theme.COLORS.DEFAULT}>
-            TODAYS PRICES
+        TODAY'S PRICES
         </Text>
       </Block>
       <Picker
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
 
   selectBox: {
     width: 122,
-    height: 19,
+    height: 23,
     color: nowTheme.COLORS.PRIMARY,
     textTransform: 'uppercase',
     fontFamily: 'HKGrotesk-Bold',

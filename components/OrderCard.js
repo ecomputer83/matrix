@@ -13,7 +13,7 @@ export default class OrderCard extends React.Component {
             Navigation,
             ...props
           } = this.props;
-            let ProductColor = '#437FB4';
+            let ProductColor = '#B3D2B2';
             let StatusColor = '#417505';
 
             switch(item.ProductName){

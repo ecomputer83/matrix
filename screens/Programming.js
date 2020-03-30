@@ -14,7 +14,7 @@ class Programming extends React.Component {
         remainQuantity: 0,
         programs: [],
         TruckNo: null,
-        Quantity: "0",
+        Quantity: "33000",
         Destination: null,
         State: null,
         LGA: null,
@@ -127,7 +127,11 @@ class Programming extends React.Component {
               return;
           }
           remainQuantity -= obj.Quantity
-          this.setState({programs: programs, remainQuantity: remainQuantity, TruckNo: null, Quantity: 0, Destination: null});
+          var state = 0;
+          if(this.state.isNew){
+            state = 1
+          }
+          this.setState({programs: programs, remainQuantity: remainQuantity, TruckNo: null, Quantity: remainQuantity.toString(), Destination: null, currentState: state});
       }
       }else{
 
@@ -138,7 +142,11 @@ class Programming extends React.Component {
               return;
           }
           remainQuantity -= obj.Quantity
-          this.setState({programs: programs, remainQuantity: remainQuantity,TruckNo: null, Quantity: 0, Destination: null});
+          var state = 0;
+          if(this.state.isNew){
+            state = 1
+          }
+          this.setState({programs: programs, remainQuantity: remainQuantity,TruckNo: null, Quantity: remainQuantity.toString(), Destination: null, currentState: state});
       }
       this.setModalVisible(false);
     }

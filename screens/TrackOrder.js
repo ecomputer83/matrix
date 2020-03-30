@@ -53,7 +53,7 @@ const IndicatorStyles = {
         product : null,
         productIndex: null,
         depotIndex: null,
-        quantity: "0",
+        quantity: "33000",
         unitPrice: null,
         TotalAmount: "0",
         PhoneNumber: '',
@@ -89,12 +89,12 @@ const IndicatorStyles = {
       }
 
       setIncrease(){
-        var quantity = parseInt(this.state.quantity) + 100
+        var quantity = parseInt(this.state.quantity) + 1000
         this.setState({quantity: quantity.toString(), ifInputupdated: true})
       }
 
       setDecrease(){
-        var quantity = parseInt(this.state.quantity) - 100
+        var quantity = parseInt(this.state.quantity) - 1000
         this.setState({quantity: quantity.toString(), ifInputupdated: true})
       }
 
@@ -102,12 +102,16 @@ const IndicatorStyles = {
         this.setState({ currentPosition: position })
       }
       Next(last){
+        let ifup = false;
           if(last){
               var TotalAmount = this.state.quantity * this.state.product.Price;
               this.setState({TotalAmount: TotalAmount})
           }
         var currentPosition = this.state.currentPosition + 1
-        this.setState({currentPosition: currentPosition, ifInputupdated: false})
+        if(currentPosition == 2){
+          ifup = true
+        }
+        this.setState({currentPosition: currentPosition, ifInputupdated: ifup})
       }
 
       _checkCode = (code) => {
@@ -275,7 +279,7 @@ const IndicatorStyles = {
           <GaButton
                           shadowless
                           style={styles.increbutton}
-                          color='#4161A1'
+                          color={nowTheme.COLORS.BACKGROUND}
                           onPress={() => this.setIncrease()}
                       >
                           <Text
@@ -339,7 +343,13 @@ const IndicatorStyles = {
                     </Block>
                     : 
                     <Block middle width={width * 0.9} style={{ marginBottom: 5 }}>
-                      <Block width={47} height={47} style={{ backgroundColor: '#121112', marginBottom: 13, marginTop: 33, borderRadius: 50}}>
+                      <Block width={47} height={47} style={{ backgroundColor: nowTheme.COLORS.BACKGROUND, marginBottom: 13, marginTop: 33, borderRadius: 50, alignItems: 'center', justifyContent: 'center'}}>
+                      <Icon
+                          name={'check'}
+                          family="octicon"
+                          size={20}
+                          color={nowTheme.COLORS.WHITE}
+                      />
                       </Block>
 
                       <Text style={{fontSize: 14, lineHeight: 24, fontFamily: 'ProductSans-Bold', textAlign: 'center'}}>Congratulations! Your Order has been submitted Successfully.</Text>
@@ -466,7 +476,7 @@ const IndicatorStyles = {
                                           style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16 }}
                                           color={theme.COLORS.WHITE}
                                       >
-                                          PROCEED TO PAYMENT
+                                          Proceed To Payment
                                       </Text>
                                   </GaButton>
                                 </Block>) : (<Block />)}
