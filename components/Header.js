@@ -90,7 +90,7 @@ class Header extends React.Component {
               Good Morning,
             </Text>
             <Text size={20} style={{ fontFamily: 'HKGrotesk-Light', lineHeight: 22,fontWeight: '300', color: Theme.COLORS.HEADER}}>
-              Customer Name
+              Business Name
             </Text>
             </Block>
         <Block>
