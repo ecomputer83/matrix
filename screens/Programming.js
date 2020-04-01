@@ -22,6 +22,7 @@ class Programming extends React.Component {
         spinner: false,
         currentState: 0,
         isNew: false,
+        ifInputupdated: false,
         LGAs: []
     }
 
@@ -45,6 +46,7 @@ class Programming extends React.Component {
       spinner: false,
       currentState: 0,
       isNew: false,
+      ifInputupdated: false,
       LGAs: []
       }
     }else{
@@ -60,6 +62,7 @@ class Programming extends React.Component {
       modalVisible: false,
       spinner: false,
       currentState: 1,
+      ifInputupdated: false,
       LGAs: [],
       isNew: Params.isNew
     }
@@ -70,26 +73,26 @@ class Programming extends React.Component {
     }
     setIncrease(){
       var quantity = parseInt(this.state.Quantity) + 1000
-      this.setState({Quantity: quantity.toString()})
+      this.setState({Quantity: quantity.toString(), ifInputupdated: true})
     }
 
     setDecrease(){
       var quantity = parseInt(this.state.Quantity) - 1000
-      this.setState({Quantity: quantity.toString()})
+      this.setState({Quantity: quantity.toString(), ifInputupdated: true})
     }
 
     setStates(v){
       var LGAs = ST.LGA.filter(c=>c.stateIndex == v.index);
-      this.setState({LGAs: LGAs, State: v})
+      this.setState({LGAs: LGAs, State: v, ifInputupdated: (this.state.LGA && this.state.Destination)})
     }
 
     setLGA(v){
-      this.setState({LGA: v})
+      this.setState({LGA: v, ifInputupdated: (this.state.State && this.state.Destination)})
     }
 
     Next(){
       var currentState = this.state.currentState + 1
-      this.setState({currentState: currentState})
+      this.setState({currentState: currentState, ifInputupdated: false})
     }
 
     getPrograms(){
@@ -254,9 +257,9 @@ class Programming extends React.Component {
                                   if(text.length >= 7){
                                   var program = this.state.programs.find(c=>c.TruckNo == text)
                                   if(program != null){
-                                      this.setState({TruckNo: text, Quantity: program.Quantity.toString(), Destination: program.Destination})
+                                      this.setState({TruckNo: text, Quantity: program.Quantity.toString(), Destination: program.Destination, ifInputupdated: true})
                                   }else{
-                                  this.setState({TruckNo: text})
+                                  this.setState({TruckNo: text, ifInputupdated: true})
                                   }
                                 }
                                 }}
@@ -272,7 +275,7 @@ class Programming extends React.Component {
                                 style={styles.inputs}
                                 value={this.state.Destination}
                                 onChangeText={(text) => {
-                                  this.setState({Destination: text})
+                                  this.setState({Destination: text, ifInputupdated: (this.state.State && this.state.LGA)})
                                 }}
                                 multiline={true}
                                 numberOfLines={3}
@@ -334,7 +337,7 @@ class Programming extends React.Component {
 <GaButton
                       shadowless
                       style={styles.increbutton}
-                      color='#D9D9D9'
+                      color='#60C6EC35'
                       onPress={() => this.setDecrease()}
                   >
                       <Text
@@ -397,6 +400,9 @@ class Programming extends React.Component {
           {this.renderPrograms()}
           {this.renderModal()}
           <Block row style={{zIndex: 3, position: 'absolute', top: 500, right: '5%'}}>
+        {(this.state.isNew && this.state.remainQuantity == 0) ?
+        <block />
+          :
         <FloatingActionButton
           iconName="plus"
           iconType="AntDesign"
@@ -405,7 +411,7 @@ class Programming extends React.Component {
           rippleColor={nowTheme.COLORS.WHITE}
           iconColor={nowTheme.COLORS.WHITE}
           onPress = {() => this.setModalVisible(true)}
-        />
+        /> }
         {(this.state.programs.length != 0 && this.state.isNew) ?
         <FloatingActionButton
           iconName="check"

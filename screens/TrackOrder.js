@@ -186,7 +186,7 @@ const IndicatorStyles = {
             return (<TouchableHighlight onPress={() => this.setProduct(p, i)}>
                 <Block width={width * 0.9} row space='between' style={productStyle}>
                     <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16, }}>{p.Product}</Text>
-                    <Text style={{ fontFamily: 'HKGrotesk-MediumLegacy', fontSize: 16, color: '#AAAAAA' }}>₦{p.Price}/{p.Unit}</Text>
+                    <Text style={{ fontFamily: 'HKGrotesk-MediumLegacy', fontSize: 16, color: '#333333' }}>₦{p.Price}/{p.Unit}</Text>
                 </Block>
             </TouchableHighlight>)
         })
@@ -237,7 +237,7 @@ const IndicatorStyles = {
               transparent={false}
               visible={this.state.modalCreateVisible}
               onRequestClose={() => {
-                Alert.alert('Modal has been closed.');
+                this.setModalCreateVisible(false)
               }}>
               <Block  flex center style={{backgroundColor: '#FAFAFA'}}>
                 <Block row space='between' style={{width: width, padding: 10, alignItems:'center', marginBottom: 20, borderBottomColor: '#1D1D1D24', borderBottomWidth: 1}}>
@@ -263,18 +263,18 @@ const IndicatorStyles = {
                   <Block>
                   { (currentPosition == 0) ?
                   <Block width={width * 0.9} style={{ marginBottom: 5 }}>
-                                <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>Where Do you want to Load from?</Text>
+                                <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>Where do you want to load from?</Text>
                                     {this.renderDepots()}
                                 </Block>
                   : (currentPosition == 1) ?
                   <Block width={width * 0.9} style={{ marginBottom: 5 }}>
-                  <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>What Product Do you want to buy?</Text>  
+                  <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>What product do you want to buy?</Text>  
                         {this.renderProducts()}
                                   
                                 </Block>
                   : (currentPosition == 2)   ?             
                   <Block width={width * 0.9} style={{ marginBottom: 5 }}>
-      <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>WHAT QUANTITY DO YOU WANT TO BUY?</Text>
+      <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>What quantity do you want to buy?</Text>
           <Block row>
           <GaButton
                           shadowless
@@ -303,8 +303,8 @@ const IndicatorStyles = {
   
   <GaButton
                           shadowless
-                          style={styles.increbutton}
-                          color='#D9D9D9'
+                          style={[styles.increbutton, {opacity: 0.35}]}
+                          color='#60C6EC35'
                           onPress={() => this.setDecrease()}
                       >
                           <Text
@@ -322,6 +322,7 @@ const IndicatorStyles = {
       <Input
                     left
                     color="black"
+                    placeholder="Enter code here"
                     style={styles.custominput}
                     noicon
                 />
@@ -329,6 +330,7 @@ const IndicatorStyles = {
       <Input
                     left
                     color="black"
+                    placeholder="Enter code here"
                     style={styles.custominput}
                     noicon
                 />
@@ -336,7 +338,7 @@ const IndicatorStyles = {
                         <Block center style={{width: (width * 0.9), marginTop: 25, padding: 10, backgroundColor: '#121112'}}>
                     <Text style={{fontSize: 14, lineHeight: 16, fontFamily: 'HKGrotesk-BoldLegacy', color: '#FFFFFF', marginTop: 5}}>₦{TotalAmount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
                     <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-BoldLegacy', color: '#FFFFFF', marginTop: 5}}>{quantity} Litres</Text>
-                    <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-BoldLegacy', color: '#FFFFFF', marginTop: 5}}>{product.Product} (ex Nepal Depot {depot.Name})</Text>
+                    <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-BoldLegacy', color: '#FFFFFF', marginTop: 5}}>{product.Product} (ex Matrix Depot {depot.Name})</Text>
                     <TouchableHighlight onPress={() => this.edit()}><Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'ProductSans-Medium', color: '#23C9F1', marginTop: 15}}>Edit</Text></TouchableHighlight>
 
                         </Block>
@@ -491,7 +493,7 @@ const IndicatorStyles = {
               transparent={false}
               visible={this.state.modalPaymentVisible}
               onRequestClose={() => {
-                Alert.alert('Modal has been closed.');
+                this.setModalPaymentVisible(false);
               }}>
             { (!CompletePayment) ?  
               <Block  flex center style={{backgroundColor: '#FAFAFA'}}>
