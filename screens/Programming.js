@@ -402,7 +402,7 @@ class Programming extends React.Component {
           {this.renderModal()}
           <Block row style={{zIndex: 3, position: 'absolute', top: 500, right: '5%'}}>
         {(this.state.isNew && this.state.remainQuantity == 0) ?
-        <block />
+        <Block />
           :
         <FloatingActionButton
           iconName="plus"
