@@ -337,7 +337,7 @@ const IndicatorStyles = {
 
                         <Block center style={{width: (width * 0.9), marginTop: 25, padding: 10, backgroundColor: '#121112'}}>
                     <Text style={{fontSize: 14, lineHeight: 16, fontFamily: 'HKGrotesk-BoldLegacy', color: '#FFFFFF', marginTop: 5}}>₦{TotalAmount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
-                    <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-BoldLegacy', color: '#FFFFFF', marginTop: 5}}>{quantity} Litres</Text>
+                    <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-BoldLegacy', color: '#FFFFFF', marginTop: 5}}>{quantity.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} Litres</Text>
                     <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-BoldLegacy', color: '#FFFFFF', marginTop: 5}}>{product.Product} (ex Matrix Depot {depot.Name})</Text>
                     <TouchableHighlight onPress={() => this.edit()}><Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'ProductSans-Medium', color: '#23C9F1', marginTop: 15}}>Edit</Text></TouchableHighlight>
 
@@ -362,7 +362,7 @@ const IndicatorStyles = {
                     
                     <Block row space='between'>
                     <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-Regular', color: '#FFFFFF'}}>Order Quantity:</Text>
-                      <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-Regular', color: '#FFFFFF'}}>{quantity} Litres</Text>
+                      <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-Regular', color: '#FFFFFF'}}>{quantity.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} Litres</Text>
                     </Block>
                     <Block row space='between'>
                     <Text style={{fontSize: 12, lineHeight: 15, fontFamily: 'HKGrotesk-Regular', color: '#FFFFFF'}}>List Unit Price:</Text>
@@ -389,7 +389,7 @@ const IndicatorStyles = {
                     </Block>
       }
                   <Block style={{marginBottom:  10, marginTop: 20}}></Block>
-                                <Block width={width * 0.7} center>
+                                <Block width={width * 0.7} center style={{position: 'absolute', bottom: 50}}>
                                 { (currentPosition < 2) ?
                                 <GaButton
                                       shadowless
@@ -453,19 +453,6 @@ const IndicatorStyles = {
                                           color={theme.COLORS.WHITE}
                                       >
                                           Share Order Details
-                                      </Text>
-                                  </GaButton>
-                                  <GaButton
-                                      shadowless
-                                      style={styles.button}
-                                      color={nowTheme.COLORS.PRIMARY}
-                                      onPress={() => this.saveandnavigate()}
-                                  >
-                                      <Text
-                                          style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 14 }}
-                                          color={theme.COLORS.WHITE}
-                                      >
-                                          Credit Customer? Proceed to Truck programming
                                       </Text>
                                   </GaButton>
                                   <GaButton
@@ -637,7 +624,7 @@ const IndicatorStyles = {
                                           style={{ fontFamily: 'ProductSans-Medium', fontSize: 15 }}
                                           color={theme.COLORS.WHITE}
                                       >
-                                          Program my Truck
+                                          Program truck loading
                                       </Text>
                                 </GaButton>
                                 <TouchableHighlight onPress={() => this.backHome()}>
