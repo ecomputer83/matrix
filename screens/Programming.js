@@ -351,7 +351,13 @@ class Programming extends React.Component {
                 </Block>
   }
               <Block style={{marginBottom:  10}}></Block>
-                            <Block width={width * 0.7} center style={{position: 'absolute', bottom: 50}}>
+                            
+              
+              </Block>
+              
+            </Block>
+          </Block>
+          <Block width={width * 0.7} center style={{position: 'absolute', bottom: 50}}>
                             { (currentState > 0 && currentState < 3) ?
                             <GaButton
                                   shadowless
@@ -381,11 +387,6 @@ class Programming extends React.Component {
                               </GaButton>
                             : <Block />}
                             </Block>
-              
-              </Block>
-              
-            </Block>
-          </Block>
         </Modal>);
   }
   render () {

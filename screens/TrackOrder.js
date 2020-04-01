@@ -389,41 +389,13 @@ const IndicatorStyles = {
                     </Block>
       }
                   <Block style={{marginBottom:  10, marginTop: 20}}></Block>
-                                <Block width={width * 0.7} center style={{position: 'absolute', bottom: 50}}>
-                                { (currentPosition < 2) ?
-                                <GaButton
-                                      shadowless
-                                      style={styles.nextbutton}
-                                      color={nowTheme.COLORS.PRIMARY}
-                                      onPress={() => ifInputupdated && this.Next()}
-                                  >
-                                      <Text
-                                          style={{ fontFamily: 'HKGrotesk-Medium', fontSize: 14 }}
-                                          color={theme.COLORS.WHITE}
-                                      >
-                                          Next
-                                      </Text>
-                                </GaButton> : (currentPosition == 2) ?
-                                  <GaButton
-                                      shadowless
-                                      style={styles.nextbutton}
-                                      color={nowTheme.COLORS.PRIMARY}
-                                      onPress={() => ifInputupdated && this.Next(true)}
-                                  >
-                                      <Text
-                                          style={{ fontFamily: 'HKGrotesk-Medium', fontSize: 14 }}
-                                          color={theme.COLORS.WHITE}
-                                      >
-                                          Confirm
-                                      </Text>
-                                  </GaButton> : <Block /> }
                                 
-                                </Block>
                   
                   </Block>
                   
                 </Block>
               </Block>
+              
               { (currentPosition == 3) ?  (
                               <Block width={width * 0.9} center style={{position: 'absolute', bottom: 50}}>
                                 <GaButton
@@ -468,7 +440,37 @@ const IndicatorStyles = {
                                           Proceed To Payment
                                       </Text>
                                   </GaButton>
-                                </Block>) : (<Block />)}
+                                </Block>) : 
+                                <Block width={width * 0.7} center style={{position: 'absolute', bottom: 50}}>
+                                { (currentPosition < 2) ?
+                                <GaButton
+                                      shadowless
+                                      style={styles.nextbutton}
+                                      color={nowTheme.COLORS.PRIMARY}
+                                      onPress={() => ifInputupdated && this.Next()}
+                                  >
+                                      <Text
+                                          style={{ fontFamily: 'HKGrotesk-Medium', fontSize: 14 }}
+                                          color={theme.COLORS.WHITE}
+                                      >
+                                          Next
+                                      </Text>
+                                </GaButton> : (currentPosition == 2) ?
+                                  <GaButton
+                                      shadowless
+                                      style={styles.nextbutton}
+                                      color={nowTheme.COLORS.PRIMARY}
+                                      onPress={() => ifInputupdated && this.Next(true)}
+                                  >
+                                      <Text
+                                          style={{ fontFamily: 'HKGrotesk-Medium', fontSize: 14 }}
+                                          color={theme.COLORS.WHITE}
+                                      >
+                                          Confirm
+                                      </Text>
+                                  </GaButton> : <Block /> }
+                                
+                                </Block>}
             </Modal>);
       }
 
