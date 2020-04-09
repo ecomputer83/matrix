@@ -1,7 +1,7 @@
 platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-target 'OlusesiLog' do
+target 'Matrix' do
   # Pods for OlusesiLog
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
@@ -36,7 +36,7 @@ target 'OlusesiLog' do
 
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
-  target 'OlusesiLogTests' do
+  target 'MatrixTests' do
     inherit! :search_paths
     # Pods for testing
   end
@@ -44,10 +44,10 @@ target 'OlusesiLog' do
   use_native_modules!
 end
 
-target 'OlusesiLog-tvOS' do
+target 'Matrix-tvOS' do
   # Pods for OlusesiLog-tvOS
 
-  target 'OlusesiLog-tvOSTests' do
+  target 'Matrix-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
