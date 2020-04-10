@@ -5,8 +5,12 @@ import { Input, Icon, DetailCard, FeatureCard } from '../components';
 import FloatingActionButton from "react-native-floating-action-button";
 import { prod, ST, nowTheme } from '../constants';
 import Spinner from 'react-native-loading-spinner-overlay';
+import ModalSelector from 'react-native-modal-selector';
 
 const { width, height } = Dimensions.get("screen");
+const iPhoneX = () =>
+  Platform.OS === 'ios' && (height === 812 || width === 812 || height === 896 || width === 896);
+
 class Programming extends React.Component {
 
     state = {
@@ -17,6 +21,7 @@ class Programming extends React.Component {
         Quantity: "33000",
         Destination: null,
         State: null,
+        StateX: [],
         LGA: null,
         modalVisible: false,
         spinner: false,
@@ -30,6 +35,9 @@ class Programming extends React.Component {
       super(props);
       const Params = props.navigation.state.params
       console.log(Params)
+      var SX = ST.States.map(o => {
+        return {key: o.index, label: o.Name}
+      })
       if(Params == null){
 
 
@@ -41,6 +49,7 @@ class Programming extends React.Component {
         Quantity: "0",
       Destination: null,
       State: null,
+      StateX: SX,
       LGA: null,
       modalVisible: false,
       spinner: false,
@@ -58,6 +67,7 @@ class Programming extends React.Component {
         Quantity: "0",
       Destination: null,
       State: null,
+      StateX: SX,
       LGA: null,
       modalVisible: false,
       spinner: false,
@@ -82,7 +92,9 @@ class Programming extends React.Component {
     }
 
     setStates(v){
-      var LGAs = ST.LGA.filter(c=>c.stateIndex == v.index);
+      var LGAs = ST.LGA.filter(c=>c.stateIndex == v.index).map(l => {
+        return {key: o.index, label: o.Name}
+      });
       this.setState({LGAs: LGAs, State: v, ifInputupdated: (this.state.LGA && this.state.Destination)})
     }
 
@@ -226,7 +238,7 @@ class Programming extends React.Component {
                 this.setModalVisible(false)
               }
           }}>
-          <Block  flex center style={{backgroundColor: '#FAFAFA'}}>
+          <Block  flex center style={{backgroundColor: '#FAFAFA', paddingTop: iPhoneX() ? theme.SIZES.BASE * 3.5 : theme.SIZES.BASE}}>
             <Block row space='between' style={{width: width, padding: 10, alignItems:'center', marginBottom: 20, borderBottomColor: '#1D1D1D24', borderBottomWidth: 1}}>
               <Text style={{ fontFamily: 'HKGrotesk-Bold', fontSize: 20 }}>Program Truck</Text>
               <Icon
@@ -282,26 +294,22 @@ class Programming extends React.Component {
                                 noicon
                               />
                               <Block style={styles.picker}>
-                              <Picker
-                                  selectedValue={this.state.State }
-                                  style={styles.pickerStyle}
-                                  onValueChange={(itemValue, itemIndex) => this.setStates(itemValue)}>
-                                      <Picker.Item label='-- Select State --' value={null} />
-                                      {ST.States.map( (v)=>{
-                                      return <Picker.Item label={v.Name} value={v}  />
-                                      })}
-                              </Picker>
+                              <ModalSelector
+                                  data={this.state.StateX}
+                                  initValue='Select State'
+                                  selectStyle={styles.selectStyle}
+                                  selectTextStyle={styles.selectTextStyle}
+                                  initValueTextStyle={styles.initvalueTextStyle}
+                                  onChange={(itemValue) => this.setStates(itemValue)} />
                               </Block>
                               <Block style={styles.picker}>
-                              <Picker
-                                  selectedValue={this.state.LGA }
-                                  style={styles.pickerStyle}
-                                  onValueChange={(itemValue, itemIndex) => this.setLGA(itemValue)}>
-                                      <Picker.Item label='-- Select LGA --' value={null} />
-                                      {LGAs.map( (v)=>{
-                                      return <Picker.Item label={v.Name} value={v}  />
-                                      })}
-                              </Picker>
+                              <ModalSelector
+                                  data={this.state.LGAs }
+                                  initValue='Select LGA'
+                                  selectStyle={styles.selectStyle}
+                                  selectTextStyle={styles.selectTextStyle}
+                                  initValueTextStyle={styles.initvalueTextStyle}
+                                  onChange={(itemValue) => this.setLGA(itemValue)} />
                               </Block>
                               
                             </Block>
@@ -316,7 +324,7 @@ class Programming extends React.Component {
                       onPress={() => this.setIncrease()}
                   >
                       <Text
-                          style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}
+                          style={{ fontFamily: 'HKGrotesk-Bold', fontSize: 14 }}
                           color={theme.COLORS.WHITE}
                       >
                           +
@@ -341,8 +349,8 @@ class Programming extends React.Component {
                       onPress={() => this.setDecrease()}
                   >
                       <Text
-                          style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}
-                          color={theme.COLORS.WHITE}
+                          style={{ fontFamily: 'HKGrotesk-Bold', fontSize: 14 }}
+                          color={theme.COLORS.BLACK}
                       >
                           -
                       </Text>
@@ -400,7 +408,7 @@ class Programming extends React.Component {
           {this.renderFeatures()}
           {this.renderPrograms()}
           {this.renderModal()}
-          <Block row style={{zIndex: 3, position: 'absolute', top: 500, right: '5%'}}>
+          <Block row style={{zIndex: 3, position: 'absolute', top: '70%', right: '5%'}}>
         {(this.state.isNew && this.state.remainQuantity == 0) ?
         <Block />
           :
@@ -448,13 +456,22 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#1917181F',
     borderRadius: 0,
-    height: 45,
+    height: 40,
     marginBottom: 10
   },
-  pickerStyle: {
+  initvalueTextStyle: {
     fontFamily: 'HKGrotesk-Regular',
     fontSize: 16,
     color: '#191718',
+    justifyContent: 'center',  
+  },
+  selectTextStyle: {
+    fontFamily: 'HKGrotesk-Regular',
+    fontSize: 16,
+    color: '#191718',  
+  },
+  selectStyle: {
+    borderWidth: 0,
     justifyContent: 'center',  
   },
   product: {

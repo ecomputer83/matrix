@@ -150,7 +150,7 @@ class Header extends React.Component {
       transparent ? { backgroundColor: 'rgba(0,0,0,0)' } : null,
       bgColor ? { backgroundColor: bgColor } : null,
     ];
-
+    console.log(iPhoneX());
     const navbarStyles = [styles.navbar, bgColor && { backgroundColor: bgColor }];
 
     return (
@@ -196,9 +196,8 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   navbar: {
-    paddingVertical: 0,
     paddingBottom: theme.SIZES.BASE * 1.5,
-    paddingTop: iPhoneX ? theme.SIZES.BASE * 2 : theme.SIZES.BASE,
+    paddingTop: iPhoneX() ? theme.SIZES.BASE * 3.5 : theme.SIZES.BASE,
     zIndex: 5
   },
   avatar: {

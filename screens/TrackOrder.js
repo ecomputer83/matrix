@@ -12,6 +12,8 @@ import FloatingActionButton from "react-native-floating-action-button";
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 
 const { width, height } = Dimensions.get("screen");
+const iPhoneX = () =>
+  Platform.OS === 'ios' && (height === 812 || width === 812 || height === 896 || width === 896);
 
 const IndicatorStyles = {
     stepIndicatorSize: 10,
@@ -247,7 +249,7 @@ const IndicatorStyles = {
               onRequestClose={() => {
                 this.setModalCreateVisible(false)
               }}>
-              <Block  flex center style={{backgroundColor: '#FAFAFA'}}>
+              <Block  flex center style={{backgroundColor: '#FAFAFA', paddingTop: iPhoneX() ? theme.SIZES.BASE * 3.5 : theme.SIZES.BASE}}>
                 <Block row space='between' style={{width: width, padding: 10, alignItems:'center', marginBottom: 20, borderBottomColor: '#1D1D1D24', borderBottomWidth: 1}}>
                   <Text style={{ fontFamily: 'HKGrotesk-Bold', fontSize: 20 }}> {this.GenerateTitle(this.state.currentPosition)}</Text>
                   <Icon
@@ -291,7 +293,7 @@ const IndicatorStyles = {
                           onPress={() => this.setIncrease()}
                       >
                           <Text
-                              style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}
+                              style={{ fontFamily: 'HKGrotesk-Bold', fontSize: 14 }}
                               color={theme.COLORS.WHITE}
                           >
                               +
@@ -311,13 +313,13 @@ const IndicatorStyles = {
   
   <GaButton
                           shadowless
-                          style={[styles.increbutton, {opacity: 0.35}]}
+                          style={[styles.increbutton, {opacity: 0.65}]}
                           color='#60C6EC35'
                           onPress={() => this.setDecrease()}
                       >
                           <Text
-                              style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}
-                              color={theme.COLORS.WHITE}
+                              style={{ fontFamily: 'HKGrotesk-Bold', fontSize: 14 }}
+                              color={theme.COLORS.BLACK}
                           >
                               -
                           </Text>
@@ -485,6 +487,7 @@ const IndicatorStyles = {
       renderPaymentModal = () => {
 
         const {currentState, CompletePayment, code} = this.state;
+        const inputstyle = [styles.inputs, {paddingHorizontal: 10}]
           return (<Modal
               animationType="slide"
               transparent={false}
@@ -493,7 +496,7 @@ const IndicatorStyles = {
                 this.setModalPaymentVisible(false);
               }}>
             { (!CompletePayment) ?  
-              <Block  flex center style={{backgroundColor: '#FAFAFA'}}>
+              <Block  flex center style={{backgroundColor: '#FAFAFA', paddingTop: iPhoneX() ? theme.SIZES.BASE * 3.5 : theme.SIZES.BASE}}>
                 <Block row space='between' style={{width: width, padding: 10, alignItems:'center', marginBottom: 20, borderBottomColor: '#1D1D1D24', borderBottomWidth: 1}}>
             <Text style={{ fontFamily: 'HKGrotesk-Bold', fontSize: 20 }}> Make Payment - Step {currentState + 1}</Text>
                   <Icon
@@ -520,7 +523,7 @@ const IndicatorStyles = {
                                     }}
                                     mask={"[0000] [0000] [0000] [0000]"}
                                     placeholder="Enter card number here"
-                                    style={styles.inputs}
+                                    style={inputstyle}
                                     keyboardType="numeric"
                                 />
                               </Block>
@@ -533,7 +536,7 @@ const IndicatorStyles = {
                                     }}
                                     mask={"[00] / [00]"}
                                     placeholder="MM / YY"
-                                    style={styles.inputs}
+                                    style={inputstyle}
                                     keyboardType="numeric"
                                 />
                               </Block>
@@ -545,7 +548,7 @@ const IndicatorStyles = {
                                     }}
                                     mask={"[000]"}
                                     placeholder="CVC"
-                                    style={styles.inputs}
+                                    style={inputstyle}
                                     keyboardType="numeric"
                                 />
                               </Block>
@@ -677,7 +680,7 @@ const IndicatorStyles = {
                 />
                 {this.renderCreateModal()}
                 {this.renderPaymentModal()}
-                    <Block row style={{zIndex: 3, position: 'absolute', top: 500, right: '5%'}}>
+                    <Block row style={{zIndex: 3, position: 'absolute', top: '90%', right: '5%'}}>
           <FloatingActionButton
             iconName="plus"
             iconType="AntDesign"
@@ -717,7 +720,8 @@ const styles = StyleSheet.create({
       inputs: {
         borderWidth: 0,
         borderRadius: 0,
-        backgroundColor: '#ffffff'
+        backgroundColor: '#ffffff',
+        height: 40
       },
       Qtyinputs: {
         borderWidth: 1,
