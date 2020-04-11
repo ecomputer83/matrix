@@ -92,8 +92,8 @@ class Programming extends React.Component {
     }
 
     setStates(v){
-      var LGAs = ST.LGA.filter(c=>c.stateIndex == v.index).map(l => {
-        return {key: o.index, label: o.Name}
+      var LGAs = ST.LGA.filter(c=>c.stateIndex == v.key).map(l => {
+        return {key: l.index, label: l.Name}
       });
       this.setState({LGAs: LGAs, State: v, ifInputupdated: (this.state.LGA && this.state.Destination)})
     }
