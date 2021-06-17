@@ -52,7 +52,7 @@ const IndicatorStyles = {
       super(props);
       this.state = {
         DailyPrices: prod.DailyPrices,
-        Products: [],
+        Products: prod.DailyPrices,
         Articles: Article,
         Banks: Banks,
         OrderId: 0,
@@ -572,25 +572,26 @@ const IndicatorStyles = {
     }
   
     renderProducts = () => {
+      console.log(this.state.Products)
       let bgColor = ["#303E4F", "#437FB4", "#909090", "#CB582D", "#E37E2E"]
         return this.state.Products.map((p, i)=>{
-            const productStyle = [styles.product, {backgroundColor: bgColor[i]}, (this.state.productIndex == i) && styles.selected]
+            const productStyle = [styles.product, (this.state.productIndex == i) && styles.selected]
             return (<TouchableHighlight onPress={() => this.setProduct(p, i)}>
                 <Block width={width * 0.9} row space='between' style={{marginTop: 5}} space='between' style={productStyle}>
-                    <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16, color: '#ffffff' }}>{p.product}</Text>
-                    <Text style={{ fontFamily: 'HKGrotesk-MediumLegacy', fontSize: 16, color: '#f4f4f4' }}>₦{p.price}/{p.unit}</Text>
+                    <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16, }}>{p.product}</Text>
+                    <Text style={{ fontFamily: 'HKGrotesk-MediumLegacy', fontSize: 16, color: '#333333' }}>₦{p.price}/{p.unit}</Text>
                 </Block>
             </TouchableHighlight>)
         })
     }
   
     renderDepots = () => {
-      
+        console.log(this.state.Depots)
         return this.state.Depots.map((p, i)=>{
             const productStyle = [styles.product, (this.state.depotIndex == i) && styles.selected]
             return (<TouchableHighlight onPress={() => this.setDepot(p, i)}>
                 <Block width={width * 0.9} middle style={productStyle}>
-                    <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16, color: '#ffffff' }}>{p.name}</Text>
+                    <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16 }}>{p.name}</Text>
                 </Block>
             </TouchableHighlight>)
         })
@@ -1220,6 +1221,20 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginLeft: 20
   },
+  dropdownpicker: {
+    borderWidth: 1,
+    borderColor: '#1917181F',
+    borderRadius: 0,
+    height: 45,
+    width: '100%',
+    marginBottom: 10
+  },
+  picker2: {
+    borderWidth: 0,
+    height: 10,
+    width: width * 0.38,
+    padding: 0
+  },
   registerbutton: {
     width: (width /2) - 7.5,
     height: theme.SIZES.BASE * 3,
@@ -1231,6 +1246,9 @@ const styles = StyleSheet.create({
     height: 23,
     width: 100,
     padding: 0
+  },
+  selectStyle:{
+    borderWidth: 0
   },
   selectTextStyle: {
     fontFamily: 'HKGrotesk-Bold',
@@ -1253,6 +1271,101 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 16,
     padding: 0
+  },
+  increbutton: {
+    width: 101.1,
+    height: 40,
+    shadowRadius: 0,
+    shadowOpacity: 0,
+    borderRadius: 0,
+    marginVertical: theme.SIZES.BASE / 2
+  },
+  button: {
+    width: width - 40,
+    height: 40,
+    shadowRadius: 0,
+    shadowOpacity: 0,
+    marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 5
+  },
+  nextbutton: {
+    width: (width * 0.7),
+    height: 40,
+    shadowRadius: 0,
+    shadowOpacity: 0,
+    margin: 2
+  },
+  cardinputs: {
+    borderWidth: 1,
+    borderColor: '#1917181F',
+    borderRadius: 0,
+    backgroundColor: '#ffffff'
+  },
+  proceedbutton: {
+    width: (width * 0.3),
+    height: 40,
+    shadowRadius: 0,
+    shadowOpacity: 0,
+    margin: 2
+  },
+  custominput: {
+    borderColor: nowTheme.COLORS.BORDER,
+    borderWidth: 1,
+    height: 40,
+    width:  width - 42,
+    marginLeft: 1,
+    marginRight: 1,
+    borderRadius: 0,
+    paddingLeft: 10
+  },
+  Qtyinputs: {
+    borderWidth: 1,
+    borderColor: '#1917181F',
+    borderRadius: 0,
+    backgroundColor: '#ffffff',
+    paddingHorizontal: 120,
+    width:  width-40,
+    height: 50
+  },
+  product: {
+    height: 40,
+    marginBottom: 5, 
+    paddingHorizontal: 20, 
+    borderWidth: 1, 
+    borderRadius: 5, 
+    borderColor: '#E3E2E3', 
+    backgroundColor: '#FFFFFF', 
+    alignItems: 'center'
+  },
+  inputs: {
+    borderWidth: 0,
+    borderRadius: 0,
+    backgroundColor: '#ffffff'
+  },
+  inputsX: {
+    borderWidth: 1,
+    borderColor: '#1917181F',
+    borderRadius: 0,
+    backgroundColor: '#ffffff',
+    margin:0
+  },
+  datepicker: {
+    borderWidth: 1,
+    borderColor: '#1917181F',
+    borderRadius: 0,
+    height: 45,
+    marginBottom: 10
+  },
+  nobutton: {
+   width: (width /3) - (theme.SIZES.BASE * 2 + 2.5),
+    height: theme.SIZES.BASE * 3,
+    shadowRadius: 0,
+    shadowOpacity: 0, 
+  },
+  selected: {
+    backgroundColor: nowTheme.COLORS.BLACK,
+    
   }
 });
 

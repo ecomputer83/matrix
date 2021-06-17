@@ -109,7 +109,7 @@ class Header extends React.Component {
         <AddIconButton key="logout" iconName="logout" navigation={navigation} iconFamily="AntDesign" style={{ marginLeft: 15, marginTop: 15}} />
         </Block>
       <Swiper style={styles.wrapper} paginationStyle={{ container: { backgroundColor: 'transparent' } }}
-        paginationLeft={''} paginationRight={''} smoothTransition dragY>
+        paginationLeft={''} paginationRight={''} smoothTransition swiper dragY>
         { prod.Accounts.map( i => {
               return (
         <Block row space="between" style={{backgroundColor: bgColor}}> 

@@ -539,11 +539,12 @@ onChange = (event, selectedDate) => {
         let activeFilterIndex = this.state.Filters.findIndex(c => c.Status == stat);
         let selectedFilterIndex = this.state.Filters.findIndex(c => c == item);
         var filters = this.state.Filters;
-        filters[activeFilterIndex].Status = item.Status;
-        filters[selectedFilterIndex].Status = stat;
+        filters[activeFilterIndex].status = item.status;
+        filters[selectedFilterIndex].status = stat;
         let filteredOrder = [];
         if(item.Name != 'All'){
-            filteredOrder = this.state.OriginalOrders.filter(o => o.status == item.Id);
+            var filt = item.Name == 'Unconfirmed' ? 0 : 1
+            filteredOrder = this.state.OriginalOrders.filter(o => o.status == filt);
         }else{
             filteredOrder = this.state.OriginalOrders;
         }
