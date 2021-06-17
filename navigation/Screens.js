@@ -11,11 +11,13 @@ import Home from '../screens/Home';
 import Login from '../screens/Login';
 import Register from '../screens/Register';
 import Onboarding from '../screens/Onboarding';
-import MakeOrder from '../screens/MakeOrder';
+import BankAccounts from '../screens/BankAccounts';
+import OrderDetail from '../screens/OrderDetail';
 import CardPayment from '../screens/CardPayment';
 import Programming from '../screens/Programming';
 import TrackOrder from '../screens/TrackOrder';
 import Insight from '../screens/Insight';
+import ProgramDetail from '../screens/ProgramDetail';
 import RegReview from '../screens/RegReview';
 // drawer
 import Menu from './Menu';
@@ -90,13 +92,23 @@ const TrackOrderStack = createStackNavigator(
         header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title="Orders" navigation={navigation} />
       })
     },
-    MakeOrder: {
-      screen: MakeOrder,
-      navigationOptions: ({ navigation }) => {
-        const { state } = navigation;
-        let title = `${navigation.state.params && state.params.title ? state.params.title : 'Make Order'}`;
-        header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title={title} navigation={navigation} />
-      }
+    OrderDetail: {
+      screen: OrderDetail,
+      navigationOptions: ({ navigation }) => ({
+        header: <Header back bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title='Order Information' navigation={navigation} />
+      })
+    },
+    ProgramDetail: {
+      screen: ProgramDetail,
+      navigationOptions: ({ navigation }) => ({
+        header: <Header back bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title='Program Truck Tracking' navigation={navigation} />
+      })
+    },
+    BankAccount: {
+      screen: BankAccounts,
+      navigationOptions: ({ navigation }) => ({
+        header: <Header back bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title='Account Information' navigation={navigation} />
+      })
     },
     CardPayment: {
       screen: CardPayment,
@@ -142,6 +154,12 @@ const DispatchStack = createStackNavigator(
       screen: Programming,
       navigationOptions: ({ navigation }) => ({
         header: <Header bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title="Program" navigation={navigation} />
+      })
+    },
+    ProgramDetail: {
+      screen: ProgramDetail,
+      navigationOptions: ({ navigation }) => ({
+        header: <Header back bgColor={nowTheme.COLORS.PRIMARY} iconColor={nowTheme.COLORS.WHITE} title='Program Truck Tracking' navigation={navigation} />
       })
     },
   },

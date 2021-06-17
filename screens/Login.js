@@ -46,13 +46,13 @@ export default class Login extends React.Component {
                 }}>
                 <Block style={{marginVertical: 2.5}}>
                 <Text style={{ fontFamily: 'HKGrotesk-Regular' }} size={14}>
-                  Email
+                  Phone Number
                   </Text>
                 <Input
                     left
                     color="black"
                     style={styles.input}
-                    placeholder="Enter email here"
+                    placeholder="Enter phone here"
                     noicon
                 />
                 </Block>

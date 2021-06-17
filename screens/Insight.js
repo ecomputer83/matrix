@@ -4,6 +4,7 @@ import { Block, theme,Button, Text } from "galio-framework";
 import { BarChart } from 'react-native-chart-kit'
 import { prod, Images, nowTheme } from '../constants';
 import Spinner from 'react-native-loading-spinner-overlay';
+import BaseComponent from '../components/BaseComponent';
 
 const { width } = Dimensions.get("screen");
 const chartConfigs = {
@@ -12,10 +13,11 @@ const chartConfigs = {
     backgroundGradientTo: '#ffffff',
     color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`
   };
-class Insight extends React.Component {
+class Insight extends BaseComponent {
     
     state = {
         Marketers: prod.Marketers,
+        renderAccountVisible: false,
         Data: {
             labels: ["Confirmed Order", "Unconfirmed Order"],
             datasets: [
@@ -24,6 +26,13 @@ class Insight extends React.Component {
               }
             ]
           }
+    }
+    componentDidMount () {
+        this.props.navigation.setParams({onChangeAccountMethod: this.setModalAccountVisible });
+      }
+    setModalAccountVisible = (value) => {
+        this.setState({renderAccountVisible: value})
+        console.log(this.state.renderAccountVisible)
     }
     renderChildFilter = () => {
         return this.state.Filters.map((v,i) => {
@@ -84,7 +93,10 @@ class Insight extends React.Component {
             </Block>
         )
     }
-
+    changeAccount = (item, index) => {
+        this.setState({Marketers: prod.Marketers})
+        AsyncStorage.setItem('Account', JSON.stringify(item))
+    }
     render () {
         const graphStyle = {
             marginVertical: 8,
@@ -99,7 +111,7 @@ class Insight extends React.Component {
                   textContent={'Searching...'}
                   textStyle={styles.spinnerTextStyle}
                 />
-
+                    {this.renderAccount(this.changeAccount)}
                     <Block space="between">
                         <Block>
                             {this.renderTable()}

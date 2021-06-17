@@ -1,13 +1,14 @@
 import React from 'react';
 import { Block, Text, theme, Button as GaButton } from 'galio-framework';
 import { nowTheme } from '../constants';
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 
 const { width } = Dimensions.get('screen');
 export default class DetailCard extends React.Component {
 
     render(){
         const {
+            Navigation,
             item,
             index,
             bgColor,
@@ -16,6 +17,7 @@ export default class DetailCard extends React.Component {
             const PrimaryColor = nowTheme.COLORS.PRIMARY;
             const BlackColor = nowTheme.COLORS.BLACK;
           return ( 
+            <TouchableWithoutFeedback onPress={() => (Navigation) ? Navigation.navigate('ProgramDetail', { Program: item }): {}}>
               <Block flex style={styles.shadow, {width:(width - 20), padding:10, marginBottom:10, backgroundColor: '#ffffff'
             }}>
                 <Block>
@@ -27,7 +29,7 @@ export default class DetailCard extends React.Component {
                   fontFamily: 'HKGrotesk-SemiBoldLegacy'
                 }}
               >
-                {item.TruckNo}
+                {item.truckNo}
                   </Text>
             <Text
                 style={{
@@ -51,7 +53,7 @@ export default class DetailCard extends React.Component {
                   fontFamily: 'HKGrotesk-SemiBoldLegacy',
                 }}
               >
-                {item.Destination.substring(0, 24)}
+                {item.destination.substring(0, 24)}
                   </Text>
             <Text
                 style={{
@@ -60,11 +62,12 @@ export default class DetailCard extends React.Component {
                   fontFamily: 'HKGrotesk-SemiBoldLegacy',
                 }}
               >
-                {item.Quantity.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} Litres
+                {item.quantity.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} Litres
                   </Text>
                 </Block>
                   </Block>
-          </Block>)
+          </Block>
+          </TouchableWithoutFeedback>)
     }
 }
 

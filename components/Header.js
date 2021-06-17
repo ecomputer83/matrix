@@ -7,8 +7,10 @@ import fontelloConfig from '../config.json';
 import Icon from './Icon';
 import Input from './Input';
 import Tabs from './Tabs';
+import { prod } from '../constants'
 import Theme from '../constants/Theme';
 import Images from '../constants/Images';
+import Swiper from '../components/Swiper';
 
 const Fontello = createIconSetFromFontello(fontelloConfig);
 const { height, width } = Dimensions.get('window');
@@ -22,6 +24,14 @@ const AddButton = ({ isWhite, style, navigation, link, iconName }) => (
    <Fontello name={iconName} size={16}
       color="#ffffff"
     />
+  </TouchableOpacity>
+);
+
+const AddIconButton = ({ iconFamily, style, navigation, link, iconName }) => (
+  <TouchableOpacity
+    style={[styles.button, style]} onPress={()=>navigation.state.params.onChangeAccountMethod(true)}
+  >
+    <Icon name={iconName} family={iconFamily} size={16} color="#ffffff" />
   </TouchableOpacity>
 );
 
@@ -40,7 +50,20 @@ class Header extends React.Component {
       case 'TrackOrder':
         return [
           <AddButton key="sort" iconName="sort" navigation={navigation} isWhite={white} />,
-          <AddButton key="filter" iconName="filter" navigation={navigation} isWhite={white} />
+          <AddButton key="filter" iconName="filter" navigation={navigation} isWhite={white} />,
+          <AddIconButton key="account" iconName="user" iconFamily="Entypo" navigation={navigation} />
+        ];
+      case 'Insights':
+        return [
+          <AddIconButton key="account" iconName="user" iconFamily="Entypo" navigation={navigation} />
+        ];
+      case 'Dispatch':
+        return [
+          <AddIconButton key="account" iconName="user" iconFamily="Entypo" navigation={navigation} />
+        ];
+      case 'Programming':
+        return [
+          <AddIconButton key="account" iconName="user" iconFamily="Entypo" navigation={navigation} />
         ];
       default:
         break;
@@ -77,28 +100,48 @@ class Header extends React.Component {
     );
   };
   renderMessage = () => {
-    const { navigation, User } = this.props;
+    const { navigation, User, bgColor } = this.props;
 
     return (
       <Block style={styles.options}>
-        <Block middle>
-        <Image source={Images.Logo} style={{ width: 72, height: 29, marginBottom: 20, marginTop: 10  }} />
+        <Block row>
+        <Image source={Images.Logo} style={{ width: 221, height: 53, marginBottom: 20, marginLeft: (width - 221)/2.5, marginTop: 10 }} />
+        <AddIconButton key="logout" iconName="logout" navigation={navigation} iconFamily="AntDesign" style={{ marginLeft: 15, marginTop: 15}} />
         </Block>
-        <Block row space="between" > 
+      <Swiper style={styles.wrapper} paginationStyle={{ container: { backgroundColor: 'transparent' } }}
+        paginationLeft={''} paginationRight={''} smoothTransition dragY>
+        { prod.Accounts.map( i => {
+              return (
+        <Block row space="between" style={{backgroundColor: bgColor}}> 
           <Block>
-            <Text size={24} style={{ fontFamily: 'HKGrotesk-Bold', lineHeight: 32,fontWeight: '600', color: Theme.COLORS.HEADER}}>
+            <Text size={18} style={{ fontFamily: 'HKGrotesk-Bold', lineHeight: 22,fontWeight: '600', color: Theme.COLORS.HEADER}}>
               Good Morning,
             </Text>
-            <Text size={20} style={{ fontFamily: 'HKGrotesk-Light', lineHeight: 22,fontWeight: '300', color: Theme.COLORS.HEADER}}>
-              Business Name
+            <Text size={20} style={{ fontFamily: 'HKGrotesk-Light', lineHeight: 24,fontWeight: '300', color: Theme.COLORS.HEADER}}>
+              {i.label}
             </Text>
             </Block>
         <Block>
-          <Image source={Images.Profile} style={{ width: 56, height: 55, borderRadius: 50}} />
+          {(i.creditLimit != null)? 
+        (<Text size={12} style={{ fontFamily: 'HKGrotesk-Light', lineHeight: 32,fontWeight: '300', color: Theme.COLORS.HEADER}}>
+              Credit limit ₦{i.creditLimit.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
+            </Text>) :(<Block />)
+          }
+          {(i.creditBalance != null)? 
+          (<Block><Text size={12} style={{ fontFamily: 'HKGrotesk-Light', lineHeight: 12,fontWeight: '300', color: Theme.COLORS.HEADER}}>
+              Credit Balance 
+            </Text>
+            <Text size={20} style={{ fontFamily: 'HKGrotesk-Bold', lineHeight: 20,fontWeight: '300', color: Theme.COLORS.HEADER}}>
+            ₦{i.creditBalance.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
+        </Text></Block>) : <Block /> }
         </Block>
         
             
         </Block>
+      )
+            })
+        }
+      </Swiper>
       </Block>
     );
   };
@@ -186,7 +229,7 @@ class Header extends React.Component {
 
 const styles = StyleSheet.create({
   button: {
-    padding: 12,
+    padding: 5,
     position: 'relative'
   },
   title: {
@@ -194,6 +237,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: 'HKGrotesk-Bold',
     textAlign: 'center'
+  },
+  wrapper: {
+    height: 50
   },
   navbar: {
     paddingBottom: theme.SIZES.BASE * 1.5,

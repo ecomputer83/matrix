@@ -5,6 +5,7 @@ import PhoneInput from 'react-native-phone-input'
 const { height, width } = Dimensions.get('screen');
 import { Images, nowTheme } from '../constants/';
 import { HeaderHeight } from '../constants/utils';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Input from '../components/Input';
 import Icon from '../components/Icon';
 
@@ -18,6 +19,18 @@ export default class Login extends React.Component {
   handleLeftPress = () => {
     const { navigation } = this.props;
     return navigation.goBack(null);
+  };
+  showDatePicker = () => {
+    this.setState({ShowDatePicker: true});
+  };
+
+  hideDatePicker = () => {
+    this.setState({ShowDatePicker: false});
+  };
+
+  handleConfirm = (date) => {
+    console.warn("A date has been picked: ", date);
+    this.setState({ShowDatePicker: false, CreditDate: date});
   };
   render() {
     const { navigation } = this.props;
@@ -59,6 +72,36 @@ export default class Login extends React.Component {
                     placeholder="Enter  business name here"
                     noicon
                 />
+                </Block>
+                <Block style={{marginVertical: 1}}>
+                <Text style={{ fontFamily: 'HKGrotesk-Regular' }} size={14}>
+                  DPR License Number
+                  </Text>
+                <Input
+                    left
+                    color="black"
+                    style={styles.input}
+                    placeholder="Enter  business name here"
+                    noicon
+                />
+                </Block>
+                <Block style={{marginVertical: 1}}>
+                <Text style={{ fontFamily: 'HKGrotesk-Regular' }} size={14}>
+                  DPR Expiry Date
+                  </Text>
+                <TouchableHighlight onPress={() => this.showDatePicker()}>
+                  <Block width={width * 0.9} middle style={styles.datepicker}>
+                      <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16 }}>{this.state.CreditDate.toDateString()}</Text>
+                  </Block>
+                  </TouchableHighlight>
+                  <DateTimePickerModal
+            isVisible={this.state.ShowDatePicker}
+            maximumDate={new Date()}
+            mode="date"
+            onConfirm={this.handleConfirm}
+            onCancel={this.hideDatePicker}
+          />
+                              
                 </Block>
                 <Block style={{marginVertical: 1}}>
                 <Text style={{ fontFamily: 'HKGrotesk-Regular' }} size={14}>
