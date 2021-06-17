@@ -1212,7 +1212,14 @@ const styles = StyleSheet.create({
     marginRight: 5,
     marginLeft: 5
   },
-
+  yesbutton: {
+    width: (width /3) - (theme.SIZES.BASE * 2 + 2.5),
+    height: theme.SIZES.BASE * 2,
+    shadowRadius: 0,
+    shadowOpacity: 0,
+    marginRight: 10,
+    marginLeft: 20
+  },
   registerbutton: {
     width: (width /2) - 7.5,
     height: theme.SIZES.BASE * 3,
