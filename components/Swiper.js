@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   card: {
-    flex: 1,
+    //flex: 1,
   },
   dot: {
     height: 5,
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   dotContainer: {
     height: 60,
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     justifyContent: 'center',
   },
   bottomPagination: {
@@ -679,7 +679,7 @@ export default class SwiperAnimated extends PureComponent {
     const scale = this.enter;
 
     const animatedCardStyles = {
-      transform: [{ translateX }, { translateY }, { rotate }, { scale }],
+      transform: [{ translateX }, { translateY }, { scale }],
       opacity,
     };
 
@@ -703,6 +703,7 @@ export default class SwiperAnimated extends PureComponent {
         {renderHeader(this.currentIndex[this.guid])}
         {stack ? this.renderStack() : this.renderCard()}
         {showPagination && this.renderPagination()}
+        
       </View>
     );
   }

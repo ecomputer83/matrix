@@ -1,6 +1,6 @@
 import React from 'react';
 import { withNavigation } from 'react-navigation';
-import { ImageBackground, TouchableOpacity, StyleSheet, Image, Platform, Dimensions, StatusBar } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Image, Platform, Dimensions, StatusBar } from 'react-native';
 import { Button, Block, NavBar, Text, theme, Button as GaButton } from 'galio-framework';
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from '../config.json';
@@ -101,19 +101,24 @@ class Header extends React.Component {
   };
   renderMessage = () => {
     const { navigation, User, bgColor } = this.props;
-
     return (
       <Block style={styles.options}>
         <Block row>
         <Image source={Images.Logo} style={{ width: 221, height: 53, marginBottom: 20, marginLeft: (width - 221)/2.5, marginTop: 10 }} />
         <AddIconButton key="logout" iconName="logout" navigation={navigation} iconFamily="AntDesign" style={{ marginLeft: 15, marginTop: 15}} />
         </Block>
-      <Swiper style={styles.wrapper} paginationStyle={{ container: { backgroundColor: 'transparent' } }}
-        paginationLeft={''} paginationRight={''} smoothTransition swiper dragY>
+        <Swiper
+  style={styles.wrapper}
+  paginationStyle={{ container: { backgroundColor: 'transparent' } }}
+  paginationLeft={''}
+  paginationRight={''}
+  smoothTransition
+  loop
+>
         { prod.Accounts.map( i => {
               return (
         <Block row space="between" style={{backgroundColor: bgColor}}> 
-          <Block>
+          <Block style={{width: width * 0.5}}>
             <Text size={18} style={{ fontFamily: 'HKGrotesk-Bold', lineHeight: 22,fontWeight: '600', color: Theme.COLORS.HEADER}}>
               Good Morning,
             </Text>
@@ -121,7 +126,7 @@ class Header extends React.Component {
               {i.label}
             </Text>
             </Block>
-        <Block>
+          <Block style={{width: width * 0.5}}>
           {(i.creditLimit != null)? 
         (<Text size={12} style={{ fontFamily: 'HKGrotesk-Light', lineHeight: 32,fontWeight: '300', color: Theme.COLORS.HEADER}}>
               Credit limit ₦{i.creditLimit.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
@@ -239,7 +244,9 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   wrapper: {
-    height: 50
+    width: width * prod.Accounts.length,
+    height: 50,
+    flexDirection: 'row'
   },
   navbar: {
     paddingBottom: theme.SIZES.BASE * 1.5,
