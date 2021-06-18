@@ -89,7 +89,7 @@ constructor(props) {
   orderId: (Params.orderId) ? Params.orderId : 0,
   isQuantitySet: false,
   ShowDatePicker:  false,
-  userno: null,
+  userno: "MDGDC",
   newDevice: false
 }
 }

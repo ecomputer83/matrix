@@ -27,18 +27,18 @@ export default class BaseComponent extends React.Component{
     backgroundColor: 'black',}}>
                     <Block style={{backgroundColor: '#FAFAFA', padding: 20, width: width}}>
                         <Block  row space='between' style={{ width: width-40}}>
-                            <Text style={{ fontFamily: 'HKGrotesk-Bold', fontSize: 20, paddingBottom: 20 }}> Select Account</Text>
+                            <Text style={{ fontFamily: 'HKGrotesk-Bold', fontSize: 20, paddingBottom: 20 }}> Select Location</Text>
                             <TouchableOpacity
                                 style={{padding: 10}} onPress={()=>this.setModalAccountVisible(false) }>
                                 <Icon name='close' family='AntDesign' size={16} />
                             </TouchableOpacity>
                         </Block>
                         <Block center>
-                {prod.Accounts.map((p, i)=>{
+                {prod.Locations.map((p, i)=>{
                         const productStyle = [styles.product]
                         return (<TouchableHighlight onPress={() => callback(p, i)}>
                                     <Block width={width * 0.9} middle style={productStyle}>
-                                    <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16, }}>{p.label}</Text>
+                                    <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16, }}>{p.Name}</Text>
                                     </Block>
                                 </TouchableHighlight>)
                             }) 

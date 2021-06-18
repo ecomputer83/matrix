@@ -1,10 +1,13 @@
 import React from 'react';
-import { StyleSheet,  Dimensions, Image, Alert, FlatList, ScrollView  } from 'react-native';
+import { StyleSheet,  Dimensions, Image, Alert, FlatList, ScrollView, TouchableHighlight } from 'react-native';
 import { Block, theme,Button, Text } from "galio-framework";
 import { BarChart } from 'react-native-chart-kit'
 import { prod, Images, nowTheme } from '../constants';
 import Spinner from 'react-native-loading-spinner-overlay';
 import BaseComponent from '../components/BaseComponent';
+import { AccountCard } from '../components';
+import AsyncStorage from '@react-native-community/async-storage'
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const { width } = Dimensions.get("screen");
 const chartConfigs = {
@@ -16,8 +19,12 @@ const chartConfigs = {
 class Insight extends BaseComponent {
     
     state = {
-        Marketers: prod.Marketers,
+        Marketers: prod.Orders,
         renderAccountVisible: false,
+        showFromDatePicker: false,
+        showToDatePicker: false,
+        FromDate: new Date(),
+        ToDate: new Date(),
         Data: {
             labels: ["Confirmed Order", "Unconfirmed Order"],
             datasets: [
@@ -29,6 +36,50 @@ class Insight extends BaseComponent {
     }
     componentDidMount () {
         this.props.navigation.setParams({onChangeAccountMethod: this.setModalAccountVisible });
+      }
+      showFromDatePicker = () => {
+        this.setState({ShowFromDatePicker: true});
+      };
+    
+      hideFromDatePicker = () => {
+        this.setState({ShowFromDatePicker: false});
+      };
+    
+      handleFromConfirm = (date) => {
+        console.warn("A date has been picked: ", date);
+        this.setState({ShowFromDatePicker: false, FromDate: date});
+      };
+      showToDatePicker = () => {
+        this.setState({ShowToDatePicker: true});
+      };
+    
+      hideToDatePicker = () => {
+        this.setState({ShowToDatePicker: false});
+      };
+    
+      handleToConfirm = (date) => {
+        console.warn("A date has been picked: ", date);
+        this.setState({ShowToDatePicker: false, ToDate: date});
+      };
+    onAccountPressed = (item) => {
+        console.log(item)
+      }
+    renderFeatures = () => {
+        return (
+          <Block>
+            <Text size={16} style={{fontFamily: 'HKGrotesk-BoldLegacy', lineHeight: 16, color: '#919191', marginTop: 10, marginHorizontal: 10}}>Linked Accounts</Text>
+          <ScrollView horizontal={true}>
+            {this.renderFeature()}
+          </ScrollView>
+          </Block>
+        )
+      }
+    
+      renderFeature = () => {
+        return prod.Accounts.map((v,i) => {
+          let index = i++
+          return (<AccountCard item={v} total={prod.Accounts.length} index={index} onPress={this.changeAccount}/>)
+        })
       }
     setModalAccountVisible = (value) => {
         this.setState({renderAccountVisible: value})
@@ -51,8 +102,8 @@ class Insight extends BaseComponent {
                     <Text size={10} style={{fontFamily: 'HKGrotesk-Regular', lineHeight: 14, color: '#919191'}}>#</Text>
                 </Block>
                 <Block row space='between' style={{ width: width-123, alignItems: 'center'}}>
-                    <Text size={10} style={{fontFamily: 'HKGrotesk-Regular', lineHeight: 14, color: '#919191'}}>My Customers</Text>
-                    <Text size={10} style={{fontFamily: 'HKGrotesk-Regular', lineHeight: 14, color: '#919191'}}>Order Qty (MTD)</Text>
+                    <Text size={10} style={{fontFamily: 'HKGrotesk-Regular', lineHeight: 14, color: '#919191'}}>Order No</Text>
+                    <Text size={10} style={{fontFamily: 'HKGrotesk-Regular', lineHeight: 14, color: '#919191'}}>Order Qty</Text>
                 </Block>
             </Block>
         )
@@ -65,22 +116,74 @@ class Insight extends BaseComponent {
                 <Text size={10} style={{fontFamily: 'HKGrotesk-Regular', lineHeight: 14, color: '#919191'}}>{index}</Text>
             </Block>
             <Block row space='between' style={{ width: width-123, alignItems: 'center'}}>
-                <Text size={12} style={{fontFamily: 'HKGrotesk-SemiBold', lineHeight: 16}}>{item.Name}</Text>
-                <Text size={12} style={{fontFamily: 'HKGrotesk-SemiBold', lineHeight: 16}}>{item.Quantity.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
+                <Text size={12} style={{fontFamily: 'HKGrotesk-SemiBold', lineHeight: 16}}>{item.orderNo}</Text>
+                <Text size={12} style={{fontFamily: 'HKGrotesk-SemiBold', lineHeight: 16}}>{item.quantity.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
             </Block>
         </Block>
+        )
+    }
+
+    renderFilter = () => {
+        return (
+            <Block row style={{marginBottom: 10, paddingHorizontal: 10, borderRadius: 10, height: 48}}>
+                <Block width={width * 0.35}>
+                <Text style={{ fontFamily: 'HKGrotesk-Regular', fontSize: 12 }}>From Date</Text>
+                <TouchableHighlight onPress={() => this.showFromDatePicker()}>
+                
+                  <Block width={width * 0.3} middle style={styles.datepicker}>
+                      <Text style={{ fontFamily: 'HKGrotesk-Regular', fontSize: 12 }}>{this.state.FromDate.toDateString()}</Text>
+                  </Block>
+                  </TouchableHighlight>
+                  
+                </Block>
+                <Block width={width * 0.35}>
+                <Text style={{ fontFamily: 'HKGrotesk-Regular', fontSize: 12 }}>To Date</Text>
+                <TouchableHighlight onPress={() => this.showToDatePicker()}>
+                
+                  <Block width={width * 0.3} middle style={styles.datepicker}>
+                      <Text style={{ fontFamily: 'HKGrotesk-Regular', fontSize: 12 }}>{this.state.ToDate.toDateString()}</Text>
+                  </Block>
+                  </TouchableHighlight>
+                  
+                </Block>
+                <Block width={width * 0.2} style={{paddingTop: 20}}>
+                    <Button
+                                  shadowless
+                                  style={styles.searchbutton}
+                                  color={nowTheme.COLORS.PRIMARY}
+                              >
+                                  <Text
+                                      style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16 }}
+                                      color={theme.COLORS.WHITE}
+                                  >
+                                      Search
+                                  </Text>
+                              </Button>
+                </Block>
+                <DateTimePickerModal
+                    isVisible={this.state.ShowFromDatePicker}
+                    maximumDate={new Date()}
+                    mode="date"
+                    onConfirm={this.handleFromConfirm}
+                    onCancel={this.hideFromDatePicker}
+                />
+                <DateTimePickerModal
+                    isVisible={this.state.ShowToDatePicker}
+                    maximumDate={new Date()}
+                    mode="date"
+                    onConfirm={this.handleToConfirm}
+                    onCancel={this.hideToDatePicker}
+                />
+            </Block>
         )
     }
         
     renderTable = () => {
         let index = 0;
+        console.log(this.state.Marketers)
         return (
-            <Block style={{margin: 10, padding: 4, backgroundColor: '#FFFFFF', borderRadius: 5, borderWidth: 1, borderColor: '#97979780', width: width-20}}>
-                <Block style={{paddingLeft: 10}}>
-                    <Text size={12} style={{fontFamily: 'HKGrotesk-SemiBold', lineHeight: 16}}>Marketer's Performance</Text>
-                    <Text size={10} style={{fontFamily: 'HKGrotesk-Regular', lineHeight: 14}}>Marketer's code</Text>
-                    <Text size={20} style={{fontFamily: 'HKGrotesk-Regular', lineHeight: 24}}>NMC0432</Text>
-                </Block>
+            <Block style={{marginTop: 10, marginLeft: 10, padding: 4, backgroundColor: '#FFFFFF', borderRadius: 5, borderWidth: 1, borderColor: '#97979780', width: width-20}}>
+                
                 <Block>
                 { this.renderTableHeader()
 
@@ -94,8 +197,8 @@ class Insight extends BaseComponent {
         )
     }
     changeAccount = (item, index) => {
-        this.setState({Marketers: prod.Marketers})
-        AsyncStorage.setItem('Account', JSON.stringify(item))
+        //this.setState({Marketers: prod.Orders.filter(c=>c.account == item.key)})
+        //AsyncStorage.setItem('Account', JSON.stringify(item))
     }
     render () {
         const graphStyle = {
@@ -111,15 +214,20 @@ class Insight extends BaseComponent {
                   textContent={'Searching...'}
                   textStyle={styles.spinnerTextStyle}
                 />
-                    {this.renderAccount(this.changeAccount)}
-                    <Block space="between">
-                        <Block>
+                    {/* {this.renderAccount(this.changeAccount)} */}
+                    
+                    <Block flex space="between">
+                        <Block flex={0.3}>
+                        {this.renderFeatures()}
+                        </Block>
+                        <Block flex={0.7}>
+                            {this.renderFilter()}
                             {this.renderTable()}
                         </Block>
-                        <Block style={{margin: 12, padding: 4}}>
+                        <Block style={{marginHorizontal: 12, marginTop: 5, padding: 4}}>
                         <BarChart
                             width={width-40}
-                            height={200}
+                            height={100}
                             data={this.state.Data}
                             fromZero={true}
                             chartConfig={chartConfigs}
@@ -144,10 +252,17 @@ const styles = StyleSheet.create({
         borderColor: nowTheme.COLORS.BORDER,
         
       },
+      datepicker: {
+        borderWidth: 1,
+        borderColor: nowTheme.COLORS.PRIMARY,
+        borderRadius: 10,
+        height: nowTheme.SIZES.BASE * 2,
+        marginVertical: 5
+      },
 
       searchbutton: {
-        width: (width  * 0.2),
-        height: nowTheme.SIZES.BASE * 3,
+        width: 85,
+        height: nowTheme.SIZES.BASE * 2,
         shadowRadius: 0,
         shadowOpacity: 0
       }

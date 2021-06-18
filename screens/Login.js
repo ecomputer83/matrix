@@ -7,16 +7,28 @@ import { Images, nowTheme } from '../constants/';
 import { HeaderHeight } from '../constants/utils';
 import Input from '../components/Input';
 import Icon from '../components/Icon';
+import BaseComponent from '../components/BaseComponent';
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
 );
-export default class Login extends React.Component {
-
+export default class Login extends BaseComponent {
+  state = {
+    renderAccountVisible: false,
+    Location: 'Nigeria'
+  }
   handleLeftPress = () => {
     const { navigation } = this.props;
     return navigation.goBack(null);
   };
+  changeAccount = (item, index) => {
+    this.setState({Location: item.Name, renderAccountVisible: false})
+    //AsyncStorage.setItem('Account', JSON.stringify(item))
+}
+  setModalAccountVisible = (value) => {
+    this.setState({renderAccountVisible: value})
+    console.log(this.state.renderAccountVisible)
+  }
   render() {
     const { navigation } = this.props;
 
@@ -25,17 +37,51 @@ export default class Login extends React.Component {
       <Block flex style={styles.container}>
         <StatusBar barStyle="light-content" />
         <Block flex>
-          <Block style={{marginLeft: 16, marginTop: 10}}>
-          <Icon
+          <Block row style={{marginLeft: 16, marginTop: 10}}>
+            <Block width={width * 0.07}>
+            <Icon
               name={'chevron-left'}
               family="octicon"
               size={20}
               onPress={this.handleLeftPress}
               color={nowTheme.COLORS.ICON}
             />
+            </Block>
+            <Block row space="between" width={width * 0.85}>
+              <TouchableWithoutFeedback onPress={() => this.setModalAccountVisible(true)}>
+                <Block row>
+                  <Icon
+                    name={'earth'}
+                    family="AntDesign"
+                    size={20}
+                    onPress={this.handleLeftPress}
+                    color={nowTheme.COLORS.ICON}
+                  />
+                  <Text style={{ fontFamily: 'HKGrotesk-Regular', marginLeft: 5 }} size={14}>
+                  {this.state.Location}
+                  </Text>
+                </Block>
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                <Block row>
+                  <Icon
+                    name={'direction'}
+                    family="Entypo"
+                    size={20}
+                    onPress={this.handleLeftPress}
+                    color={nowTheme.COLORS.ICON}
+                  />
+                  <Text style={{ fontFamily: 'HKGrotesk-Regular' }} size={14}>
+                  Quick Tour
+                  </Text>
+                </Block>
+              </TouchableWithoutFeedback>
+            </Block>
+
           </Block>
           <Block space="between" style={styles.padded}>
             <Block>
+              {this.renderAccount(this.changeAccount)}
             <Block>
             <Text size={28} style={{marginLeft: 21, marginBottom:5, fontFamily: 'HKGrotesk-Bold'}}>
             Log In to continue

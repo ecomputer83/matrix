@@ -51,19 +51,6 @@ class Header extends React.Component {
         return [
           <AddButton key="sort" iconName="sort" navigation={navigation} isWhite={white} />,
           <AddButton key="filter" iconName="filter" navigation={navigation} isWhite={white} />,
-          <AddIconButton key="account" iconName="user" iconFamily="Entypo" navigation={navigation} />
-        ];
-      case 'Insights':
-        return [
-          <AddIconButton key="account" iconName="user" iconFamily="Entypo" navigation={navigation} />
-        ];
-      case 'Dispatch':
-        return [
-          <AddIconButton key="account" iconName="user" iconFamily="Entypo" navigation={navigation} />
-        ];
-      case 'Programming':
-        return [
-          <AddIconButton key="account" iconName="user" iconFamily="Entypo" navigation={navigation} />
         ];
       default:
         break;
@@ -103,51 +90,24 @@ class Header extends React.Component {
     const { navigation, User, bgColor } = this.props;
     return (
       <Block style={styles.options}>
-        <Block row>
-        <Image source={Images.Logo} style={{ width: 221, height: 53, marginBottom: 20, marginLeft: (width - 221)/2.5, marginTop: 10 }} />
-        <AddIconButton key="logout" iconName="logout" navigation={navigation} iconFamily="AntDesign" style={{ marginLeft: 15, marginTop: 15}} />
+        <Block style={{alignItems: 'flex-end'}}>
+        {/* <Image source={Images.Logo} style={{ width: 110, height: 26, marginBottom: 10, marginLeft: (width - 221)/2.5, marginTop: 10 }} /> */}
+        <AddIconButton key="logout" iconName="logout" navigation={navigation} iconFamily="AntDesign" style={{ marginLeft: 15, marginTop: 10}} />
         </Block>
-        <Swiper
-  style={styles.wrapper}
-  paginationStyle={{ container: { backgroundColor: 'transparent' } }}
-  paginationLeft={''}
-  paginationRight={''}
-  smoothTransition
-  loop
->
-        { prod.Accounts.map( i => {
-              return (
-        <Block row space="between" style={{backgroundColor: bgColor}}> 
-          <Block style={{width: width * 0.5}}>
-            <Text size={18} style={{ fontFamily: 'HKGrotesk-Bold', lineHeight: 22,fontWeight: '600', color: Theme.COLORS.HEADER}}>
+        <Block row space="between" >
+          <Block>
+            <Text size={24} style={{ fontFamily: 'HKGrotesk-Bold', lineHeight: 26,fontWeight: '600', color: Theme.COLORS.HEADER}}>
               Good Morning,
             </Text>
-            <Text size={20} style={{ fontFamily: 'HKGrotesk-Light', lineHeight: 24,fontWeight: '300', color: Theme.COLORS.HEADER}}>
-              {i.label}
+            <Text size={20} style={{ fontFamily: 'HKGrotesk-Light', lineHeight: 22,fontWeight: '300', color: Theme.COLORS.HEADER}}>
+              Business Name
             </Text>
-            </Block>
-          <Block style={{width: width * 0.5}}>
-          {(i.creditLimit != null)? 
-        (<Text size={12} style={{ fontFamily: 'HKGrotesk-Light', lineHeight: 32,fontWeight: '300', color: Theme.COLORS.HEADER}}>
-              Credit limit ₦{i.creditLimit.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
-            </Text>) :(<Block />)
-          }
-          {(i.creditBalance != null)? 
-          (<Block><Text size={12} style={{ fontFamily: 'HKGrotesk-Light', lineHeight: 12,fontWeight: '300', color: Theme.COLORS.HEADER}}>
-              Credit Balance 
-            </Text>
-            <Text size={20} style={{ fontFamily: 'HKGrotesk-Bold', lineHeight: 20,fontWeight: '300', color: Theme.COLORS.HEADER}}>
-            ₦{i.creditBalance.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
-        </Text></Block>) : <Block /> }
+          </Block>
+          <Block>
+            <Image source={Images.Profile} style={{ width: 56, height: 55, borderRadius: 50}} />
+          </Block>
         </Block>
-        
-            
         </Block>
-      )
-            })
-        }
-      </Swiper>
-      </Block>
     );
   };
 
@@ -292,7 +252,7 @@ const styles = StyleSheet.create({
     borderColor: Theme.COLORS.BORDER
   },
   options: {
-    marginBottom: 32,
+    marginBottom: 16,
     elevation: 4,
     width:width - 30,
     marginLeft: 15,

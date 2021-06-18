@@ -50,7 +50,7 @@ const IndicatorStyles = {
     state = {
         DailyPrices: prod.DailyPrices,
         Filters: prod.Filters,
-        Orders: prod.Orders,
+        Orders: prod.Orders.filter(c=>c.account == prod.Accounts[0].key),
         OriginalOrders: prod.Orders,
         OrderId: 0,
         modalCreateVisible: false,
@@ -128,6 +128,15 @@ const IndicatorStyles = {
        }
       })
   }
+  AccountSelector = (ky) => (
+    <ModalSelector
+    data={prod.Accounts}
+    initValue={ky}
+    selectStyle={styles.selectAccountStyle}
+    selectTextStyle={styles.selectAccountTextStyle}
+    initValueTextStyle={styles.initvalueAccountTextStyle}
+    onChange={this.changeAccount} />
+  );
   Selector = (ky) => (
     <ModalSelector
     data={this.state.Capacity }
@@ -567,7 +576,7 @@ onChange = (event, selectedDate) => {
             {/* </CopilotBlock>  
       </CopilotStep> */}
       </Block>
-      <Block width={width * 0.3} row space='between' style={{marginTop: 2, marginLeft: 5, marginRight: 5}} space="between">
+      <Block width={width * 0.2} row space='between' style={{marginTop: 2, marginLeft: 5, marginRight: 5}} space="between">
       {/* <CopilotStep text="how many of the selected truck capacity you want to order" order={6} name="num">
         <CopilotBlock> */}
               <Input
@@ -583,22 +592,40 @@ onChange = (event, selectedDate) => {
             {/* </CopilotBlock>
          </CopilotStep>               */}
         </Block>
-          <Block width={width * 0.1}>
-          {/* <CopilotStep text="click to add, and you can add more" order={7} name="add">
-            <CopilotBlock> */}
-            <TouchableHighlight onPress={() => this.setQuantity() } style={{width: width * 0.1, paddingVertical: 15}}>
-              <Icon name="pluscircleo" family="AntDesign" />
-            </TouchableHighlight>
-            {/* </CopilotBlock>
+        <Block width={width * 0.2} style={{paddingVertical: 12}}>
+        {/* <CopilotStep text="click to add, and you can add more" order={7} name="add">
+         <CopilotBlock> */}
+         <GaButton
+                                  shadowless
+                                  style={styles.increbutton}
+                                  color={nowTheme.COLORS.PRIMARY}
+                                  onPress={() => this.setQuantity()}
+                              >
+                                  <Text
+                                      style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16 }}
+                                      color={theme.COLORS.WHITE}
+                                  >
+                                      Add
+                                  </Text>
+                              </GaButton>
+          {/* <Button onPress={() => this.setQuantity() } style={{width: width * 0.1, paddingVertical: 15}}>
+            <Icon name="pluscircleo" family="AntDesign" />
+          </Button> */}
+          {/* </CopilotBlock>
           </CopilotStep> */}
-          </Block>
+        </Block>
           </Block>
           <Block row space='between' style={{marginTop: 5, marginBottom: 15}}>
                   <Block width={width * 0.6}><Text style={{fontSize: 16, lineHeight: 17, fontFamily: 'HKGrotesk-MediumLegacy'}}>Total Quantity</Text></Block>
                   <Block width={width * 0.4}><Text style={{fontSize: 14, lineHeight: 15, fontFamily: 'HKGrotesk-Bold'}}>{(this.state.quantity).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text></Block>
               </Block>
             
-              <Text size={10} style={{fontFamily: 'HKGrotesk-SemiBoldLegacy', lineHeight: 14, color: '#919191', marginBottom: 10}}>Order Capacity</Text>
+              <Block row space='between' style={{marginBottom: 10}}>
+                <Block width={width * 0.3}><Text style={{fontSize: 14, lineHeight: 15, color: '#919191', fontFamily: 'HKGrotesk-MediumLegacy'}}>Order Capacity</Text></Block>
+                <Block width={width * 0.2}><Text style={{fontSize: 14, lineHeight: 15, color: '#919191', fontFamily: 'HKGrotesk-MediumLegacy'}}>Unit</Text></Block>
+                <Block width={width * 0.3}><Text style={{fontSize: 14, lineHeight: 15, color: '#919191', fontFamily: 'HKGrotesk-Bold'}}>Total</Text></Block>
+                <Block width={width * 0.2}></Block>
+            </Block>
           <FlatList data={this.state.QuantityLoad} keyExtractor={(item, index )=> index.toString()} extraData={this.state} ListHeaderComponent={null} renderItem={({item, index}) => {
               return (<Block row space='between' style={{marginTop: 5}}>
                   <Block width={width * 0.3}><Text style={{fontSize: 14, lineHeight: 15, fontFamily: 'HKGrotesk-MediumLegacy'}}>{item.Capacity.label}</Text></Block>
@@ -733,11 +760,11 @@ onChange = (event, selectedDate) => {
                 this.renderQuantityPage()
                 : (currentPosition == 3) ?
                   <Block width={width * 0.9} style={{ marginBottom: 5 }}>
-    <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>Do you have a discount Code? Enter here...</Text>
+    <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>How Can We Reach You?</Text>
     <Input
                   left
                   color="black"
-                  placeholder="Enter code here"
+                  placeholder="Enter phone number"
                   style={styles.custominput}
                   noicon
               />
@@ -1134,7 +1161,7 @@ onChange = (event, selectedDate) => {
   // }
 
   changeAccount = (item, index) => {
-    this.setState({Orders: prod.Orders})
+    this.setState({Orders: prod.Orders.filter(c=>c.account == item.key)})
     AsyncStorage.setItem('Account', JSON.stringify(item))
   }
 
@@ -1146,7 +1173,9 @@ onChange = (event, selectedDate) => {
                 textContent={'Loading...'}
                 textStyle={styles.spinnerTextStyle}
               />
-              {this.renderAccount(this.changeAccount)}
+              <Block style={styles.dropdownaccountpicker}>
+                {this.AccountSelector(prod.Accounts[0].label)}
+              </Block>
               {this.renderCreateModal()}
               {this.renderPaymentModal()}
               {/* {this.renderProgramModal(true)} */}
@@ -1195,6 +1224,13 @@ const styles = StyleSheet.create({
         borderRadius: 0,
         borderColor: nowTheme.COLORS.BORDER
       },
+      increbutton: {
+        width: 50,
+        height: 40,
+        shadowRadius: 0,
+        shadowOpacity: 0,
+        borderRadius: 0,
+      },
       inputs: {
         borderWidth: 0,
         borderRadius: 0,
@@ -1229,6 +1265,14 @@ const styles = StyleSheet.create({
         width: '100%',
         marginBottom: 10
       },
+      dropdownaccountpicker: {
+        borderWidth: 1,
+        borderColor: '#1917181F',
+        borderRadius: 0,
+        height: 35,
+        width: '100%',
+        marginVertical: 5
+      },
       picker2: {
         borderWidth: 0,
         height: 10,
@@ -1257,6 +1301,22 @@ const styles = StyleSheet.create({
         color: nowTheme.COLORS.PRIMARY,
         textTransform: 'uppercase', 
       },
+      selectAccountStyle:{
+        borderWidth: 0,
+        width: width-20
+      },
+      selectAccountTextStyle: {
+        fontFamily: 'HKGrotesk-Bold',
+        fontSize: 14,
+        color: nowTheme.COLORS.BLACK,
+        textTransform: 'uppercase', 
+      },
+      initvalueAccountTextStyle: {
+        fontFamily: 'HKGrotesk-Bold',
+        fontSize: 14,
+        color: nowTheme.COLORS.BLACK,
+        textTransform: 'uppercase', 
+      },
       datepicker: {
         borderWidth: 1,
         borderColor: '#1917181F',
@@ -1272,14 +1332,6 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 20,
         marginBottom: 5
-      },
-      increbutton: {
-        width: 101.1,
-        height: 40,
-        shadowRadius: 0,
-        shadowOpacity: 0,
-        borderRadius: 0,
-        marginVertical: theme.SIZES.BASE / 2
       },
       nextbutton: {
         width: (width * 0.7),

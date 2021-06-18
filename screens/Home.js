@@ -3,7 +3,7 @@ import { StyleSheet, ScrollView, Dimensions, FlatList, Image, Alert, Modal, View
 import { Block, theme, Text, Button, Button as GaButton } from "galio-framework";
 import AsyncStorage from '@react-native-community/async-storage'
 import { white } from "color-name";
-import {Card, Input, Icon } from "../components";
+import {Card, Input, Icon, AccountCard } from "../components";
 import {prod, Article, nowTheme, Images, Banks} from "../constants";
 import ModalSelector from 'react-native-modal-selector';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -485,7 +485,26 @@ const IndicatorStyles = {
         this.setModalPaymentVisible(false);
           this.props.navigation.navigate('Home')
   }
-  
+  onAccountPressed = (item) => {
+    console.log(item)
+  }
+  renderFeatures = () => {
+    return (
+      <Block>
+        <Text size={16} style={{fontFamily: 'HKGrotesk-BoldLegacy', lineHeight: 16, color: '#919191', marginTop: 10, marginHorizontal: 10}}>Linked Accounts</Text>
+      <ScrollView horizontal={true}>
+        {this.renderFeature()}
+      </ScrollView>
+      </Block>
+    )
+  }
+
+  renderFeature = () => {
+    return prod.Accounts.map((v,i) => {
+      let index = i++
+      return (<AccountCard item={v} total={prod.Accounts.length} index={index} onPress={this.onAccountPressed}/>)
+    })
+  }
   renderQuantityPage = () => {
   
     return (
@@ -496,13 +515,13 @@ const IndicatorStyles = {
         <View width={width * 0.5} style={{paddingVertical: 10, paddingHorizontal: 5, flexDirection: 'row', justifyContent: `space-between`}}>
         {/* <CopilotStep text="select the truck capacity to order" order={5} name="capacity">
          <CopilotBlock  style={styles.dropdownpicker}> */}
-                      <Block>
+                      <Block style={styles.dropdownpicker}>
                         {this.state.selector() }
                       </Block>
               {/* </CopilotBlock>  
         </CopilotStep> */}
         </View>
-        <View width={width * 0.3} style={{marginTop: 2, marginLeft: 5, marginRight: 5, flexDirection: 'row', justifyContent: `space-between`}}>
+        <View width={width * 0.2} style={{marginTop: 2, marginLeft: 5, marginRight: 5, flexDirection: 'row', justifyContent: `space-between`}}>
         {/* <CopilotStep text="how many of the selected truck capacity you want to order" order={6} name="num">
         <CopilotBlock> */}
                 <Input
@@ -518,12 +537,25 @@ const IndicatorStyles = {
               {/* </CopilotBlock>
            </CopilotStep>                  */}
           </View>
-        <Block width={width * 0.1}>
+        <Block width={width * 0.2} style={{paddingVertical: 12}}>
         {/* <CopilotStep text="click to add, and you can add more" order={7} name="add">
          <CopilotBlock> */}
-          <TouchableHighlight onPress={() => this.setQuantity() } style={{width: width * 0.1, paddingVertical: 15}}>
+         <GaButton
+                                  shadowless
+                                  style={styles.increbutton}
+                                  color={nowTheme.COLORS.PRIMARY}
+                                  onPress={() => this.setQuantity()}
+                              >
+                                  <Text
+                                      style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16 }}
+                                      color={theme.COLORS.WHITE}
+                                  >
+                                      Add
+                                  </Text>
+                              </GaButton>
+          {/* <Button onPress={() => this.setQuantity() } style={{width: width * 0.1, paddingVertical: 15}}>
             <Icon name="pluscircleo" family="AntDesign" />
-          </TouchableHighlight>
+          </Button> */}
           {/* </CopilotBlock>
           </CopilotStep> */}
         </Block>
@@ -533,7 +565,12 @@ const IndicatorStyles = {
                 <Block width={width * 0.4}><Text style={{fontSize: 14, lineHeight: 15, fontFamily: 'HKGrotesk-Bold'}}>{(this.state.quantity).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text></Block>
             </Block>
           
-            <Text size={10} style={{fontFamily: 'HKGrotesk-SemiBoldLegacy', lineHeight: 14, color: '#919191', marginBottom: 10}}>Order Capacity</Text>
+            <Block row space='between' style={{marginBottom: 10}}>
+                <Block width={width * 0.3}><Text style={{fontSize: 14, lineHeight: 15, color: '#919191', fontFamily: 'HKGrotesk-MediumLegacy'}}>Order Capacity</Text></Block>
+                <Block width={width * 0.2}><Text style={{fontSize: 14, lineHeight: 15, color: '#919191', fontFamily: 'HKGrotesk-MediumLegacy'}}>Unit</Text></Block>
+                <Block width={width * 0.3}><Text style={{fontSize: 14, lineHeight: 15, color: '#919191', fontFamily: 'HKGrotesk-Bold'}}>Total</Text></Block>
+                <Block width={width * 0.2}></Block>
+            </Block>
         <FlatList data={this.state.QuantityLoad} keyExtractor={(item, index )=> index.toString()} extraData={this.state} ListHeaderComponent={null} renderItem={({item, index}) => {
             return (<Block row space='between' style={{marginTop: 5}}>
                 <Block width={width * 0.3}><Text style={{fontSize: 14, lineHeight: 15, fontFamily: 'HKGrotesk-MediumLegacy'}}>{item.Capacity.label}</Text></Block>
@@ -720,11 +757,11 @@ const IndicatorStyles = {
                 this.renderQuantityPage()
                 : (currentPosition == 3) ?
                   <Block width={width * 0.9} style={{ marginBottom: 5 }}>
-    <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>Do you have a discount Code? Enter here...</Text>
+    <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>How Can We Reach You?</Text>
     <Input
                   left
                   color="black"
-                  placeholder="Enter code here"
+                  placeholder="Enter phone number"
                   style={styles.custominput}
                   noicon
               />
@@ -1155,6 +1192,7 @@ const IndicatorStyles = {
                   />
                   {this.renderCreateModal()}
                   {this.renderPaymentModal()}
+                  {this.renderFeatures()}
         <Block row space='between' style={{marginTop: 5}} space="between" style={{padding: 10}}>
         <Block>
           <Text style={{ fontFamily: 'HKGrotesk-Light', fontSize: 14 }} color='#CB582D'>
@@ -1273,12 +1311,11 @@ const styles = StyleSheet.create({
     padding: 0
   },
   increbutton: {
-    width: 101.1,
+    width: 50,
     height: 40,
     shadowRadius: 0,
     shadowOpacity: 0,
     borderRadius: 0,
-    marginVertical: theme.SIZES.BASE / 2
   },
   button: {
     width: width - 40,

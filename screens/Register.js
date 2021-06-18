@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, StatusBar, Dimensions, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { ScrollView, StyleSheet, StatusBar, Dimensions, Platform, TouchableWithoutFeedback, TouchableHighlight, Keyboard } from 'react-native';
 import { Block, Button, Text, theme } from 'galio-framework';
 import PhoneInput from 'react-native-phone-input'
 const { height, width } = Dimensions.get('screen');
@@ -14,7 +14,9 @@ const DismissKeyboard = ({ children }) => (
 );
 export default class Login extends React.Component {
   state = {
-    phoneNumber: ''
+    phoneNumber: '',
+    ShowDatePicker: false,
+    CreditDate: new Date()
   }
   handleLeftPress = () => {
     const { navigation } = this.props;
@@ -91,7 +93,7 @@ export default class Login extends React.Component {
                   </Text>
                 <TouchableHighlight onPress={() => this.showDatePicker()}>
                   <Block width={width * 0.9} middle style={styles.datepicker}>
-                      <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16 }}>{this.state.CreditDate.toDateString()}</Text>
+                      <Text style={{ fontFamily: 'HKGrotesk-Regular', fontSize: 16 }}>{this.state.CreditDate.toDateString()}</Text>
                   </Block>
                   </TouchableHighlight>
                   <DateTimePickerModal
@@ -265,7 +267,13 @@ const styles = StyleSheet.create({
     shadowRadius: 0,
     shadowOpacity: 0,
   },
-
+  datepicker: {
+    borderWidth: 1,
+    borderColor: '#1917181F',
+    borderRadius: 0,
+    height: 40,
+    marginVertical: 10
+  },
   gradient: {
     zIndex: 1,
     position: 'absolute',
