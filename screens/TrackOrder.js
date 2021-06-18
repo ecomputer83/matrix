@@ -65,6 +65,7 @@ const IndicatorStyles = {
         product : null,
         productIndex: null,
         depotIndex: null,
+        accountIndex: null,
         quantity: "0",
         unitPrice: null,
         TotalAmount: "0",
@@ -393,11 +394,11 @@ const IndicatorStyles = {
         //  }
         //   currentPosition = this.state.currentPosition + 1
         // }
-        if(currentPosition == 2){
+        if(currentPosition == 3){
           ifup = true
         }
         this.setState({currentPosition: currentPosition, ifInputupdated: ifup})
-        if(currentPosition == 2 && this.state.newDevice){
+        if(currentPosition == 3 && this.state.newDevice){
           this.props.start('capacity');
           console.log(this.props)
           }
@@ -525,7 +526,22 @@ onChange = (event, selectedDate) => {
         this.setState({product: item, productIndex: index, ifInputupdated: true});
         this.Next();
     }
-
+    setAccount(item, index){
+      console.log(item);
+      // var Group = item.group;
+      // if(Group != this.SelectedGroup){
+      //   this.setState({spinner: true})
+      // HttpService.GetAsync('api/Misc/SalePrice/'+ Group).then(response => response.json().then(v => {
+      //   this.setState({depot: item, depotIndex: index, ifInputupdated: true, Products: v, SelectedGroup: Group, spinner: false});
+      //   this.Next()
+      //  }));
+      // }else{
+      //   this.setState({depot: item, depotIndex: index, ifInputupdated: true});
+      //   this.Next()
+      // }
+      this.setState({accountIndex: index, ifInputupdated: true});
+        this.Next()
+  }
     setDepot(item, index){
       console.log(item);
       this.setState({depot: item, depotIndex: index, ifInputupdated: true});
@@ -583,7 +599,7 @@ onChange = (event, selectedDate) => {
                     left
                     color="black"
                     style={styles.inputsX}
-                    placeholder="Amount"
+                    placeholder="Unit"
                     value={this.state.NumCapacity}
                     onChangeText={text => this.setState({NumCapacity: text})}
                     noicon
@@ -653,7 +669,17 @@ onChange = (event, selectedDate) => {
             </TouchableHighlight>)
         })
     }
-
+    renderAccounts = () => {
+      console.log(this.state.Depots)
+      return prod.Accounts.map((p, i)=>{
+          const productStyle = [styles.product, (this.state.accountIndex == i) && styles.selected]
+          return (<TouchableHighlight onPress={() => this.setAccount(p, i)}>
+              <Block width={width * 0.9} middle style={productStyle}>
+                  <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16 }}>{p.label}</Text>
+              </Block>
+          </TouchableHighlight>)
+      })
+  }
     renderDepots = () => {
       
       return this.state.Depots.map((p, i)=>{
@@ -675,6 +701,8 @@ onChange = (event, selectedDate) => {
 
     GenerateTitle = (currentPosition) => {
       switch(currentPosition) {
+        case -1:
+          return 'Creating New Order - Step 0';
         case 0:
           return 'Creating New Order - Step 1';
         case 1:
@@ -730,15 +758,24 @@ onChange = (event, selectedDate) => {
               <Block  width={width * 0.9} style={{ padding: 2 }}>
               <View style={styles.stepIndicator}>
         <StepIndicator
-          stepCount={4}
+          stepCount={5}
           customStyles={IndicatorStyles}
           currentPosition={this.state.currentPosition}
           onPress={this.onStepPress}
-          labels={['Location', 'Product', 'Quantity', 'Confirm']}
+          labels={['Account','Location', 'Product', 'Quantity', 'Confirm']}
         />
       </View>
                 <Block>
                 { (currentPosition == 0) ?
+                <Block width={width * 0.9} style={{ marginBottom: 5 }}>
+                              <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>What account do you want to buy from?</Text>
+                              {/* <CopilotStep text="Click on your preferred depot" order={3} name="depot">
+                                <CopilotBlock> */}
+                                  {this.renderAccounts()}
+                                {/* </CopilotBlock>
+                              </CopilotStep> */}
+                              </Block>
+                : (currentPosition == 1) ?
                 <Block width={width * 0.9} style={{ marginBottom: 5 }}>
                               <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>Where do you want to load from?</Text>
                               {/* <CopilotStep text="Click on your preferred depot" order={3} name="depot">
@@ -747,7 +784,7 @@ onChange = (event, selectedDate) => {
                                   {/* </CopilotBlock>
                                 </CopilotStep> */}
                               </Block>
-                : (currentPosition == 1) ?
+                : (currentPosition == 2) ?
                 <Block width={width * 0.9} style={{ marginBottom: 5 }}>
                 <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>What product do you want to buy?</Text>
                 {/* <CopilotStep text="Click on product to order" order={4} name="product">
@@ -756,9 +793,9 @@ onChange = (event, selectedDate) => {
                   {/* </CopilotBlock>
                   </CopilotStep>              */}
                               </Block>
-                : (currentPosition == 2)   ?             
+                : (currentPosition == 3)   ?             
                 this.renderQuantityPage()
-                : (currentPosition == 3) ?
+                : (currentPosition == 4) ?
                   <Block width={width * 0.9} style={{ marginBottom: 5 }}>
     <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>How Can We Reach You?</Text>
     <Input
@@ -832,7 +869,7 @@ onChange = (event, selectedDate) => {
               </Block>
             </Block>
 
-            { (currentPosition == 3) ?  (
+            { (currentPosition == 4) ?  (
                             <Block width={width * 0.9} center style={{position: 'absolute', bottom: 40}}>
                               <GaButton
                                   shadowless
@@ -848,7 +885,7 @@ onChange = (event, selectedDate) => {
                                   </Text>
                               </GaButton>
                             </Block>)
-                             : (currentPosition > 3) ? (userno != null) ? (
+                             : (currentPosition > 4) ? (userno != null) ? (
                               <Block width={width * 0.9} center style={{position: 'absolute', bottom: 40}}>
                                 {(this.state.ipman == 0) ? (
                                 <GaButton
@@ -909,7 +946,7 @@ onChange = (event, selectedDate) => {
                               </Block>)
                               : 
                               <Block width={width * 0.7} center style={{position: 'absolute', bottom: 50}}>
-                              { (currentPosition == 2) ?
+                              { (currentPosition == 3) ?
                                 <GaButton
                                     shadowless
                                     style={styles.nextbutton}

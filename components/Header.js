@@ -97,7 +97,7 @@ class Header extends React.Component {
         <Block row space="between" >
           <Block>
             <Text size={24} style={{ fontFamily: 'HKGrotesk-Bold', lineHeight: 26,fontWeight: '600', color: Theme.COLORS.HEADER}}>
-              Good Morning,
+              Good Morning
             </Text>
             <Text size={20} style={{ fontFamily: 'HKGrotesk-Light', lineHeight: 22,fontWeight: '300', color: Theme.COLORS.HEADER}}>
               Business Name

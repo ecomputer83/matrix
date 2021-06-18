@@ -78,7 +78,7 @@ constructor(props) {
   modalPaymentVisible: false,
   BankName: null,
       Reference: null,
-      CreditAmount: "0",
+      CreditAmount: (Params.Order) ? Params.Order.totalAmount: 0,
       CreditDate: new Date(),
   spinner: false,
   currentState: 0,
@@ -234,21 +234,21 @@ componentDidMount(){
           let programs = this.state.programs;
       let remainQuantity = this.state.remainQuantity;
       if(programs.length > 0){
-      let existingIndex = programs.findIndex(c=>c.TruckNo == obj.TruckNo);
+      let existingIndex = programs.findIndex(c=>c.TruckNo == obj.truckNo);
       if(existingIndex > -1){
-              remainQuantity += programs[existingIndex].Quantity;
-              programs[existingIndex].Quantity = obj.Quantity;
+              remainQuantity += programs[existingIndex].quantity;
+              programs[existingIndex].quantity = obj.quantity;
               programs[existingIndex].Destination = obj.Destination;
-              remainQuantity -= obj.Quantity;
+              remainQuantity -= obj.quantity;
           
       }else{
-          if(remainQuantity >= obj.Quantity){
+          if(remainQuantity >= obj.quantity){
               programs.push(obj)
           }else{
               Alert.alert("Oops!", "Input quantity is beyond the remain quantity, remain quantity is "+ remainQuantity)
               return;
           }
-          remainQuantity -= obj.Quantity
+          remainQuantity -= obj.quantity
           var state = 0;
           if(this.state.isNew){
             state = 1
@@ -258,18 +258,18 @@ componentDidMount(){
       this.setState({Orders: orders, programs: program, remainQuantity: remainQuantity, TruckNo: null, Destination: null, currentState: 0,spinner: false});
     }else{
 
-      if(remainQuantity >= obj.Quantity){
+      if(remainQuantity >= obj.quantity){
           programs.push(obj)
         }else{
           Alert.alert("Oops!", "Input quantity is beyond the remain quantity, remain quantity is "+ remainQuantity)
           return;
       }
-      remainQuantity -= obj.Quantity
+      remainQuantity -= obj.quantity
       var state = 0;
       if(this.state.isNew){
         state = 1
       }
-      this.setState({programs: programs, remainQuantity: remainQuantity,TruckNo: null, Quantity: remainQuantity.toString(), Destination: null, currentState: state});
+      this.setState({programs: programs, remainQuantity: remainQuantity,TruckNo: null, Quantity: remainQuantity.toString(), Destination: null, currentState: state, spinner: false});
   }
   this.setModalVisible(false);  
     //   HttpService.PostAsync('api/program', obj, this.state.token).then(response => {
@@ -339,9 +339,9 @@ componentDidMount(){
        creditDate: this.state.CreditDate
      }
      console.log(model)
-     let remainQuantity = this.state.remainQuantity;
-                  remainQuantity -= obj.quantity
-      var value = prod.Orders.find(c=>c.orderNo == this.state.orderId)
+      var value = this.state.Order
+      value.credit = {creditType: 'Bank Deposit'},
+      value.status = 1
       this.setState({Order: value, totalquantity: value.quantity, programs: value.programs,
         remainQuantity: value.quantity, Credit: value.credit, spinner: false, modalPaymentVisible: false});      
   //    HttpService.PostAsync('api/Credit', model, this.state.token).then( resp => {
@@ -601,7 +601,7 @@ componentDidMount(){
         shadowless
         style={styles.Xbutton}
         color={nowTheme.COLORS.PRIMARY}
-        onPress={() => this.saveandnavigate()}
+        onPress={() => this.requestcredit()}
     >
         <Text
             style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 14 }}

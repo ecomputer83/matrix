@@ -62,7 +62,7 @@ export default class FeatureCard extends React.Component {
                   fontFamily: 'HKGrotesk-SemiBoldLegacy',
                 }}
               >
-                {item.creditBalance.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} Litres
+                {item.creditBalance.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
                   </Text>
                 </Block>
                   </Block>

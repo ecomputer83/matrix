@@ -168,35 +168,35 @@ class Programming extends BaseComponent {
       if(programs.length > 0){
       let existingIndex = programs.findIndex(c=>c.TruckNo == obj.TruckNo);
       if(existingIndex > -1){
-              remainQuantity += programs[existingIndex].Quantity;
-              programs[existingIndex].Quantity = obj.Quantity;
+              remainQuantity += programs[existingIndex].quantity;
+              programs[existingIndex].quantity = obj.quantity;
               programs[existingIndex].Destination = obj.Destination;
-              remainQuantity -= obj.Quantity;
+              remainQuantity -= obj.quantity;
           
       }else{
-          if(remainQuantity >= obj.Quantity){
+          if(remainQuantity >= obj.quantity){
               programs.push(obj)
           }else{
               Alert.alert("Oops!", "Input quantity is beyond the remain quantity, remain quantity is "+ remainQuantity)
               return;
           }
-          remainQuantity -= obj.Quantity
+          remainQuantity -= obj.quantity
           var state = 0;
           if(this.state.isNew){
             state = 1
           }
         }
       
-      this.setState({Orders: orders, programs: program, remainQuantity: remainQuantity, TruckNo: null, Destination: null, currentState: 0,spinner: false});
+      this.setState({Orders: prod.Orders, programs: programs, remainQuantity: remainQuantity, TruckNo: null, Destination: null, currentState: 0,spinner: false});
     }else{
 
-      if(remainQuantity >= obj.Quantity){
+      if(remainQuantity >= obj.quantity){
           programs.push(obj)
         }else{
           Alert.alert("Oops!", "Input quantity is beyond the remain quantity, remain quantity is "+ remainQuantity)
           return;
       }
-      remainQuantity -= obj.Quantity
+      remainQuantity -= obj.quantity
       var state = 0;
       if(this.state.isNew){
         state = 1
@@ -291,9 +291,9 @@ class Programming extends BaseComponent {
     
       renderOrders =() => {
         //this.GetOrder();
-        //console.log(this.state.Orders);
-        return this.state.Orders.filter(c=> c.quantity > ((this.programbyorderId(c.orderId).length > 0) ? this.calculatefromProgram(c.orderId) : 0)).map((v, i) => {
-          var remainquantity = v.quantity - ((this.programbyorderId(v.orderId).length > 0) ? this.calculatefromProgram(v.orderId) : 0)
+        console.log(this.state.Orders);
+        return this.state.Orders.filter(c=> c.quantity > ((this.programbyorderId(c.orderNo).length > 0) ? this.calculatefromProgram(c.orderNo) : 0)).map((v, i) => {
+          var remainquantity = v.quantity - ((this.programbyorderId(v.orderNo).length > 0) ? this.calculatefromProgram(v.orderId) : 0)
           if(remainquantity > 0) {
           return (<TouchableHighlight onPress={() => this.setOrder(v, remainquantity)}>
                   <Block width={width * 0.9} row space='between' style={styles.product}>

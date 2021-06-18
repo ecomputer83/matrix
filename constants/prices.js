@@ -4,7 +4,7 @@ const DailyPrices = [
     {id:3, product: "AGO", price: 210.00, unit: "ltr"},
     {id:3, product: "ATK", price: 156.00, unit: "ltr"},
     {id:5, product: "LPG", price: 3000.00, unit: "kg"},
-    {id:6, product: "Bitumen", price: 3500.00, unit: "ltr"}
+    {id:6, product: "Bitumen", price: 3500.00, unit: "kg"}
 ]
 
 const Depots = [{id: 2, name: "Lagos"}, {id: 3, name: "Warri"}]
@@ -33,5 +33,5 @@ const Orders = [{orderNo: "PO68876", account: 'ACT00001', quantity: 35000, total
 
  const Marketers = [{Name: "BKO Olatunde Enterprises", Quantity: 233000}, {Name: "HARTIZ Global", Quantity: 203000},{Name: "Fuel4All International", Quantity: 183000},{Name: "Olaoluwa & Sons", Quantity: 166000},{Name: "God is Good Energy Services", Quantity: 124000}]
 
- const Accounts = [{key: "ACT00001", label: "Business Name 1", creditBalance: 4000000, creditLimit: 9000000},{key: "ACT00002", label: "Business Name 2", creditBalance: 7000000, creditLimit: 10000000},{key: "ACT00003", label: "Business Name 3", creditBalance: 4530000, creditLimit: 8000000}]
+ const Accounts = [{key: "ACT00001", label: "A-Z Oil and Gas Services", creditBalance: 4000000, creditLimit: 9000000},{key: "ACT00002", label: "A-Z Oil and Gas Limited", creditBalance: 7000000, creditLimit: 10000000},{key: "ACT00003", label: "A-Z Oil and Gas Nigeria", creditBalance: 4530000, creditLimit: 8000000}]
  export default {DailyPrices, Depots, Orders, Filters, Marketers, Accounts, Locations}
