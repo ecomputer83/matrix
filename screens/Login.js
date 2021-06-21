@@ -92,13 +92,13 @@ export default class Login extends BaseComponent {
                 }}>
                 <Block style={{marginVertical: 2.5}}>
                 <Text style={{ fontFamily: 'HKGrotesk-Regular' }} size={14}>
-                  Phone Number
+                  Email Address
                   </Text>
                 <Input
                     left
                     color="black"
                     style={styles.input}
-                    placeholder="Enter phone here"
+                    placeholder="Enter email here"
                     noicon
                 />
                 </Block>

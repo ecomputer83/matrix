@@ -3,7 +3,7 @@ const DailyPrices = [
     {id:2, product: "DPK", price: 220.00, unit: "ltr"},
     {id:3, product: "AGO", price: 210.00, unit: "ltr"},
     {id:3, product: "ATK", price: 156.00, unit: "ltr"},
-    {id:5, product: "LPG", price: 3000.00, unit: "kg"},
+    {id:5, product: "LPG", price: 300000.00, unit: "tonne"},
     {id:6, product: "Bitumen", price: 3500.00, unit: "kg"}
 ]
 

@@ -768,7 +768,7 @@ const IndicatorStyles = {
                 <Block>
                 { (currentPosition == 0) ?
                 <Block width={width * 0.9} style={{ marginBottom: 5 }}>
-                              <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>What account do you want to buy from?</Text>
+                              <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>Which account do you want to buy from?</Text>
                               {/* <CopilotStep text="Click on your preferred depot" order={3} name="depot">
                                 <CopilotBlock> */}
                                   {this.renderAccounts()}

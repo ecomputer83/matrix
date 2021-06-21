@@ -25,6 +25,7 @@ class Programming extends BaseComponent {
       SelectedOrder: null,
       Orders: prod.Orders,
       TruckNo: null,
+      CompanyName: null,
       Quantity: "33000",
       Destination: null,
       State: null,
@@ -157,6 +158,7 @@ class Programming extends BaseComponent {
           let obj = {
               orderId: this.state.orderId,
               truckNo: this.state.TruckNo,
+              companyName: this.state.CompanyName,
               quantity: parseInt(this.state.Quantity),
               destination: this.state.Destination + ', ' + this.state.LGA + ', ' + this.state.State,
               status: 1
@@ -170,6 +172,7 @@ class Programming extends BaseComponent {
       if(existingIndex > -1){
               remainQuantity += programs[existingIndex].quantity;
               programs[existingIndex].quantity = obj.quantity;
+              programs[existingIndex].companyName = obj.companyName;
               programs[existingIndex].Destination = obj.Destination;
               remainQuantity -= obj.quantity;
           
@@ -187,7 +190,7 @@ class Programming extends BaseComponent {
           }
         }
       
-      this.setState({Orders: prod.Orders, programs: programs, remainQuantity: remainQuantity, TruckNo: null, Destination: null, currentState: 0,spinner: false});
+      this.setState({Orders: prod.Orders, programs: programs, remainQuantity: remainQuantity, TruckNo: null, CompanyName: null, Destination: null, currentState: 0,spinner: false});
     }else{
 
       if(remainQuantity >= obj.quantity){
@@ -201,7 +204,7 @@ class Programming extends BaseComponent {
       if(this.state.isNew){
         state = 1
       }
-      this.setState({programs: programs, remainQuantity: remainQuantity,TruckNo: null, Quantity: remainQuantity.toString(), Destination: null, currentState: state});
+      this.setState({programs: programs, remainQuantity: remainQuantity,TruckNo: null, Quantity: remainQuantity.toString(), CompanyName: null, Destination: null, currentState: state});
   }
   this.setModalVisible(false);
 
@@ -368,7 +371,18 @@ class Programming extends BaseComponent {
                                 </Block>
                   : (currentState == 2) ?
                   <Block width={width * 0.9} style={{ marginBottom: 5 }}>
-                  <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>Please enter Destination details</Text>  
+                  <Text style={{fontSize: 16, lineHeight: 40, fontFamily: 'HKGrotesk-Bold'}}>Please enter Destination details</Text> 
+                                <Input
+                                    placeholder="Enter Recipient Company Name"
+                                    color="black"
+                                    style={styles.inputs}
+                                    value={this.state.CompanyName}
+                                    onChangeText={(text) => {
+                                      
+                                      this.setState({CompanyName: text, ifInputupdated: true})
+                                    }}
+                                    noicon
+                                  />
                                 <Input
                                     placeholder="Enter Street Name"
                                     color="black"
