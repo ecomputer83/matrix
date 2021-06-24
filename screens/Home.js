@@ -145,14 +145,14 @@ const IndicatorStyles = {
         //  if(this.state.Group != Group){
         //   this.setState({spinner: true})
         //   console.log(this.state.Group)
-        //  HttpService.GetAsync('api/Misc/SalePrice/'+ Group).then(response => {
-        //    console.log(response)
-        //    response.json().then(v => {
-        //   this.setState({
-        //     _depot: depot, DailyPrices: v, Group: Group, spinner: false
-        //    })
-        //  })
-        // });
+         HttpService.GetAsync('api/Misc/SalePrice/'+ Group).then(response => {
+           console.log(response)
+           response.json().then(v => {
+          this.setState({
+            _depot: depot, DailyPrices: v, Group: Group, spinner: false
+           })
+         })
+        });
         //   }else{
         //     console.log(1 + this.state.Group)
         //   this.setState({
@@ -287,47 +287,47 @@ const IndicatorStyles = {
           if(this.state.OrderId == 0)
           {
             console.log(model)
-            this.setState({OrderId: 2, orderNo: "SDTVDGFV", spinner: false})
-            //  HttpService.PostAsync('api/Order', model, this.state.token).then(response => {
-            //    console.log(response)
-            //    if(response.status != 200)
-            //    {
-            //      this.setModalCreateVisible(false);
-            //      alert("Sorry, there is an issue with the server, kindly contact the administrator");
-            //      return
-            //    }else{
-            //      if(this.state.userno != null){
-            //    response.json().then(value => 
-            //  {
-            //    console.log(value);
-            //    this.setState({OrderId: value, spinner: true})
-            //    HttpService.GetAsync('api/Order/' + value, this.state.token).then(response => {
-            //      console.log(response);
-            //      response.json().then(order => {
-            //     console.log(order);
-            //     this.setState({OrderId: value, orderNo: order.orderNo, spinner: false})
-                
-            //    })
-            //   })
             
-            //  })
-            // }else{
-            //   alert("Your account is awaiting approval, Our agent will contact you shortly");
-            // }
-            // }
-            // });
+             HttpService.PostAsync('api/Order', model, this.state.token).then(response => {
+               console.log(response)
+               if(response.status != 200)
+               {
+                 this.setModalCreateVisible(false);
+                 alert("Sorry, there is an issue with the server, kindly contact the administrator");
+                 return
+               }else{
+                 if(this.state.userno != null){
+               response.json().then(value => 
+             {
+               console.log(value);
+               this.setState({OrderId: value, spinner: true})
+               HttpService.GetAsync('api/Order/' + value, this.state.token).then(response => {
+                 console.log(response);
+                 response.json().then(order => {
+                console.log(order);
+                this.setState({OrderId: value, orderNo: order.orderNo, spinner: false})
+                
+               })
+              })
+            
+             })
+            }else{
+              alert("Your account is awaiting approval, Our agent will contact you shortly");
+            }
+            }
+            });
          }
-        //  else{
-        //      HttpService.PutAsync('api/Order/' + this.state.OrderId, model, this.state.token).then(response => 
-        //       {
-        //         console.log(response)
-        //         response.json().then(value => 
-        //      {
-        //        console.log(value);
-        //        //this.setState({OrderId: value})
-        //      })
-        //       });
-        //  }
+         else{
+             HttpService.PutAsync('api/Order/' + this.state.OrderId, model, this.state.token).then(response => 
+              {
+                console.log(response)
+                response.json().then(value => 
+             {
+               console.log(value);
+               this.setState({OrderId: value})
+             })
+              });
+         }
          currentPosition = this.state.currentPosition + 2
         }else {
           if(this.state.currentPosition == 4){
@@ -339,23 +339,22 @@ const IndicatorStyles = {
              } 
              if(this.state.OrderId == 0)
              {
-              this.setState({OrderId: 2, orderNo: "SDTVDGFV"})
                console.log(model)
-                // HttpService.PostAsync('api/Order', model, this.state.token).then(response => response.json().then(value => 
-                // {
-                //   console.log(value);
-                //   HttpService.GetAsync('api/Order/' + value).then(response => response.json().then(order => {
-                //     this.setState({OrderId: value, orderNo: order.orderNo})
-                //    }))
-                // }));
+                HttpService.PostAsync('api/Order', model, this.state.token).then(response => response.json().then(value => 
+                {
+                  console.log(value);
+                  HttpService.GetAsync('api/Order/' + value).then(response => response.json().then(order => {
+                    this.setState({OrderId: value, orderNo: order.orderNo})
+                   }))
+                }));
             }
-            // else{
-            //     HttpService.PutAsync('api/Order/' + this.state.OrderId, model, this.state.token).then(response => response.json().then(value => 
-            //     {
-            //       console.log(value);
-            //       //this.setState({OrderId: value})
-            //     }));
-            // }
+            else{
+                HttpService.PutAsync('api/Order/' + this.state.OrderId, model, this.state.token).then(response => response.json().then(value => 
+                {
+                  console.log(value);
+                  this.setState({OrderId: value})
+                }));
+            }
           }
           currentPosition = this.state.currentPosition + 1
         }
@@ -390,6 +389,9 @@ const IndicatorStyles = {
                   creditDate: this.state.CreditDate
                 }
                 console.log(model)
+                
+                HttpService.PostAsync('api/Credit', model, this.state.token).then( resp => {
+                  if(resp.status == 200){
                 this.setState({
                   depot: null,
                   product : null,
@@ -398,31 +400,16 @@ const IndicatorStyles = {
                   unitPrice: null,
                   TotalAmount: "0",
                   depotX: prod.Depots.map((d, i) => {
-                    return { key: i, label: d.name}
+                    return { key: i, label: d.Name}
                   }),
                   depot: prod.Depots[0],
                   spinner: false, CompletePayment: true
                 });
-              //   HttpService.PostAsync('api/Credit', model, this.state.token).then( resp => {
-              //     if(resp.status == 200){
-              //   this.setState({
-              //     depot: null,
-              //     product : null,
-              //     productIndex: null,
-              //     depotIndex: null,
-              //     unitPrice: null,
-              //     TotalAmount: "0",
-              //     depotX: prod.Depots.map((d, i) => {
-              //       return { key: i, label: d.Name}
-              //     }),
-              //     depot: prod.Depots[0],
-              //     spinner: false, CompletePayment: true
-              //   });
   
-              // }else{
-              //   alert("There is an error in the submission")
-              // }
-              //})
+              }else{
+                alert("There is an error in the submission")
+              }
+              })
             }else{
               this.setState({spinner: false})
               alert("Payment amount not must be less than "+this.state.TotalAmount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'))
@@ -458,23 +445,20 @@ const IndicatorStyles = {
             type: 2,
             creditDate: new Date()
           }
-          this.setModalPaymentVisible(false);
+          
+          HttpService.PostAsync('api/Credit', model, this.state.token).then( response => {
+            AsyncStorage.getItem("user").then(_user => {
+              var user = JSON.parse(_user);
+              user.creditBalance = (parseInt(user.creditBalance) - this.state.TotalAmount).toString();
+              AsyncStorage.mergeItem("user", JSON.stringify(user)).then( o => {
+                this.setModalPaymentVisible(false);
             this.setModalCreateVisible(false);
             this.setState({spinner: false})
             Alert.alert("Credit Request", "Your credit approval request is sent successfully. Your order will be confirmed upon credit approval");
-          // HttpService.PostAsync('api/Credit', model, this.state.token).then( response => {
-          //   AsyncStorage.getItem("user").then(_user => {
-          //     var user = JSON.parse(_user);
-          //     user.creditBalance = (parseInt(user.creditBalance) - this.state.TotalAmount).toString();
-          //     AsyncStorage.mergeItem("user", JSON.stringify(user)).then( o => {
-          //       this.setModalPaymentVisible(false);
-          //   this.setModalCreateVisible(false);
-          //   this.setState({spinner: false})
-          //   Alert.alert("Credit Request", "Your credit approval request is sent successfully. Your order will be confirmed upon credit approval");
-          //     })
-          //   })
+              })
+            })
             
-          // })
+          })
         }
       }
       else {
@@ -596,32 +580,21 @@ const IndicatorStyles = {
         console.log(item);
         // var Group = item.group;
         // if(Group != this.SelectedGroup){
-        //   this.setState({spinner: true})
-        // HttpService.GetAsync('api/Misc/SalePrice/'+ Group).then(response => response.json().then(v => {
-        //   this.setState({depot: item, depotIndex: index, ifInputupdated: true, Products: v, SelectedGroup: Group, spinner: false});
-        //   this.Next()
-        //  }));
+          this.setState({spinner: true})
+        HttpService.GetAsync('api/Misc/SalePrice/'+ Group).then(response => response.json().then(v => {
+          this.setState({depot: item, depotIndex: index, ifInputupdated: true, Products: v, SelectedGroup: Group, spinner: false});
+          this.Next()
+         }));
         // }else{
         //   this.setState({depot: item, depotIndex: index, ifInputupdated: true});
         //   this.Next()
         // }
-        this.setState({depot: item, depotIndex: index, ifInputupdated: true});
-          this.Next()
+        // this.setState({depot: item, depotIndex: index, ifInputupdated: true});
+        //   this.Next()
     }
 
     setAccount(item, index){
       console.log(item);
-      // var Group = item.group;
-      // if(Group != this.SelectedGroup){
-      //   this.setState({spinner: true})
-      // HttpService.GetAsync('api/Misc/SalePrice/'+ Group).then(response => response.json().then(v => {
-      //   this.setState({depot: item, depotIndex: index, ifInputupdated: true, Products: v, SelectedGroup: Group, spinner: false});
-      //   this.Next()
-      //  }));
-      // }else{
-      //   this.setState({depot: item, depotIndex: index, ifInputupdated: true});
-      //   this.Next()
-      // }
       this.setState({accountIndex: index, ifInputupdated: true});
         this.Next()
   }
@@ -1169,55 +1142,55 @@ const IndicatorStyles = {
       )
     }
     
-    // componentDidMount(){
+    componentDidMount(){
   
-    //   if(this.state.DailyPrices != null){
-    //     HttpService.GetAsync('api/Misc').then(response => {
+      if(this.state.DailyPrices != null){
+        HttpService.GetAsync('api/Misc').then(response => {
           
-    //       response.json().then(json => {
-    //         console.log(json)
-    //       if(json != undefined){
-    //       var depots = json.depots.map((d, i) => {
-    //         return { key: d.id, label: d.name}
-    //       });
-    //       var depot = (json.depots.length > 0) ? json.depots.find(c=>c.group == this.state.Group): {};
-    //       this.setState({DailyPrices: json.products, depotX: depots, Depots: json.depots, _depot: depot})
-    //       AsyncStorage.setItem('misc', JSON.stringify({DailyPrices: json.products, Depots: json.depots}))
-    //       if(this.state.DailyPrices.length > 0){
-    //         this.setState({spinner: false})
-    //         AsyncStorage.getItem('newDevice').then( value => {
-    //           if(value == undefined || value == null){
-    //             this.props.start();
-    //             this.setState({newDevice: true})
-    //           }
-    //         }).catch(e => {
-    //           this.props.start();
-    //         })
-    //       }
-    //       AsyncStorage.getItem('userToken').then( value => {
-    //         this.setState({ token: value})
-    //         HttpService.GetAsync('api/misc/banks', value).then(response => {
-    //           response.json().then(art => {
-    //             var banks = art.map((d, i) => {
-    //               return { key: d.no, label: d.name + ' - ' + d.bankAccountNo}
-    //             });
-    //             this.setState({ Banks: banks});
-    //           })
-    //         })
-    //         HttpService.GetAsync('api/article', value).then(response => {
-    //           response.json().then(art => {
-    //             this.setState({ Articles: art});
-    //           })
-    //         })
-    //       })
+          response.json().then(json => {
+            console.log(json)
+          if(json != undefined){
+          var depots = json.depots.map((d, i) => {
+            return { key: d.id, label: d.name}
+          });
+          var depot = (json.depots.length > 0) ? json.depots.find(c=>c.group == this.state.Group): {};
+          this.setState({DailyPrices: json.products, depotX: depots, Depots: json.depots, _depot: depot})
+          AsyncStorage.setItem('misc', JSON.stringify({DailyPrices: json.products, Depots: json.depots}))
+          if(this.state.DailyPrices.length > 0){
+            this.setState({spinner: false})
+            AsyncStorage.getItem('newDevice').then( value => {
+              if(value == undefined || value == null){
+                this.props.start();
+                this.setState({newDevice: true})
+              }
+            }).catch(e => {
+              this.props.start();
+            })
+          }
+          AsyncStorage.getItem('userToken').then( value => {
+            this.setState({ token: value})
+            HttpService.GetAsync('api/misc/banks', value).then(response => {
+              response.json().then(art => {
+                var banks = art.map((d, i) => {
+                  return { key: d.no, label: d.name + ' - ' + d.bankAccountNo}
+                });
+                this.setState({ Banks: banks});
+              })
+            })
+            HttpService.GetAsync('api/article', value).then(response => {
+              response.json().then(art => {
+                this.setState({ Articles: art});
+              })
+            })
+          })
           
   
-    //     }
-    //     })
-    //   });
-    //   }
+        }
+        })
+      });
+      }
       
-    // }
+    }
   
     componentDidUpdate(){
       

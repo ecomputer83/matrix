@@ -250,150 +250,150 @@ const IndicatorStyles = {
           }
           console.log(this.state.ipman)
           currentPosition = this.state.currentPosition + 1
-        // if(last && this.state.ipman == 1){
-        //   var model = {
-        //     ProductId: this.state.product.id,
-        //     DepotId: this.state.depot.id,
-        //     Quantity: parseInt(this.state.quantity),
-        //     TotalAmount: parseInt(this.state.quantity * this.state.product.price)
-        //   } 
-        //   if(this.state.OrderId == 0)
-        //   {
-        //     console.log(model)
-        //     this.setState({OrderId: 2, OrderNo: 'GHF5445', spinner: true,
-        //     unitPrice: null,
-        //         depotX: prod.Depots.map((d, i) => {
-        //           return { key: i, label: d.Name}
-        //         }),
-        //         //depot: this.state.Depots[0],
-        //         spinner: false, CompletePayment: false })
-        //     //  HttpService.PostAsync('api/Order', model, this.state.token).then(response => {
-        //     //   if(response.status != 200)
-        //     //   {
-        //     //     this.setModalCreateVisible(false);
-        //     //     alert("Sorry, there is an issue with the server, kindly contact the administrator");
-        //     //     return
-        //     //   }
-        //     //   if(this.state.userno != null){
-        //     //     response.json().then(v => 
-        //     //  {
-        //     //    console.log(v);
-        //     //    this.setState({OrderId: v, spinner: true})
-        //     //   //  HttpService.GetAsync('api/Order', this.state.token).then(response => {
-        //     //   //   console.log(response)
-        //     //   //   response.json().then(value => {
-        //     //   //     //console.log(value)
-        //     //   //     var newOrder = value.find(c=>c.orderId == v)
-        //     //   //     this.setState({Orders: value, OriginalOrders: value, OrderNo: newOrder.orderNo, spinner: false});
+        if(last && this.state.ipman == 1){
+          var model = {
+            ProductId: this.state.product.id,
+            DepotId: this.state.depot.id,
+            Quantity: parseInt(this.state.quantity),
+            TotalAmount: parseInt(this.state.quantity * this.state.product.price)
+          } 
+          if(this.state.OrderId == 0)
+          {
+            // console.log(model)
+            // this.setState({OrderId: 2, OrderNo: 'GHF5445', spinner: true,
+            // unitPrice: null,
+            //     depotX: prod.Depots.map((d, i) => {
+            //       return { key: i, label: d.Name}
+            //     }),
+            //     //depot: this.state.Depots[0],
+            //     spinner: false, CompletePayment: false })
+             HttpService.PostAsync('api/Order', model, this.state.token).then(response => {
+              if(response.status != 200)
+              {
+                this.setModalCreateVisible(false);
+                alert("Sorry, there is an issue with the server, kindly contact the administrator");
+                return
+              }
+              if(this.state.userno != null){
+                response.json().then(v => 
+             {
+               console.log(v);
+               this.setState({OrderId: v, spinner: true})
+               HttpService.GetAsync('api/Order', this.state.token).then(response => {
+                console.log(response)
+                response.json().then(value => {
+                  //console.log(value)
+                  var newOrder = value.find(c=>c.orderId == v)
+                  this.setState({Orders: value, OriginalOrders: value, OrderNo: newOrder.orderNo, spinner: false});
       
                   
-        //     //   //   })
+                })
                 
-        //     //   // })
-        //     //   this.setState({
-        //     //     unitPrice: null,
-        //     //     depotX: prod.Depots.map((d, i) => {
-        //     //       return { key: i, label: d.Name}
-        //     //     }),
-        //     //     //depot: this.state.Depots[0],
-        //     //     spinner: false, CompletePayment: false
-        //     //   });
+              })
+              this.setState({
+                unitPrice: null,
+                depotX: prod.Depots.map((d, i) => {
+                  return { key: i, label: d.Name}
+                }),
+                //depot: this.state.Depots[0],
+                spinner: false, CompletePayment: false
+              });
             
-        //     //  })
-        //     //   }else{
-        //     //     alert("Your account is awaiting approval, Our agent will contact you shortly");
-        //     //   }
-        //     // });
-        //  }else{
-        //      HttpService.PutAsync('api/Order/' + this.state.OrderId, model, this.state.token).then(response => response.json().then(v => 
-        //      {
-        //        console.log(v);
-        //        HttpService.GetAsync('api/Order', this.state.token).then(response => {
-        //         console.log(response)
-        //         response.json().then(value => {
-        //           //console.log(value)
-        //           var newOrder = value.find(c=>c.orderId == v)
-        //           this.setState({Orders: value, OriginalOrders: value, OrderNo: newOrder.orderNo});
+             })
+              }else{
+                alert("Your account is awaiting approval, Our agent will contact you shortly");
+              }
+            });
+         }else{
+             HttpService.PutAsync('api/Order/' + this.state.OrderId, model, this.state.token).then(response => response.json().then(v => 
+             {
+               console.log(v);
+               HttpService.GetAsync('api/Order', this.state.token).then(response => {
+                console.log(response)
+                response.json().then(value => {
+                  //console.log(value)
+                  var newOrder = value.find(c=>c.orderId == v)
+                  this.setState({Orders: value, OriginalOrders: value, OrderNo: newOrder.orderNo});
       
                   
-        //         })
+                })
                 
-        //       })
-        //       this.setState({
-        //         unitPrice: null,
-        //         depotX: prod.Depots.map((d, i) => {
-        //           return { key: i, label: d.Name}
-        //         }),
-        //         //depot: prod.Depots[0],
-        //         spinner: false, CompletePayment: false
-        //       });
-        //        //this.setState({DepotId: value})
-        //      }));
-        //  }
-        //   currentPosition = this.state.currentPosition + 2
-        // }else {
-        //   if(this.state.currentPosition == 3){
-        //     var model = {
-        //       ProductId: this.state.product.id,
-        //       DepotId: this.state.depot.id,
-        //       Quantity: parseInt(this.state.quantity),
-        //       TotalAmount: parseInt(this.state.TotalAmount)
-        //     } 
-        //     if(this.state.OrderId == 0)
-        //     {
-        //        HttpService.PostAsync('api/Order', model, this.state.token).then(response => response.json().then(v => 
-        //        {
-        //          console.log(v);
-        //          this.setState({OrderId: v})
-        //        HttpService.GetAsync('api/Order', this.state.token).then(response => {
-        //         console.log(response)
-        //         response.json().then(value => {
-        //           //console.log(value)
-        //           var newOrder = value.find(c=>c.orderId == v)
-        //           this.setState({Orders: value, OriginalOrders: value, OrderNo: newOrder.orderNo});
+              })
+              this.setState({
+                unitPrice: null,
+                depotX: prod.Depots.map((d, i) => {
+                  return { key: i, label: d.Name}
+                }),
+                //depot: prod.Depots[0],
+                spinner: false, CompletePayment: false
+              });
+               //this.setState({DepotId: value})
+             }));
+         }
+          currentPosition = this.state.currentPosition + 2
+        }else {
+          if(this.state.currentPosition == 3){
+            var model = {
+              ProductId: this.state.product.id,
+              DepotId: this.state.depot.id,
+              Quantity: parseInt(this.state.quantity),
+              TotalAmount: parseInt(this.state.TotalAmount)
+            } 
+            if(this.state.OrderId == 0)
+            {
+               HttpService.PostAsync('api/Order', model, this.state.token).then(response => response.json().then(v => 
+               {
+                 console.log(v);
+                 this.setState({OrderId: v})
+               HttpService.GetAsync('api/Order', this.state.token).then(response => {
+                console.log(response)
+                response.json().then(value => {
+                  //console.log(value)
+                  var newOrder = value.find(c=>c.orderId == v)
+                  this.setState({Orders: value, OriginalOrders: value, OrderNo: newOrder.orderNo});
       
                   
-        //         })
+                })
                 
-        //       })
-        //       this.setState({
-        //         unitPrice: null,
-        //         depotX: prod.Depots.map((d, i) => {
-        //           return { key: i, label: d.Name}
-        //         }),
-        //         //depot: prod.Depots[0],
-        //         spinner: false, CompletePayment: false
-        //       });
-        //        }));
-        //    }else{
-        //        HttpService.PutAsync('api/Order/' + this.state.DepotId, model, this.state.token).then(response => response.json().then(v => 
-        //        {
-        //          console.log(v);
-        //          HttpService.GetAsync('api/Order/'+v, this.state.token).then(response => {
-        //           console.log(response)
-        //           response.json().then(value => {
-        //             //console.log(value)
-        //             var newOrder = value.find(c=>c.orderId == v)
-        //             this.setState({Orders: value, OriginalOrders: value, OrderNo: newOrder.orderNo});
+              })
+              this.setState({
+                unitPrice: null,
+                depotX: prod.Depots.map((d, i) => {
+                  return { key: i, label: d.Name}
+                }),
+                //depot: prod.Depots[0],
+                spinner: false, CompletePayment: false
+              });
+               }));
+           }else{
+               HttpService.PutAsync('api/Order/' + this.state.DepotId, model, this.state.token).then(response => response.json().then(v => 
+               {
+                 console.log(v);
+                 HttpService.GetAsync('api/Order/'+v, this.state.token).then(response => {
+                  console.log(response)
+                  response.json().then(value => {
+                    //console.log(value)
+                    var newOrder = value.find(c=>c.orderId == v)
+                    this.setState({Orders: value, OriginalOrders: value, OrderNo: newOrder.orderNo});
         
                     
-        //           })
+                  })
                   
-        //         })
-        //         this.setState({
-        //           unitPrice: null,
-        //           depotX: prod.Depots.map((d, i) => {
-        //             return { key: i, label: d.Name}
-        //           }),
-        //           //depot: prod.Depots[0],
-        //           spinner: false, CompletePayment: false
-        //         });
-        //          //this.setState({OrderId: value})
-        //        }));
-        //    }
-        //  }
-        //   currentPosition = this.state.currentPosition + 1
-        // }
+                })
+                this.setState({
+                  unitPrice: null,
+                  depotX: prod.Depots.map((d, i) => {
+                    return { key: i, label: d.Name}
+                  }),
+                  //depot: prod.Depots[0],
+                  spinner: false, CompletePayment: false
+                });
+                 //this.setState({OrderId: value})
+               }));
+           }
+         }
+          currentPosition = this.state.currentPosition + 1
+        }
         if(currentPosition == 3){
           ifup = true
         }
@@ -425,39 +425,39 @@ const IndicatorStyles = {
            creditDate: this.state.CreditDate
          }
          console.log(model)
+        //  this.setState({
+        //   depot: null,
+        //   product : null,
+        //   productIndex: null,
+        //   depotIndex: null,
+        //   unitPrice: null,
+        //   TotalAmount: "0",
+        //   depotX: prod.Depots.map((d, i) => {
+        //     return { key: i, label: d.Name}
+        //   }),
+        //   depot: prod.Depots[0],
+        //   spinner: false, CompletePayment: true
+        // });
+         HttpService.PostAsync('api/Credit', model, this.state.token).then( resp => {
+           if(resp.status == 200){
          this.setState({
-          depot: null,
-          product : null,
-          productIndex: null,
-          depotIndex: null,
-          unitPrice: null,
-          TotalAmount: "0",
-          depotX: prod.Depots.map((d, i) => {
-            return { key: i, label: d.Name}
-          }),
-          depot: prod.Depots[0],
-          spinner: false, CompletePayment: true
-        });
-      //    HttpService.PostAsync('api/Credit', model, this.state.token).then( resp => {
-      //      if(resp.status == 200){
-      //    this.setState({
-      //      depot: null,
-      //      product : null,
-      //      productIndex: null,
-      //      depotIndex: null,
-      //      unitPrice: null,
-      //      TotalAmount: "0",
-      //      depotX: prod.Depots.map((d, i) => {
-      //        return { key: i, label: d.Name}
-      //      }),
-      //      depot: prod.Depots[0],
-      //      spinner: false, CompletePayment: true
-      //    });
+           depot: null,
+           product : null,
+           productIndex: null,
+           depotIndex: null,
+           unitPrice: null,
+           TotalAmount: "0",
+           depotX: prod.Depots.map((d, i) => {
+             return { key: i, label: d.Name}
+           }),
+           depot: prod.Depots[0],
+           spinner: false, CompletePayment: true
+         });
 
-      //  }else{
-      //   alert("There is an error in the submission")
-      // }
-      //  })
+       }else{
+        alert("There is an error in the submission")
+      }
+       })
       }else{
         this.setState({spinner: false})
         alert("Payment amount not must be less than "+this.state.TotalAmount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'))
@@ -491,24 +491,24 @@ onChange = (event, selectedDate) => {
             type: 2,
             creditDate: new Date()
           }
-          this.setModalPaymentVisible(false);
-            this.setModalCreateVisible(false);
-            this.setState({spinner: false})
-            Alert.alert("Credit Request", "Your credit approval request is sent successfully. Your order will be confirmed upon credit approval");
-          // HttpService.PostAsync('api/Credit', model, this.state.token).then( response => {
-          //   AsyncStorage.getItem("user").then(_user => {
-          //     var user = JSON.parse(_user);
-          //     user.creditBalance = (parseInt(user.creditBalance) - this.state.TotalAmount).toString();
-          //     AsyncStorage.mergeItem("user", JSON.stringify(user)).then( o => {
-          //       this.setModalPaymentVisible(false);
+          // this.setModalPaymentVisible(false);
           //   this.setModalCreateVisible(false);
           //   this.setState({spinner: false})
           //   Alert.alert("Credit Request", "Your credit approval request is sent successfully. Your order will be confirmed upon credit approval");
-          //     })
+          HttpService.PostAsync('api/Credit', model, this.state.token).then( response => {
+            AsyncStorage.getItem("user").then(_user => {
+              var user = JSON.parse(_user);
+              user.creditBalance = (parseInt(user.creditBalance) - this.state.TotalAmount).toString();
+              AsyncStorage.mergeItem("user", JSON.stringify(user)).then( o => {
+                this.setModalPaymentVisible(false);
+            this.setModalCreateVisible(false);
+            this.setState({spinner: false})
+            Alert.alert("Credit Request", "Your credit approval request is sent successfully. Your order will be confirmed upon credit approval");
+              })
               
-          //   })
+            })
             
-          // })
+          })
         }
       }
       else {
@@ -528,17 +528,7 @@ onChange = (event, selectedDate) => {
     }
     setAccount(item, index){
       console.log(item);
-      // var Group = item.group;
-      // if(Group != this.SelectedGroup){
-      //   this.setState({spinner: true})
-      // HttpService.GetAsync('api/Misc/SalePrice/'+ Group).then(response => response.json().then(v => {
-      //   this.setState({depot: item, depotIndex: index, ifInputupdated: true, Products: v, SelectedGroup: Group, spinner: false});
-      //   this.Next()
-      //  }));
-      // }else{
-      //   this.setState({depot: item, depotIndex: index, ifInputupdated: true});
-      //   this.Next()
-      // }
+
       this.setState({accountIndex: index, ifInputupdated: true});
         this.Next()
   }
@@ -548,11 +538,11 @@ onChange = (event, selectedDate) => {
       this.Next()
       // var Group = item.group;
       // if(Group != this.SelectedGroup){
-      //   this.setState({spinner: true})
-      // HttpService.GetAsync('api/Misc/SalePrice/'+ Group).then(response => response.json().then(v => {
-      //   this.setState({depot: item, depotIndex: index, ifInputupdated: true, DailyPrices: v, SelectedGroup: Group, spinner: false});
-      //   this.Next()
-      //  }));
+        this.setState({spinner: true})
+      HttpService.GetAsync('api/Misc/SalePrice/'+ Group).then(response => response.json().then(v => {
+        this.setState({depot: item, depotIndex: index, ifInputupdated: true, DailyPrices: v, SelectedGroup: Group, spinner: false});
+        this.Next()
+       }));
       // }else{
       //   this.setState({depot: item, depotIndex: index, ifInputupdated: true});
       //   this.Next()
@@ -1156,46 +1146,46 @@ onChange = (event, selectedDate) => {
           </Block>
       )
   }
-  componentDidMount () {
-    this.props.navigation.setParams({onChangeAccountMethod: this.setModalAccountVisible });
-  }
-  // componentDidMount(){
-  //   AsyncStorage.getItem('userToken').then( value => {
-  //     this.setState({spinner: true, token: value});
-  //     HttpService.GetAsync('api/misc/banks', value).then(response => {
-  //       response.json().then(art => {
-  //         var banks = art.map((d, i) => {
-  //           return { key: d.no, label: d.name + ' - ' + d.bankAccountNo}
-  //         });
-  //         this.setState({ Banks: banks});
-  //       })
-  //     })
-  //     HttpService.GetAsync('api/Order', value).then(response => {
-  //       console.log(response)
-  //       response.json().then(value => {
-  //         //console.log(value)
-  //         this.setState({Orders: value, OriginalOrders: value});
+  // componentDidMount () {
+  //   this.props.navigation.setParams({onChangeAccountMethod: this.setModalAccountVisible });
+  // }
+  componentDidMount(){
+    AsyncStorage.getItem('userToken').then( value => {
+      this.setState({spinner: true, token: value});
+      HttpService.GetAsync('api/misc/banks', value).then(response => {
+        response.json().then(art => {
+          var banks = art.map((d, i) => {
+            return { key: d.no, label: d.name + ' - ' + d.bankAccountNo}
+          });
+          this.setState({ Banks: banks});
+        })
+      })
+      HttpService.GetAsync('api/Order', value).then(response => {
+        console.log(response)
+        response.json().then(value => {
+          //console.log(value)
+          this.setState({Orders: value, OriginalOrders: value});
 
           
-  //       })
-  //       this.setState({spinner: false});
-  //       AsyncStorage.getItem('newDevice').then( value => {
-  //         if(value == undefined || value == null){
-  //           this.props.start();
-  //           console.log(this.props)
-  //           this.setState({newDevice: true})
-  //         }
-  //       }).catch(e => {
-  //         this.props.start();
-  //       })
-  //     })
-  //   })
-  //   AsyncStorage.getItem('misc').then(value => {
-  //     console.log(value)
-  //     this.setState(JSON.parse(value));
-  //   })
+        })
+        this.setState({spinner: false});
+        AsyncStorage.getItem('newDevice').then( value => {
+          if(value == undefined || value == null){
+            this.props.start();
+            console.log(this.props)
+            this.setState({newDevice: true})
+          }
+        }).catch(e => {
+          this.props.start();
+        })
+      })
+    })
+    AsyncStorage.getItem('misc').then(value => {
+      console.log(value)
+      this.setState(JSON.parse(value));
+    })
     
-  // }
+  }
 
   changeAccount = (item, index) => {
     this.setState({Orders: prod.Orders.filter(c=>c.account == item.key)})

@@ -20,19 +20,19 @@ class BankAccount extends React.Component {
         }
     }
 
-    // componentDidMount(){
-    //     AsyncStorage.getItem('userToken').then( value => {
-    //         this.setState({ token: value})
-    //         HttpService.GetAsync('api/misc/banks', value).then(response => {
-    //           response.json().then(art => {
-    //             var banks = art.map((d, i) => {
-    //               return { key: d.no, label: d.name + ' - ' + d.bankAccountNo}
-    //             });
-    //             this.setState({ Banks: banks});
-    //           })
-    //         })
-    //       })
-    // }
+    componentDidMount(){
+        AsyncStorage.getItem('userToken').then( value => {
+            this.setState({ token: value})
+            HttpService.GetAsync('api/misc/banks', value).then(response => {
+              response.json().then(art => {
+                var banks = art.map((d, i) => {
+                  return { key: d.no, label: d.name + ' - ' + d.bankAccountNo}
+                });
+                this.setState({ Banks: banks});
+              })
+            })
+          })
+    }
 
     render(){
 
