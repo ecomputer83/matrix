@@ -19,7 +19,7 @@ export default class FeatureCard extends React.Component {
             const BlackColor = nowTheme.COLORS.WHITE;
           return ( 
             <TouchableWithoutFeedback onPress={onPress(item)}>
-            <ImageBackground source={Images.ProgramCard} style={{width: 315, height: 105, margin: 5,padding: 5}}>
+            <ImageBackground source={Images.ProgramCard} style={{width: 315, height: 95, margin: 5,padding: 5}}>
                 <Block>
                 <Block row space='between' style={{width:260, marginTop: 5}}>
             <Text size={10} style={{fontFamily: 'HKGrotesk-Regular', lineHeight: 14, color: '#C4F4FF'}}>Account No</Text>
@@ -70,7 +70,7 @@ export default class FeatureCard extends React.Component {
                 {item.creditBalance.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
                   </Text>
                 </Block>
-                <Block row space='between' style={{width:295}}>
+                {/* <Block row space='between' style={{width:295}}>
             <Text
                 style={{
                   color: BlackColor,
@@ -89,7 +89,7 @@ export default class FeatureCard extends React.Component {
               >
                 {item.stock.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
                   </Text>
-                </Block>      
+                </Block>      */} 
                   </Block>
           </ImageBackground>
           </TouchableWithoutFeedback>)

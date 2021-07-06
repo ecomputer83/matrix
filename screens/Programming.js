@@ -300,11 +300,11 @@ class Programming extends BaseComponent {
           if(remainquantity > 0) {
           return (<TouchableHighlight onPress={() => this.setOrder(v, remainquantity)}>
                   <Block width={width * 0.9} style={styles.product}>
-                      <Block row space='between'>
+                      <Block row space='between' width={width * 0.8}>
                         <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16 }}>{v.orderNo}</Text>
                         <Text style={{ fontFamily: 'HKGrotesk-MediumLegacy', fontSize: 16, color: '#AAAAAA' }}>{remainquantity}</Text>
                       </Block>
-                      <Block row space='between'>
+                      <Block row space='between' width={width * 0.8}>
                         <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 11 }}>{v.orderDate}</Text>
                         <Text style={{ fontFamily: 'HKGrotesk-MediumLegacy', fontSize: 11, color: '#AAAAAA' }}>₦{v.totalAmount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
                       </Block>
@@ -645,9 +645,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',  
   },
   product: {
-    height: 40,
+    height: 50,
     marginBottom: 5, 
     paddingHorizontal: 20, 
+    paddingVertical: 5,
     borderWidth: 1, 
     borderRadius: 5, 
     borderColor: '#E3E2E3', 
