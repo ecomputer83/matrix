@@ -114,7 +114,7 @@ renderOption = (label, value) => {
     return (
       <Block flex={0.3}>
         {this.state.Program != null ?
-        (<DetailCard item={this.state.Program} index={1} />) : (<Block />) }
+        (<DetailCard item={this.state.Program} index={1} isDetail={true} />) : (<Block />) }
         </Block>
     )
   }

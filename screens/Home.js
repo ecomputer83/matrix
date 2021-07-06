@@ -287,7 +287,7 @@ const IndicatorStyles = {
           if(this.state.OrderId == 0)
           {
             console.log(model)
-            this.setState({OrderId: 2, orderNo: "SDTVDGFV", spinner: false})
+            this.setState({OrderId: 2, orderNo: "PO74465", spinner: false})
             //  HttpService.PostAsync('api/Order', model, this.state.token).then(response => {
             //    console.log(response)
             //    if(response.status != 200)
@@ -339,7 +339,7 @@ const IndicatorStyles = {
              } 
              if(this.state.OrderId == 0)
              {
-              this.setState({OrderId: 2, orderNo: "SDTVDGFV"})
+              this.setState({OrderId: 2, orderNo: "PO68876"})
                console.log(model)
                 // HttpService.PostAsync('api/Order', model, this.state.token).then(response => response.json().then(value => 
                 // {

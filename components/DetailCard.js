@@ -11,6 +11,7 @@ export default class DetailCard extends React.Component {
             Navigation,
             item,
             index,
+            isDetail,
             bgColor,
             ...props
           } = this.props;
@@ -41,7 +42,19 @@ export default class DetailCard extends React.Component {
                 #{index}
                   </Text>
             </Block>
-            <Block row space='between' style={{width: (width - 10) * 0.8, marginTop: 15}}>
+            { isDetail ? <Block style={{width:(width - 10) * 0.9, marginTop: 15}}>
+              <Text size={10} style={{fontFamily: 'HKGrotesk-Regular', lineHeight: 14, color: '#919191'}}>Company</Text>
+              <Text
+                style={{
+                  color: BlackColor,
+                  fontSize: 14,
+                  fontFamily: 'HKGrotesk-SemiBoldLegacy',
+                }}
+              >
+                {item.company.substring(0, 40)}
+                  </Text>
+            </Block> : <Block style={{marginTop: 15}}/>}
+            <Block row space='between' style={{width: (width - 10) * 0.8}}>
             <Text size={10} style={{fontFamily: 'HKGrotesk-Regular', lineHeight: 14, color: '#919191'}}>Destination</Text>
             <Text size={10} style={{fontFamily: 'HKGrotesk-Regular', lineHeight: 14, color: '#919191'}}>Quantity</Text>
             </Block>

@@ -245,7 +245,7 @@ const IndicatorStyles = {
               return;
             }else{
               var TotalAmount = this.state.quantity * this.state.product.price;
-              this.setState({TotalAmount: TotalAmount, CreditAmount: TotalAmount})
+              this.setState({TotalAmount: TotalAmount,  CreditAmount: TotalAmount})
             }
           }
           console.log(this.state.ipman)
@@ -257,16 +257,10 @@ const IndicatorStyles = {
         //     Quantity: parseInt(this.state.quantity),
         //     TotalAmount: parseInt(this.state.quantity * this.state.product.price)
         //   } 
-        //   if(this.state.OrderId == 0)
-        //   {
-        //     console.log(model)
-        //     this.setState({OrderId: 2, OrderNo: 'GHF5445', spinner: true,
-        //     unitPrice: null,
-        //         depotX: prod.Depots.map((d, i) => {
-        //           return { key: i, label: d.Name}
-        //         }),
-        //         //depot: this.state.Depots[0],
-        //         spinner: false, CompletePayment: false })
+          if(this.state.OrderId == 0)
+          {
+            console.log(model)
+            this.setState({OrderId: 2, OrderNo: 'PO74465',CompletePayment: false })
         //     //  HttpService.PostAsync('api/Order', model, this.state.token).then(response => {
         //     //   if(response.status != 200)
         //     //   {
@@ -304,7 +298,8 @@ const IndicatorStyles = {
         //     //     alert("Your account is awaiting approval, Our agent will contact you shortly");
         //     //   }
         //     // });
-        //  }else{
+          }
+        //else{
         //      HttpService.PutAsync('api/Order/' + this.state.OrderId, model, this.state.token).then(response => response.json().then(v => 
         //      {
         //        console.log(v);

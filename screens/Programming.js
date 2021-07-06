@@ -299,9 +299,15 @@ class Programming extends BaseComponent {
           var remainquantity = v.quantity - ((this.programbyorderId(v.orderNo).length > 0) ? this.calculatefromProgram(v.orderId) : 0)
           if(remainquantity > 0) {
           return (<TouchableHighlight onPress={() => this.setOrder(v, remainquantity)}>
-                  <Block width={width * 0.9} row space='between' style={styles.product}>
-                      <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16 }}>{v.orderNo}</Text>
-                      <Text style={{ fontFamily: 'HKGrotesk-MediumLegacy', fontSize: 16, color: '#AAAAAA' }}>{remainquantity}</Text>
+                  <Block width={width * 0.9} style={styles.product}>
+                      <Block row space='between'>
+                        <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16 }}>{v.orderNo}</Text>
+                        <Text style={{ fontFamily: 'HKGrotesk-MediumLegacy', fontSize: 16, color: '#AAAAAA' }}>{remainquantity}</Text>
+                      </Block>
+                      <Block row space='between'>
+                        <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 11 }}>{v.orderDate}</Text>
+                        <Text style={{ fontFamily: 'HKGrotesk-MediumLegacy', fontSize: 11, color: '#AAAAAA' }}>₦{v.totalAmount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
+                      </Block>
                   </Block>
               </TouchableHighlight>)
           }else{
