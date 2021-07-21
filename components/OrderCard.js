@@ -99,7 +99,7 @@ export default class OrderCard extends React.Component {
                   zIndex: 2
                 }}
               >
-                {item.orderDate}
+                {new Date(item.orderDate).toDateString()}
                   </Text>
                   </Block>
                   <Block style={{width: 85, height: 22, borderRadius: 5, backgroundColor: StatusColor, alignItems: 'center', justifyContent: 'center'}}>

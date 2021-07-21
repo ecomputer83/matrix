@@ -3,6 +3,7 @@ import { withNavigation } from 'react-navigation';
 import { View, TouchableOpacity, StyleSheet, Image, Platform, Dimensions, StatusBar } from 'react-native';
 import { Button, Block, NavBar, Text, theme, Button as GaButton } from 'galio-framework';
 import { createIconSetFromFontello } from 'react-native-vector-icons';
+import AsyncStorage from '@react-native-community/async-storage'
 import fontelloConfig from '../config.json';
 import Icon from './Icon';
 import Input from './Input';
@@ -11,6 +12,9 @@ import { prod } from '../constants'
 import Theme from '../constants/Theme';
 import Images from '../constants/Images';
 import Swiper from '../components/Swiper';
+
+import { AuthContext } from '../helpers/authContext';
+import HttpService from '../services/HttpService';
 
 const Fontello = createIconSetFromFontello(fontelloConfig);
 const { height, width } = Dimensions.get('window');
@@ -37,7 +41,48 @@ const AddIconButton = ({ iconFamily, style, navigation, link, iconName }) => (
 
 
 class Header extends React.Component {
+  state = {
+    Name: 'Business Name',
+    isfetched: false
+  }
 
+  static contextType = AuthContext;
+
+  componentDidMount(){
+    this.readData();
+  }
+
+  readData = async () => {
+    const { signOut } = this.context
+    var token = await AsyncStorage.getItem('userToken');
+    var _user = await AsyncStorage.getItem('user');
+    try {
+        if(_user != null) {
+          var user = JSON.parse(_user)
+          this.setState({Name: user.businessName,
+            isfetched: true
+            })
+          console.log(user)
+        }else{
+          signOut();
+        }
+        HttpService.GetAsync('api/account/user', token)
+        .then(response => {
+          if (!response.ok) {
+            if(!response.statusText){
+              if(response.headers.map.www-authenticate){
+                signOut();
+              }
+            }else{
+              throw Error(response.statusText);
+            }
+          }
+        })
+    } catch (error) {
+      console.error(error);
+      //signOut();
+    }
+  }
   handleLeftPress = () => {
     const { back, navigation } = this.props;
     return back ? navigation.goBack() : navigation.openDrawer();
@@ -100,7 +145,7 @@ class Header extends React.Component {
               Good Morning
             </Text>
             <Text size={20} style={{ fontFamily: 'HKGrotesk-Light', lineHeight: 22,fontWeight: '300', color: Theme.COLORS.HEADER}}>
-              Business Name
+            {this.state.Name}
             </Text>
           </Block>
           <Block>

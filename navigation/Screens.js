@@ -221,30 +221,7 @@ const TabStack = createBottomTabNavigator(
 
 const AppStack = createStackNavigator(
   {
-    Onboarding: {
-      screen: Onboarding,
-      navigationOptions: {
-        header: null,
-    },
-    },
-    Login: {
-      screen: Login,
-      navigationOptions: {
-        header: null,
-    },
-    },
-    Register: {
-      screen: Register,
-      navigationOptions: {
-        header: null,
-    },
-    },
-    RegReview: {
-      screen: RegReview,
-      navigationOptions: {
-        header: null,
-    },
-    },
+    
     Home: {
       screen: TabStack,
       navigationOptions: {

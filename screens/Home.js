@@ -51,10 +51,10 @@ const IndicatorStyles = {
     constructor(props) {
       super(props);
       this.state = {
-        DailyPrices: prod.DailyPrices,
-        Products: prod.DailyPrices,
-        Articles: Article,
-        Banks: Banks,
+        DailyPrices: [],
+        Products: [],
+        Articles: [],
+        Banks: [],
         OrderId: 0,
         modalCreateVisible: false,
           modalPaymentVisible: false,
@@ -63,7 +63,7 @@ const IndicatorStyles = {
           currentPosition: 0,
           currentState: 0,
           CompletePayment: false,
-          depot: prod.Depots[0],
+          depot: {},
           product : null,
           productIndex: null,
           accountIndex: null,
@@ -76,16 +76,15 @@ const IndicatorStyles = {
           ifInputupdated: false,
           Name: 'Business Name',
         Limit: 0,
+        account: [],
         Balance: 0,
         ipman: 0,
         isnoteligible: false,
         isfetched: false,
-        depotX: prod.Depots.map((d, i) => {
-          return { key: i, label: d.name}
-        }),
-        Depots: prod.Depots,
-        depot: prod.Depots[0],
-        _depot: prod.Depots[0],
+        depotX: {},
+        Depots: [],
+        depot: {},
+        _depot: {},
         token: null,
         BankName: null,
         Reference: null,
@@ -99,7 +98,6 @@ const IndicatorStyles = {
         orderNo: null,
         selector: () => this.Selector('Select Capacity'),
         ShowDatePicker:  false,
-        Group: "OGHARA",
         SelectedGroup: "",
         userno: null,
         newDevice: false
@@ -139,20 +137,20 @@ const IndicatorStyles = {
     pickerDepotX(index){
       var depot = this.state.Depots.find(c => c.id == index);
       if(depot){
-         //var Group = depot.group;
+         var Group = depot.code;
          
   
         //  if(this.state.Group != Group){
         //   this.setState({spinner: true})
         //   console.log(this.state.Group)
-        //  HttpService.GetAsync('api/Misc/SalePrice/'+ Group).then(response => {
-        //    console.log(response)
-        //    response.json().then(v => {
-        //   this.setState({
-        //     _depot: depot, DailyPrices: v, Group: Group, spinner: false
-        //    })
-        //  })
-        // });
+         HttpService.GetAsync('api/Misc/SalePrice/'+ userno + '/'+ Group).then(response => {
+           console.log(response)
+           response.json().then(v => {
+          this.setState({
+            _depot: depot, DailyPrices: v, Group: Group, spinner: false
+           })
+         })
+        });
         //   }else{
         //     console.log(1 + this.state.Group)
         //   this.setState({
@@ -225,7 +223,7 @@ const IndicatorStyles = {
         product : null, quantity: "0",
         productIndex: null,
         depotIndex: null,
-        unitPrice: null,currentPosition: 0, QuantityLoad: [],
+        unitPrice: null,currentPosition: this.state.userno ? 0 : 1, QuantityLoad: [],
         currentState: 0})
   
         this.setState({modalCreateVisible: visible});
@@ -277,57 +275,59 @@ const IndicatorStyles = {
             }
           }
           console.log(this.state.ipman)
-        if(last && this.state.ipman == 1){
+        if(last && this.state.creditLimit > 0){
           var model = {
             ProductId: this.state.product.id,
             DepotId: this.state.depot.id,
             Quantity: parseInt(this.state.quantity),
+            CustomerNo: this.state.userno,
             TotalAmount: parseInt(this.state.quantity * this.state.product.price)
           } 
           if(this.state.OrderId == 0)
           {
             console.log(model)
-            this.setState({OrderId: 2, orderNo: "PO74465", spinner: false})
-            //  HttpService.PostAsync('api/Order', model, this.state.token).then(response => {
-            //    console.log(response)
-            //    if(response.status != 200)
-            //    {
-            //      this.setModalCreateVisible(false);
-            //      alert("Sorry, there is an issue with the server, kindly contact the administrator");
-            //      return
-            //    }else{
-            //      if(this.state.userno != null){
-            //    response.json().then(value => 
-            //  {
-            //    console.log(value);
-            //    this.setState({OrderId: value, spinner: true})
-            //    HttpService.GetAsync('api/Order/' + value, this.state.token).then(response => {
-            //      console.log(response);
-            //      response.json().then(order => {
-            //     console.log(order);
-            //     this.setState({OrderId: value, orderNo: order.orderNo, spinner: false})
-                
-            //    })
-            //   })
             
-            //  })
-            // }else{
-            //   alert("Your account is awaiting approval, Our agent will contact you shortly");
-            // }
-            // }
-            // });
+             HttpService.PostAsync('api/Order', model, this.state.token).then(response => {
+               console.log(response)
+               if(response.status != 200)
+               {
+                 this.setModalCreateVisible(false);
+                 alert("Sorry, there is an issue with the server, kindly contact the administrator");
+                 return
+               }else{
+                 if(this.state.userno != null)
+                 {
+               response.json().then(value => 
+             {
+               console.log(value);
+               this.setState({OrderId: value, spinner: true})
+               HttpService.GetAsync('api/Order/' + value, this.state.token).then(response => {
+                 console.log(response);
+                 response.json().then(order => {
+                console.log(order);
+                this.setState({OrderId: value, orderNo: order.orderNo, spinner: false})
+                
+               })
+              })
+            
+             })
+            }else{
+              alert("Your account is awaiting approval, Our agent will contact you shortly");
+            }
+            }
+            });
          }
-        //  else{
-        //      HttpService.PutAsync('api/Order/' + this.state.OrderId, model, this.state.token).then(response => 
-        //       {
-        //         console.log(response)
-        //         response.json().then(value => 
-        //      {
-        //        console.log(value);
-        //        //this.setState({OrderId: value})
-        //      })
-        //       });
-        //  }
+         else{
+             HttpService.PutAsync('api/Order/' + this.state.OrderId, model, this.state.token).then(response => 
+              {
+                console.log(response)
+                response.json().then(value => 
+             {
+               console.log(value);
+               this.setState({OrderId: value})
+             })
+              });
+         }
          currentPosition = this.state.currentPosition + 2
         }else {
           if(this.state.currentPosition == 4){
@@ -335,27 +335,27 @@ const IndicatorStyles = {
                ProductId: this.state.product.id,
                DepotId: this.state.depot.id,
                Quantity: parseInt(this.state.quantity),
+               CustomerNo: this.state.userno,
                TotalAmount: parseInt(this.state.TotalAmount)
              } 
              if(this.state.OrderId == 0)
              {
-              this.setState({OrderId: 2, orderNo: "PO68876"})
                console.log(model)
-                // HttpService.PostAsync('api/Order', model, this.state.token).then(response => response.json().then(value => 
-                // {
-                //   console.log(value);
-                //   HttpService.GetAsync('api/Order/' + value).then(response => response.json().then(order => {
-                //     this.setState({OrderId: value, orderNo: order.orderNo})
-                //    }))
-                // }));
+                HttpService.PostAsync('api/Order', model, this.state.token).then(response => response.json().then(value => 
+                {
+                  console.log(value);
+                  HttpService.GetAsync('api/Order/' + value).then(response => response.json().then(order => {
+                    this.setState({OrderId: value, orderNo: order.orderNo})
+                   }))
+                }));
             }
-            // else{
-            //     HttpService.PutAsync('api/Order/' + this.state.OrderId, model, this.state.token).then(response => response.json().then(value => 
-            //     {
-            //       console.log(value);
-            //       //this.setState({OrderId: value})
-            //     }));
-            // }
+            else{
+                HttpService.PutAsync('api/Order/' + this.state.OrderId, model, this.state.token).then(response => response.json().then(value => 
+                {
+                  console.log(value);
+                  this.setState({OrderId: value})
+                }));
+            }
           }
           currentPosition = this.state.currentPosition + 1
         }
@@ -364,7 +364,7 @@ const IndicatorStyles = {
         }
         this.setState({currentPosition: currentPosition, ifInputupdated: ifup})
         if(currentPosition == 2 && this.state.newDevice){
-        this.props.start('capacity');
+        //this.props.start('capacity');
         console.log(this.props)
         }
       }
@@ -390,6 +390,9 @@ const IndicatorStyles = {
                   creditDate: this.state.CreditDate
                 }
                 console.log(model)
+                
+                HttpService.PostAsync('api/Credit', model, this.state.token).then( resp => {
+                  if(resp.status == 200){
                 this.setState({
                   depot: null,
                   product : null,
@@ -398,31 +401,16 @@ const IndicatorStyles = {
                   unitPrice: null,
                   TotalAmount: "0",
                   depotX: prod.Depots.map((d, i) => {
-                    return { key: i, label: d.name}
+                    return { key: i, label: d.Name}
                   }),
                   depot: prod.Depots[0],
                   spinner: false, CompletePayment: true
                 });
-              //   HttpService.PostAsync('api/Credit', model, this.state.token).then( resp => {
-              //     if(resp.status == 200){
-              //   this.setState({
-              //     depot: null,
-              //     product : null,
-              //     productIndex: null,
-              //     depotIndex: null,
-              //     unitPrice: null,
-              //     TotalAmount: "0",
-              //     depotX: prod.Depots.map((d, i) => {
-              //       return { key: i, label: d.Name}
-              //     }),
-              //     depot: prod.Depots[0],
-              //     spinner: false, CompletePayment: true
-              //   });
   
-              // }else{
-              //   alert("There is an error in the submission")
-              // }
-              //})
+              }else{
+                alert("There is an error in the submission")
+              }
+              })
             }else{
               this.setState({spinner: false})
               alert("Payment amount not must be less than "+this.state.TotalAmount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'))
@@ -431,7 +419,7 @@ const IndicatorStyles = {
       }
   
       edit() {
-        let currentPosition = 0
+        let currentPosition = (this.state.userno) ? 0: 1
         this.setState({currentPosition: currentPosition})
       }
   
@@ -458,23 +446,20 @@ const IndicatorStyles = {
             type: 2,
             creditDate: new Date()
           }
-          this.setModalPaymentVisible(false);
+          
+          HttpService.PostAsync('api/Credit', model, this.state.token).then( response => {
+            AsyncStorage.getItem("user").then(_user => {
+              var user = JSON.parse(_user);
+              user.creditBalance = (parseInt(user.creditBalance) - this.state.TotalAmount).toString();
+              AsyncStorage.mergeItem("user", JSON.stringify(user)).then( o => {
+                this.setModalPaymentVisible(false);
             this.setModalCreateVisible(false);
             this.setState({spinner: false})
             Alert.alert("Credit Request", "Your credit approval request is sent successfully. Your order will be confirmed upon credit approval");
-          // HttpService.PostAsync('api/Credit', model, this.state.token).then( response => {
-          //   AsyncStorage.getItem("user").then(_user => {
-          //     var user = JSON.parse(_user);
-          //     user.creditBalance = (parseInt(user.creditBalance) - this.state.TotalAmount).toString();
-          //     AsyncStorage.mergeItem("user", JSON.stringify(user)).then( o => {
-          //       this.setModalPaymentVisible(false);
-          //   this.setModalCreateVisible(false);
-          //   this.setState({spinner: false})
-          //   Alert.alert("Credit Request", "Your credit approval request is sent successfully. Your order will be confirmed upon credit approval");
-          //     })
-          //   })
+              })
+            })
             
-          // })
+          })
         }
       }
       else {
@@ -488,20 +473,29 @@ const IndicatorStyles = {
   }
   onAccountPressed = (item) => {
     console.log(item)
+    HttpService.GetAsync('api/Misc/SalePrice/'+ item.no + '/'+ this.state.Group).then(response => {
+      console.log(response)
+      response.json().then(v => {
+     this.setState({
+       _depot: depot, DailyPrices: v, Group: Group, spinner: false
+      })
+    })
+   });
   }
   renderFeatures = () => {
     return (
+      this.state.account.length > 0 ? 
       <Block>
         <Text size={16} style={{fontFamily: 'HKGrotesk-BoldLegacy', lineHeight: 16, color: '#919191', marginTop: 10, marginHorizontal: 10}}>Linked Accounts</Text>
       <ScrollView horizontal={true}>
         {this.renderFeature()}
       </ScrollView>
-      </Block>
+      </Block> : <Block />
     )
   }
 
   renderFeature = () => {
-    return prod.Accounts.map((v,i) => {
+    return this.state.account.map((v,i) => {
       let index = ++i
       return (<AccountCard item={v} total={prod.Accounts.length} index={index} onPress={this.onAccountPressed}/>)
     })
@@ -596,32 +590,21 @@ const IndicatorStyles = {
         console.log(item);
         // var Group = item.group;
         // if(Group != this.SelectedGroup){
-        //   this.setState({spinner: true})
-        // HttpService.GetAsync('api/Misc/SalePrice/'+ Group).then(response => response.json().then(v => {
-        //   this.setState({depot: item, depotIndex: index, ifInputupdated: true, Products: v, SelectedGroup: Group, spinner: false});
-        //   this.Next()
-        //  }));
+          this.setState({spinner: true})
+        HttpService.GetAsync('api/Misc/SalePrice/'+ this.state.userno + '/' + item.id).then(response => response.json().then(v => {
+          this.setState({depot: item, depotIndex: index, ifInputupdated: true, Products: v, spinner: false});
+          this.Next()
+         }));
         // }else{
         //   this.setState({depot: item, depotIndex: index, ifInputupdated: true});
         //   this.Next()
         // }
-        this.setState({depot: item, depotIndex: index, ifInputupdated: true});
-          this.Next()
+        // this.setState({depot: item, depotIndex: index, ifInputupdated: true});
+        //   this.Next()
     }
 
     setAccount(item, index){
       console.log(item);
-      // var Group = item.group;
-      // if(Group != this.SelectedGroup){
-      //   this.setState({spinner: true})
-      // HttpService.GetAsync('api/Misc/SalePrice/'+ Group).then(response => response.json().then(v => {
-      //   this.setState({depot: item, depotIndex: index, ifInputupdated: true, Products: v, SelectedGroup: Group, spinner: false});
-      //   this.Next()
-      //  }));
-      // }else{
-      //   this.setState({depot: item, depotIndex: index, ifInputupdated: true});
-      //   this.Next()
-      // }
       this.setState({accountIndex: index, ifInputupdated: true});
         this.Next()
   }
@@ -633,7 +616,7 @@ const IndicatorStyles = {
             const productStyle = [styles.product, (this.state.productIndex == i) && styles.selected]
             return (<TouchableHighlight onPress={() => this.setProduct(p, i)}>
                 <Block width={width * 0.9} row space='between' style={{marginTop: 5}} space='between' style={productStyle}>
-                    <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16, }}>{p.product}</Text>
+                    <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16, color: (this.state.productIndex == i) ? "#FFFFFF" : "#000000" }}>{p.product}</Text>
                     <Text style={{ fontFamily: 'HKGrotesk-MediumLegacy', fontSize: 16, color: '#333333' }}>₦{p.price}/{p.unit}</Text>
                 </Block>
             </TouchableHighlight>)
@@ -642,11 +625,11 @@ const IndicatorStyles = {
   
     renderAccounts = () => {
       console.log(this.state.Depots)
-      return prod.Accounts.map((p, i)=>{
+      return this.state.account.map((p, i)=>{
           const productStyle = [styles.product, (this.state.accountIndex == i) && styles.selected]
           return (<TouchableHighlight onPress={() => this.setAccount(p, i)}>
               <Block width={width * 0.9} middle style={productStyle}>
-                  <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16 }}>{p.label}</Text>
+                  <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16, color: (this.state.accountIndex == i) ? "#FFFFFF" : "#000000" }}>{p.label}</Text>
               </Block>
           </TouchableHighlight>)
       })
@@ -657,7 +640,7 @@ const IndicatorStyles = {
             const productStyle = [styles.product, (this.state.depotIndex == i) && styles.selected]
             return (<TouchableHighlight onPress={() => this.setDepot(p, i)}>
                 <Block width={width * 0.9} middle style={productStyle}>
-                    <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16 }}>{p.name}</Text>
+                    <Text style={{ fontFamily: 'HKGrotesk-SemiBoldLegacy', fontSize: 16, color: (this.state.depotIndex == i) ? "#FFFFFF" : "#000000" }}>{p.name}</Text>
                 </Block>
             </TouchableHighlight>)
         })
@@ -724,6 +707,8 @@ const IndicatorStyles = {
       this.readData().then( resp => {
         if(resp !== null){
           
+          console.log(this.state.currentPosition)
+          console.log(resp)
           var user = JSON.parse(resp);
           this.setState({Name: user.businessName,
           Limit: user.creditLimit,
@@ -886,7 +871,7 @@ const IndicatorStyles = {
                               </GaButton>
                             </Block>)
                              : (currentPosition > 4) ? (userno != null) ? (<Block width={width * 0.9} center style={{position: 'absolute', bottom: 40}}>
-                                {(this.state.ipman == 0) ? (
+                                {(this.state.creditBalance == 0) ? (
                                 <GaButton
                                     shadowless
                                     style={styles.button}
@@ -999,13 +984,13 @@ const IndicatorStyles = {
               
               <Block width={width * 0.9} style={{ marginBottom: 5, marginLeft: 5, marginTop: 25 }}>
               <Block style={styles.dropdownpicker}>
-                                <ModalSelector
+                                {this.state.Banks.length > 0 ? <ModalSelector
                                     data={this.state.Banks }
                                     initValue='Select Account'
                                     selectStyle={styles.selectStyle}
                                     selectTextStyle={styles.selectTextStyle}
                                     initValueTextStyle={styles.initvalueTextStyle}
-                                    onChange={(itemValue) => this.setBank(itemValue)} />
+                                    onChange={(itemValue) => this.setBank(itemValue)} /> : <Block /> }
                                 </Block>  
               </Block>
               <Block width={width * 0.9} space='between' style={{ marginBottom: 5, marginLeft: 5, marginTop: 5 }}>
@@ -1169,55 +1154,64 @@ const IndicatorStyles = {
       )
     }
     
-    // componentDidMount(){
-  
-    //   if(this.state.DailyPrices != null){
-    //     HttpService.GetAsync('api/Misc').then(response => {
-          
-    //       response.json().then(json => {
-    //         console.log(json)
-    //       if(json != undefined){
-    //       var depots = json.depots.map((d, i) => {
-    //         return { key: d.id, label: d.name}
-    //       });
-    //       var depot = (json.depots.length > 0) ? json.depots.find(c=>c.group == this.state.Group): {};
-    //       this.setState({DailyPrices: json.products, depotX: depots, Depots: json.depots, _depot: depot})
-    //       AsyncStorage.setItem('misc', JSON.stringify({DailyPrices: json.products, Depots: json.depots}))
-    //       if(this.state.DailyPrices.length > 0){
-    //         this.setState({spinner: false})
-    //         AsyncStorage.getItem('newDevice').then( value => {
-    //           if(value == undefined || value == null){
-    //             this.props.start();
-    //             this.setState({newDevice: true})
-    //           }
-    //         }).catch(e => {
-    //           this.props.start();
-    //         })
-    //       }
-    //       AsyncStorage.getItem('userToken').then( value => {
-    //         this.setState({ token: value})
-    //         HttpService.GetAsync('api/misc/banks', value).then(response => {
-    //           response.json().then(art => {
-    //             var banks = art.map((d, i) => {
-    //               return { key: d.no, label: d.name + ' - ' + d.bankAccountNo}
-    //             });
-    //             this.setState({ Banks: banks});
-    //           })
-    //         })
-    //         HttpService.GetAsync('api/article', value).then(response => {
-    //           response.json().then(art => {
-    //             this.setState({ Articles: art});
-    //           })
-    //         })
-    //       })
-          
-  
-    //     }
-    //     })
-    //   });
-    //   }
+    componentDidMount(){
       
-    // }
+      if(this.state.DailyPrices != null){
+        HttpService.GetAsync('api/Misc').then(response => {
+          
+          response.json().then(json => {
+            console.log(json)
+          if(json != undefined){
+          var depots = json.depots.map((d, i) => {
+            return { key: d.id, label: d.name}
+          });
+          var depot = (json.depots.length > 0) ? json.depots[0]: {};
+          this.setState({DailyPrices: json.products, depotX: depots, Depots: json.depots, _depot: depot})
+          AsyncStorage.setItem('misc', JSON.stringify({DailyPrices: json.products, Depots: json.depots}))
+          if(this.state.DailyPrices.length > 0){
+            this.setState({spinner: false})
+            // AsyncStorage.getItem('newDevice').then( value => {
+            //   if(value == undefined || value == null){
+            //     this.props.start();
+            //     this.setState({newDevice: true})
+            //   }
+            // }).catch(e => {
+            //   this.props.start();
+            // })
+          }
+          
+          AsyncStorage.getItem('userToken').then( value => {
+            this.setState({ token: value})
+            HttpService.GetAsync('api/Account/LinkedAccount', value).then(response => {
+              response.json().then(act => {
+                var account = act.map((d, i) => {
+                    return { key: act.no, label: act.name, creaditLimit: act.creditLimitLcy, creditBalance: act.balanceLcy}
+                })
+                this.setState({ account: account })
+              })
+            });
+            HttpService.GetAsync('api/misc/banks', value).then(response => {
+              response.json().then(art => {
+                var banks = art.map((d, i) => {
+                  return { key: d.no, label: d.name + ' - ' + d.bankAccountNo}
+                });
+                this.setState({ Banks: banks});
+              })
+            })
+            HttpService.GetAsync('api/article', value).then(response => {
+              response.json().then(art => {
+                this.setState({ Articles: art});
+              })
+            })
+          })
+          
+  
+        }
+        })
+      });
+      }
+      
+    }
   
     componentDidUpdate(){
       
@@ -1246,13 +1240,13 @@ const IndicatorStyles = {
           >
         <CopilotBlock space='between' style={{marginTop: 5, flexDirection: 'row', justifyContent: `space-between`}}>
          */}
-         <ModalSelector
+         {this.state.depotX.length > 0 ? <ModalSelector
             data={this.state.depotX}
             initValue={this.state._depot.name}
             selectStyle={styles.picker}
             selectTextStyle={styles.selectTextStyle}
             initValueTextStyle={styles.initvalueTextStyle}
-            onChange={(itemValue) => this.pickerDepotX(itemValue.key)} />
+            onChange={(itemValue) => this.pickerDepotX(itemValue.key)} /> : <Block />}
           <Icon
                 name={'chevron-down'}
                 family="octicon"

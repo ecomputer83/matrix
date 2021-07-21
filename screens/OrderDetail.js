@@ -99,40 +99,40 @@ setBank =(itemValue) => {
   this.setState({BankName: itemValue.key});
 }
 componentDidMount(){
-  var value = prod.Orders.find(c=>c == this.state.Order)
-  this.setState({Order: value, totalquantity: value.quantity, programs: value.programs, CreditAmount: value.totalAmount,
-   remainQuantity: value.quantity, Credit: value.credit, Banks: Banks, spinner: false});
+  // var value = prod.Orders.find(c=>c == this.state.Order)
+  // this.setState({Order: value, totalquantity: value.quantity, programs: value.programs, CreditAmount: value.totalAmount,
+  //  remainQuantity: value.quantity, Credit: value.credit, Banks: Banks, spinner: false});
   
-  // AsyncStorage.getItem('user').then(data =>{ 
-  //     var user = JSON.parse(data)
-  //     this.setState({ipman: user.isIPMAN, Balance: user.creditBalance, userno: user.userNo});
-  // })
-  //this.setState({spinner: true})
-  // AsyncStorage.getItem('userToken').then(token => {
-  //   // HttpService.GetAsync('api/misc/banks', token).then(response => {
-  //   //   response.json().then(art => {
-  //   //     var banks = art.map((d, i) => {
-  //   //       return { key: d.no, label: d.name + ' - ' + d.bankAccountNo}
-  //   //     });
-  //   //     this.setState({ Banks: banks});
-  //   //   })
-  //   // })
-  //   // HttpService.GetAsync('api/order/'+this.state.orderId, token)
-  //   // .then(response => response.json().then(value => {
-  //   //   this.setState({Order: value, totalquantity: value.quantity, programs: value.programs, CreditAmount: value.totalAmount,
-  //   //     remainQuantity: value.quantity, Credit: value.credit, token: token, spinner: false});
-  //   //     AsyncStorage.getItem('newDevice').then( value => {
-  //   //       if(value == undefined || value == null){
-  //   //         this.props.start();
-  //   //         this.setState({newDevice: true})
-  //   //       }
-  //   //     }).catch(e => {
-  //   //       this.props.start();
-  //   //     })
-  //   // }
+  AsyncStorage.getItem('user').then(data =>{ 
+      var user = JSON.parse(data)
+      this.setState({ipman: user.isIPMAN, Balance: user.creditBalance, userno: user.userNo});
+  })
+  this.setState({spinner: true})
+  AsyncStorage.getItem('userToken').then(token => {
+    HttpService.GetAsync('api/misc/banks', token).then(response => {
+      response.json().then(art => {
+        var banks = art.map((d, i) => {
+          return { key: d.no, label: d.name + ' - ' + d.bankAccountNo}
+        });
+        this.setState({ Banks: banks});
+      })
+    })
+    HttpService.GetAsync('api/order/'+this.state.orderId, token)
+    .then(response => response.json().then(value => {
+      this.setState({Order: value, totalquantity: value.quantity, programs: value.programs, CreditAmount: value.totalAmount,
+        remainQuantity: value.quantity, Credit: value.credit, token: token, spinner: false});
+        AsyncStorage.getItem('newDevice').then( value => {
+          if(value == undefined || value == null){
+            this.props.start();
+            this.setState({newDevice: true})
+          }
+        }).catch(e => {
+          this.props.start();
+        })
+    }
 
-  //   // ))
-  // })
+    ))
+  })
   
 }
     setModalVisible(visible) {
@@ -196,24 +196,20 @@ componentDidMount(){
             type: 2,
             creditDate: new Date()
           }
-          // HttpService.PostAsync('api/Credit', model, this.state.token).then( response => {
-          //   AsyncStorage.getItem("user").then(_user => {
-          //     var user = JSON.parse(_user);
-          //     user.creditBalance = (parseInt(user.creditBalance) - this.state.TotalAmount).toString();
-          //     AsyncStorage.mergeItem("user", JSON.stringify(user)).then( o => {
-          //       this.setModalPaymentVisible(false);
-          //   this.setModalCreateVisible(false);
-          //   this.setState({spinner: false})
-          //   Alert.alert("Credit Request", "Your credit approval request is sent successfully. Your order will be confirmed upon credit approval");
-          //     })
-          //   })
+          HttpService.PostAsync('api/Credit', model, this.state.token).then( response => {
+            AsyncStorage.getItem("user").then(_user => {
+              var user = JSON.parse(_user);
+              user.creditBalance = (parseInt(user.creditBalance) - this.state.TotalAmount).toString();
+              AsyncStorage.mergeItem("user", JSON.stringify(user)).then( o => {
+                this.setModalPaymentVisible(false);
+            this.setModalCreateVisible(false);
+            this.setState({spinner: false})
+            Alert.alert("Credit Request", "Your credit approval request is sent successfully. Your order will be confirmed upon credit approval");
+              })
+            })
             
-          // })
+          })
 
-          this.setModalPaymentVisible(false);
-          this.setModalCreateVisible(false);
-          this.setState({spinner: false})
-          Alert.alert("Credit Request", "Your credit approval request is sent successfully. Your order will be confirmed upon credit approval");
         }
       }
       else {
@@ -234,70 +230,29 @@ componentDidMount(){
       };
       console.log(obj);
       this.setState({spinner: true})
-          let programs = this.state.programs;
-      let remainQuantity = this.state.remainQuantity;
-      if(programs.length > 0){
-      let existingIndex = programs.findIndex(c=>c.TruckNo == obj.truckNo);
-      if(existingIndex > -1){
-              remainQuantity += programs[existingIndex].quantity;
-              programs[existingIndex].quantity = obj.quantity;
-              programs[existingIndex].companyName = obj.CompanyName;
-              programs[existingIndex].Destination = obj.Destination;
-              remainQuantity -= obj.quantity;
-          
-      }else{
-          if(remainQuantity >= obj.quantity){
-              programs.push(obj)
-          }else{
-              Alert.alert("Oops!", "Input quantity is beyond the remain quantity, remain quantity is "+ remainQuantity)
-              return;
+       
+      HttpService.PostAsync('api/program', obj, this.state.token).then(response => {
+        console.log(response)
+        if(response.status == 200){
+        HttpService.GetAsync('api/order/'+this.state.Order.orderId, this.state.token)
+              .then(response => {
+                console.log(response)
+                response.json().then(value => {
+                  AsyncStorage.setItem("newDevice", "device");
+                let remainQuantity = this.state.remainQuantity;
+                  remainQuantity -= obj.quantity
+                this.setState({Order: value, remainQuantity: remainQuantity, TruckNo: null, Quantity: remainQuantity.toString(), Destination: null, currentState: 0,spinner: false});
+                this.setModalVisible(false);
           }
-          remainQuantity -= obj.quantity
-          var state = 0;
-          if(this.state.isNew){
-            state = 1
-          }
+
+          )
+        })
+        }else{
+          this.setState({spinner: false})
+          alert("An error ocurred while adding program, contact administrator")
         }
       
-      this.setState({Orders: orders, programs: program, remainQuantity: remainQuantity, TruckNo: null, CompanyName: null, Destination: null, currentState: 0,spinner: false});
-    }else{
-
-      if(remainQuantity >= obj.quantity){
-          programs.push(obj)
-        }else{
-          Alert.alert("Oops!", "Input quantity is beyond the remain quantity, remain quantity is "+ remainQuantity)
-          return;
-      }
-      remainQuantity -= obj.quantity
-      var state = 0;
-      if(this.state.isNew){
-        state = 1
-      }
-      this.setState({programs: programs, remainQuantity: remainQuantity,TruckNo: null, Quantity: remainQuantity.toString(), CompanyName: null, Destination: null, currentState: state, spinner: false});
-  }
-  this.setModalVisible(false);  
-    //   HttpService.PostAsync('api/program', obj, this.state.token).then(response => {
-    //     console.log(response)
-    //     if(response.status == 200){
-    //     HttpService.GetAsync('api/order/'+this.state.Order.orderId, this.state.token)
-    //           .then(response => {
-    //             console.log(response)
-    //             response.json().then(value => {
-    //               AsyncStorage.setItem("newDevice", "device");
-    //             let remainQuantity = this.state.remainQuantity;
-    //               remainQuantity -= obj.quantity
-    //             this.setState({Order: value, remainQuantity: remainQuantity, TruckNo: null, Quantity: remainQuantity.toString(), Destination: null, currentState: 0,spinner: false});
-    //             this.setModalVisible(false);
-    //       }
-
-    //       )
-    //     })
-    //     }else{
-    //       this.setState({spinner: false})
-    //       alert("An error ocurred while adding program, contact administrator")
-    //     }
-      
-    // })
+    })
     }else{
         alert('You won`t be able to program the remaining '+ (this.state.totalquantity - this.state.Quantity) + 'ltrs in next program for this order, Kindly make adjustment now');
     }
@@ -342,24 +297,19 @@ componentDidMount(){
        reference: this.state.Reference,
        creditDate: this.state.CreditDate
      }
-     console.log(model)
-      var value = this.state.Order
-      value.credit = {creditType: 'Bank Deposit'},
-      value.status = 1
-      this.setState({Order: value, totalquantity: value.quantity, programs: value.programs,
-        remainQuantity: value.quantity, Credit: value.credit, spinner: false, modalPaymentVisible: false});      
-  //    HttpService.PostAsync('api/Credit', model, this.state.token).then( resp => {
-  //      if(resp.status == 200){
-  //       HttpService.GetAsync('api/order/'+this.state.orderId, this.state.token)
-  //       .then(response => response.json().then(value => {
-  //         this.setState({Order: value, totalquantity: value.quantity, programs: value.programs,
-  //           remainQuantity: value.quantity, Credit: value.credit, spinner: false, modalPaymentVisible: false});
-  //       }
+     console.log(model)      
+     HttpService.PostAsync('api/Credit', model, this.state.token).then( resp => {
+       if(resp.status == 200){
+        HttpService.GetAsync('api/order/'+this.state.orderId, this.state.token)
+        .then(response => response.json().then(value => {
+          this.setState({Order: value, totalquantity: value.quantity, programs: value.programs,
+            remainQuantity: value.quantity, Credit: value.credit, spinner: false, modalPaymentVisible: false});
+        }
     
-  //       ))
+        ))
 
-  //  }
-  //  })
+   }
+   })
   }else{
     this.setState({spinner: false})
     alert("Payment amount not must be less than "+this.state.Order.totalAmount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'))

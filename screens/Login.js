@@ -1,26 +1,81 @@
 import React from 'react';
 import { ImageBackground, Image, StyleSheet, StatusBar, Dimensions, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Block, Button, Text, theme } from 'galio-framework';
-
+import Spinner from 'react-native-loading-spinner-overlay';
 const { height, width } = Dimensions.get('screen');
 import { Images, nowTheme } from '../constants/';
-import { HeaderHeight } from '../constants/utils';
+import { validateAll } from 'indicative/validator';
 import Input from '../components/Input';
 import Icon from '../components/Icon';
 import BaseComponent from '../components/BaseComponent';
 
+
+import { AuthContext } from '../helpers/authContext';
+
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
 );
-export default class Login extends BaseComponent {
+export default class Register extends BaseComponent {
   state = {
     renderAccountVisible: false,
-    Location: 'Nigeria'
+    Location: 'Nigeria',
+    email: '',
+    password: '',
+    spinner: false,
+    biometryType: null,
+    modalVisible: false,
+    SignUpErrors: {}
   }
+
+  static contextType = AuthContext;
+
   handleLeftPress = () => {
     const { navigation } = this.props;
     return navigation.goBack(null);
   };
+
+  signin = async () => {
+    const { signIn } = this.context
+    try {
+      const rules = {
+        email: 'required|email',
+        password: 'required|string|min:6|max:40'
+    };
+    this.setState({spinner: true})
+    const data = { email: this.state.email, password: this.state.password };
+    console.log(data);
+    const messages = {
+        required: field => `${field} is required`,
+        'UserName.alpha': 'Username contains unallowed characters',
+        'email.email': 'Please enter a valid email address',
+        'Password.min': 'Wrong Password?'
+    };
+
+    validateAll(data, rules, messages)
+        .then(() => {
+            console.log('success sign in');
+            
+            signIn({ email: this.state.email, password: this.state.password });
+            this.setState({spinner: false})
+        })
+        .catch(err => {
+          if(Array.isArray(err)) {
+            const formatError = {};
+            err.forEach(err => {
+                formatError[err.field] = err.message;
+            });
+            this.setState({SignUpErrors: formatError, spinner: false})
+          }else{
+            console.log(err)
+            this.setState({spinner: false})
+          }
+           
+        });
+    } catch (error) {
+      // Error saving data
+    }
+  }
+
   changeAccount = (item, index) => {
     this.setState({Location: item.Name, renderAccountVisible: false})
     //AsyncStorage.setItem('Account', JSON.stringify(item))
@@ -47,6 +102,11 @@ export default class Login extends BaseComponent {
               color={nowTheme.COLORS.ICON}
             />
             </Block>
+            <Spinner
+                  visible={this.state.spinner}
+                  textContent={'Loading...'}
+                  textStyle={styles.spinnerTextStyle}
+                />
             <Block row space="between" width={width * 0.85}>
               <TouchableWithoutFeedback onPress={() => this.setModalAccountVisible(true)}>
                 <Block row>
@@ -54,7 +114,6 @@ export default class Login extends BaseComponent {
                     name={'earth'}
                     family="AntDesign"
                     size={20}
-                    onPress={this.handleLeftPress}
                     color={nowTheme.COLORS.ICON}
                   />
                   <Text style={{ fontFamily: 'HKGrotesk-Regular', marginLeft: 5 }} size={14}>
@@ -68,7 +127,6 @@ export default class Login extends BaseComponent {
                     name={'direction'}
                     family="Entypo"
                     size={20}
-                    onPress={this.handleLeftPress}
                     color={nowTheme.COLORS.ICON}
                   />
                   <Text style={{ fontFamily: 'HKGrotesk-Regular' }} size={14}>
@@ -99,7 +157,9 @@ export default class Login extends BaseComponent {
                     color="black"
                     style={styles.input}
                     placeholder="Enter email here"
+                    onChangeText={(value) => this.setState({email: value})}
                     noicon
+                    errorMessage={this.state.SignUpErrors.email}
                 />
                 </Block>
                 <Block style={{marginVertical: 2.5}}>
@@ -110,8 +170,10 @@ export default class Login extends BaseComponent {
                     placeholder="Enter password here"
                     noicon
                     color="black"
+                    onChangeText={(value) => this.setState({password: value})}
                     style={styles.input}
                     password
+                    errorMessage={this.state.SignUpErrors.password}
                 />
                 </Block>
               </Block>
@@ -129,7 +191,7 @@ export default class Login extends BaseComponent {
                   shadowless
                   style={styles.button}
                   color={nowTheme.COLORS.PRIMARY}
-                  onPress={() => navigation.navigate('Home')}
+                  onPress={() => this.signin()}
                 >
                   <Text
                     style={{ fontFamily: 'HKGrotesk-BoldLegacy', fontSize: 16 }}

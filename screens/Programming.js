@@ -52,56 +52,56 @@ class Programming extends BaseComponent {
       super(props);
     }
     GetOrder = () => {
-      this.setState({Orders: prod.Orders})
-      // AsyncStorage.getItem('userToken').then(token => {
-      //     HttpService.GetAsync('api/order/credited', token).then(resp => resp.json()
-      //     .then(_value => {
-      //       var orders = _value.map((v, i) => {
-      //         return v.order;
-      //       })
-      //     this.setState({Orders: orders});
-      //     }))
-      //   })
+      
+      AsyncStorage.getItem('userToken').then(token => {
+          HttpService.GetAsync('api/order/credited', token).then(resp => resp.json()
+          .then(_value => {
+            var orders = _value.map((v, i) => {
+              return v.order;
+            })
+          this.setState({Orders: orders});
+          }))
+        })
     }
     componentDidMount(){
-      this.props.navigation.setParams({onChangeAccountMethod: this.setModalAccountVisible });
-      // AsyncStorage.getItem('user').then(data =>{ 
-      //     var user = JSON.parse(data)
-      //     this.setState({ipman: user.isIPMAN, Balance: user.creditBalance});
-      // })
-      // AsyncStorage.getItem('userToken').then(token => {
-      //   this.setState({spinner: true})
-      //   HttpService.GetAsync('api/program', token)
-      //   .then(response => {
-      //     console.log(response);
-      //     response.json().then(value => {
+      //this.props.navigation.setParams({onChangeAccountMethod: this.setModalAccountVisible });
+      AsyncStorage.getItem('user').then(data =>{ 
+          var user = JSON.parse(data)
+          this.setState({ipman: user.isIPMAN, Balance: user.creditBalance});
+      })
+      AsyncStorage.getItem('userToken').then(token => {
+        this.setState({spinner: true})
+        HttpService.GetAsync('api/program', token)
+        .then(response => {
+          console.log(response);
+          response.json().then(value => {
           
-      //     this.setState({programs: value, token: token});
-      //     HttpService.GetAsync('api/order/credited', token).then(resp => resp.json()
-      //     .then(_value => {
-      //       var orders = _value.map((v, i) => {
-      //         return v.order;
-      //       })
-      //     this.setState({Orders: orders, spinner: false});
-      //     AsyncStorage.getItem('newDevice').then( value => {
-      //       if(value == undefined || value == null){
-      //         this.props.start();
-      //         this.setState({newDevice: true})
-      //       }
-      //     }).catch(e => {
-      //       this.props.start();
-      //     })
-      //     }))
-      //   })
-      //   })
-      //   HttpService.GetAsync('api/program/working', token)
-      //   .then(response => {
-      //     console.log(response);
-      //     response.json().then(value => {
-      //       this.setState({features: value});
-      //     })
-      //   })
-      // })
+          this.setState({programs: value, token: token});
+          HttpService.GetAsync('api/order/credited', token).then(resp => resp.json()
+          .then(_value => {
+            var orders = _value.map((v, i) => {
+              return v.order;
+            })
+          this.setState({Orders: orders, spinner: false});
+          AsyncStorage.getItem('newDevice').then( value => {
+            if(value == undefined || value == null){
+              this.props.start();
+              this.setState({newDevice: true})
+            }
+          }).catch(e => {
+            this.props.start();
+          })
+          }))
+        })
+        })
+        HttpService.GetAsync('api/program/working', token)
+        .then(response => {
+          console.log(response);
+          response.json().then(value => {
+            this.setState({features: value});
+          })
+        })
+      })
       
     }
         setModalVisible(visible) {
@@ -165,80 +165,37 @@ class Programming extends BaseComponent {
           };
           // console.log(obj);
           this.setState({spinner: true})
-          let programs = this.state.programs;
-      let remainQuantity = this.state.remainQuantity;
-      if(programs.length > 0){
-      let existingIndex = programs.findIndex(c=>c.TruckNo == obj.TruckNo);
-      if(existingIndex > -1){
-              remainQuantity += programs[existingIndex].quantity;
-              programs[existingIndex].quantity = obj.quantity;
-              programs[existingIndex].companyName = obj.companyName;
-              programs[existingIndex].Destination = obj.Destination;
-              remainQuantity -= obj.quantity;
-          
-      }else{
-          if(remainQuantity >= obj.quantity){
-              programs.push(obj)
-          }else{
-              Alert.alert("Oops!", "Input quantity is beyond the remain quantity, remain quantity is "+ remainQuantity)
-              return;
-          }
-          remainQuantity -= obj.quantity
-          var state = 0;
-          if(this.state.isNew){
-            state = 1
-          }
-        }
-      
-      this.setState({Orders: prod.Orders, programs: programs, remainQuantity: remainQuantity, TruckNo: null, CompanyName: null, Destination: null, currentState: 0,spinner: false});
-    }else{
-
-      if(remainQuantity >= obj.quantity){
-          programs.push(obj)
-        }else{
-          Alert.alert("Oops!", "Input quantity is beyond the remain quantity, remain quantity is "+ remainQuantity)
-          return;
-      }
-      remainQuantity -= obj.quantity
-      var state = 0;
-      if(this.state.isNew){
-        state = 1
-      }
-      this.setState({programs: programs, remainQuantity: remainQuantity,TruckNo: null, Quantity: remainQuantity.toString(), CompanyName: null, Destination: null, currentState: state});
-  }
-  this.setModalVisible(false);
-
-        //   HttpService.PostAsync('api/program', obj, this.state.token).then(response => {
-        //     console.log(response)
-        //     if(response.status == 200){
-        //     HttpService.GetAsync('api/order/credited', this.state.token)
-        //           .then(response => {
-        //             console.log(response)
-        //             response.json().then(value => {
-        //               var orders = value.map((v, i) => {
-        //                 return v.order;
-        //               })
-        //               HttpService.GetAsync('api/program', this.state.token)
-        //               .then(response => {
-        //                 console.log(response);
-        //                 response.json().then(program => {
-        //                 AsyncStorage.setItem("newDevice", "device");
-        //             let remainQuantity = this.state.remainQuantity;
-        //               remainQuantity -= obj.quantity
-        //             this.setState({Orders: orders, programs: program, TruckNo: null, Destination: null, currentState: 0,spinner: false});
-        //             this.setModalVisible(false);
-        //                 })
-        //               })
-        //       }
+          HttpService.PostAsync('api/program', obj, this.state.token).then(response => {
+            console.log(response)
+            if(response.status == 200){
+            HttpService.GetAsync('api/order/credited', this.state.token)
+                  .then(response => {
+                    console.log(response)
+                    response.json().then(value => {
+                      var orders = value.map((v, i) => {
+                        return v.order;
+                      })
+                      HttpService.GetAsync('api/program', this.state.token)
+                      .then(response => {
+                        console.log(response);
+                        response.json().then(program => {
+                        AsyncStorage.setItem("newDevice", "device");
+                    let remainQuantity = this.state.remainQuantity;
+                      remainQuantity -= obj.quantity
+                    this.setState({Orders: orders, programs: program, TruckNo: null, CompanyName: null, Destination: null, currentState: 0,spinner: false});
+                    this.setModalVisible(false);
+                        })
+                      })
+              }
     
-        //       )
-        //     })
-        //     }else{
-        //       this.setState({spinner: false})
-        //       alert("An error ocurred while adding program, contact administrator")
-        //     }
+              )
+            })
+            }else{
+              this.setState({spinner: false})
+              alert("An error ocurred while adding program, contact administrator")
+            }
           
-        // })
+        })
         }else{
             alert('You won`t be able to program the remaining '+ (this.state.totalquantity - this.state.Quantity) + 'ltrs in next program for this order, Kindly make adjustment now');
         }
@@ -277,7 +234,7 @@ class Programming extends BaseComponent {
       }
     
       renderFeature = () => {
-        return this.state.features.map((v,i) => {
+        return this.state.programs.map((v,i) => {
           let index = i++
           return (<FeatureCard item={v} index={index} Navigation={this.props.navigation}/>)
         })

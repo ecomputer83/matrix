@@ -4,19 +4,35 @@ import { Block, Button, Text, theme } from 'galio-framework';
 import PhoneInput from 'react-native-phone-input'
 const { height, width } = Dimensions.get('screen');
 import { Images, nowTheme } from '../constants/';
-import { HeaderHeight } from '../constants/utils';
+import Spinner from 'react-native-loading-spinner-overlay';
+import { validateAll } from 'indicative/validator';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Input from '../components/Input';
 import Icon from '../components/Icon';
+import HttpService from '../services/HttpService';
+
+import { AuthContext } from '../helpers/authContext';
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
 );
-export default class Login extends React.Component {
+export default class Register extends React.Component {
   state = {
     phoneNumber: '',
     ShowDatePicker: false,
-    CreditDate: new Date()
+    DPRExpiry: new Date(),
+    isIPMAN: false,
+    DPRLicenseNo: '',
+    businessName: '',
+    rcNumber: '',
+    address: '',
+    contactName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    viewstate: 1,
+    SignUpErrors: {},
+    spinner: false
   }
   handleLeftPress = () => {
     const { navigation } = this.props;
@@ -32,8 +48,78 @@ export default class Login extends React.Component {
 
   handleConfirm = (date) => {
     console.warn("A date has been picked: ", date);
-    this.setState({ShowDatePicker: false, CreditDate: date});
+    this.setState({ShowDatePicker: false, DPRExpiry: date});
   };
+  SetInput = (obj) => {
+    var name = Object.keys(obj)[0];
+    var error = this.state.SignUpErrors;
+
+    if(error[name]){
+      error[name] = undefined;
+      this.setState({SignUpErrors: error})
+    }
+
+    this.setState(obj);
+  }
+  Register = () => {
+    const { navigation } = this.props;
+    try {
+      const rules = {
+        businessName: 'required|string',
+        rcNumber: 'required|string',
+        address: 'required|string',
+        contactName: 'required|string',
+        email: 'required|email',
+        password: 'required|string|min:6|max:40|confirmed'
+    };
+
+    const data = { DPRExpiry: this.state.DPRExpiry,
+       DPRLicenseNo: this.state.DPRLicenseNo,
+        businessName: this.state.businessName,
+        rcNumber: this.state.rcNumber,
+        address: this.state.address, 
+        contactName: this.state.contactName, 
+        phoneNumber: this.state.phoneNumber, 
+        email: this.state.email, 
+        password: this.state.password,
+        password_confirmation:  this.state.confirmPassword,
+        confirmPassword: this.state.confirmPassword };
+    console.log(data);
+    const messages = {
+        required: field => `${field} is required`,
+        'UserName.alpha': 'Username contains unallowed characters',
+        'email.email': 'Please enter a valid email address',
+        'Password.min': 'Wrong Password?',
+        'password.confirmed': 'Password does not match'
+    };
+
+    validateAll(data, rules, messages)
+        .then(() => {
+            this.setState({spinner: true})
+            console.log(data)
+            HttpService.PostAsync('api/account/register', data)
+            .then(response => {
+                if(response.status == 200){
+                  this.setState({spinner: false})
+              navigation.navigate('RegReview');
+                }else{
+                  this.setState({spinner: false})
+                  alert("There is an issue with registration, kindly contact the system administrator");
+                }
+          })
+        })
+        .catch(err => {
+            const formatError = {};
+            err.forEach(err => {
+                formatError[err.field] = err.message;
+            });
+            this.setState({SignUpErrors: formatError});
+        });
+    } catch (error) {
+      // Error saving data
+      console.log(error)
+    }
+  }
   render() {
     const { navigation } = this.props;
     const { phoneNumber } = this.state;
@@ -52,6 +138,11 @@ export default class Login extends React.Component {
               color={nowTheme.COLORS.ICON}
             />
           </Block>
+          <Spinner
+                  visible={this.state.spinner}
+                  textContent={'Loading...'}
+                  textStyle={styles.spinnerTextStyle}
+                />
           <ScrollView>
           <Block space="between" style={styles.padded}>
             <Block>
@@ -72,7 +163,9 @@ export default class Login extends React.Component {
                     color="black"
                     style={styles.input}
                     placeholder="Enter  business name here"
+                    onChangeText={text => this.SetInput({businessName: text})}
                     noicon
+                    errorMessage={this.state.SignUpErrors.businessName}
                 />
                 </Block>
                 <Block style={{marginVertical: 1}}>
@@ -83,8 +176,10 @@ export default class Login extends React.Component {
                     left
                     color="black"
                     style={styles.input}
-                    placeholder="Enter  business name here"
+                    placeholder="Enter DPR License Number here"
+                    onChangeText={text => this.SetInput({DPRLicenseNo: text})}
                     noicon
+                    errorMessage={this.state.SignUpErrors.DPRLicenseNo}
                 />
                 </Block>
                 <Block style={{marginVertical: 1}}>
@@ -93,12 +188,12 @@ export default class Login extends React.Component {
                   </Text>
                 <TouchableHighlight onPress={() => this.showDatePicker()}>
                   <Block width={width * 0.9} middle style={styles.datepicker}>
-                      <Text style={{ fontFamily: 'HKGrotesk-Regular', fontSize: 16 }}>{this.state.CreditDate.toDateString()}</Text>
+                      <Text style={{ fontFamily: 'HKGrotesk-Regular', fontSize: 16 }}>{this.state.DPRExpiry.toDateString()}</Text>
                   </Block>
                   </TouchableHighlight>
                   <DateTimePickerModal
             isVisible={this.state.ShowDatePicker}
-            maximumDate={new Date()}
+            //maximumDate={new Date()}
             mode="date"
             onConfirm={this.handleConfirm}
             onCancel={this.hideDatePicker}
@@ -114,7 +209,9 @@ export default class Login extends React.Component {
                     color="black"
                     style={styles.input}
                     placeholder="Enter cac number here"
+                    onChangeText={text => this.SetInput({rcNumber: text})}
                     noicon
+                    errorMessage={this.state.SignUpErrors.rcNumber}
                 />
                 </Block>
                 <Block style={{marginVertical: 1}}>
@@ -126,7 +223,9 @@ export default class Login extends React.Component {
                     color="black"
                     style={styles.input}
                     placeholder="Enter business address"
+                    onChangeText={text => this.SetInput({address: text})}
                     noicon
+                    errorMessage={this.state.SignUpErrors.address}
                 />
                 </Block>
                 <Block style={{marginVertical: 1}}>
@@ -138,7 +237,9 @@ export default class Login extends React.Component {
                     color="black"
                     style={styles.input}
                     placeholder="Enter name here"
+                    onChangeText={text => this.SetInput({contactName: text})}
                     noicon
+                    errorMessage={this.state.SignUpErrors.contactName}
                 />
                 </Block>
                 <Block style={{marginVertical: 1}}>
@@ -163,7 +264,9 @@ export default class Login extends React.Component {
                     color="black"
                     style={styles.input}
                     placeholder="Enter email here"
+                    onChangeText={text => this.SetInput({email: text})}
                     noicon
+                    errorMessage={this.state.SignUpErrors.email}
                 />
                 </Block>
                 <Block style={{marginVertical: 1}}>
@@ -175,7 +278,9 @@ export default class Login extends React.Component {
                     noicon
                     color="black"
                     style={styles.input}
+                    onChangeText={text => this.SetInput({password: text})}
                     password
+                    errorMessage={this.state.SignUpErrors.password}
                 />
                 </Block>
                 <Block style={{marginVertical: 1}}>
@@ -187,7 +292,9 @@ export default class Login extends React.Component {
                     noicon
                     color="black"
                     style={styles.input}
+                    onChangeText={text => this.SetInput({confirmPassword: text})}
                     password
+                    errorMessage={this.state.SignUpErrors.confirmPassword}
                 />
                 </Block>
               </Block>
@@ -205,7 +312,7 @@ export default class Login extends React.Component {
                   shadowless
                   style={styles.button}
                   color={nowTheme.COLORS.PRIMARY}
-                  onPress={() => navigation.navigate('RegReview')}
+                  onPress={() => this.Register()}
                 >
                   <Text
                     style={{ fontFamily: 'HKGrotesk-BoldLegacy', fontSize: 16 }}

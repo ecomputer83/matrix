@@ -35,29 +35,22 @@ constructor(props) {
 }
 componentDidMount(){
   this.setState({spinner: true})
-  var value = this.state.Program
-  var status = this.state.status;
+  
+  AsyncStorage.getItem('userToken').then(token => {
+    HttpService.GetAsync('api/program/'+this.state.Program.id, token)
+    .then(response => response.json().then(value => {
+      console.log(value)
+      
+      var status = this.state.status;
       status.push({time: '14:00', title: 'Programmed', description: value.programDate, adddescription: '', lineColor:'rgb(45,156,219)', circleColor:'rgb(45,156,219)'});
       status.push({time: '14:00', title: 'Loading Ticket Ready', description: value.loadingDate, adddescription: value.loadingTicketNo ? 'Ticket No: '+value.loadingTicketNo: '', lineColor:value.loadingTicketNo ? 'rgb(45,156,219)': '#dedede', circleColor:value.loadingTicketNo ? 'rgb(45,156,219)': '#dedede'});
       status.push({time: '14:00', title: 'Dispatched', description: value.dispatchDate, adddescription: '', lineColor:value.quantityShipped ? 'rgb(45,156,219)': '#dedede', circleColor:value.quantityShipped ? 'rgb(45,156,219)': '#dedede'});
       status.push({time: '14:00', title: 'Waybill Generated', description: value.waybillDate, adddescription: value.waybillNo ? 'Waybill No: '+value.waybillNo: '', lineColor:value.quantityInvoiced ? 'rgb(45,156,219)': '#dedede', circleColor:value.quantityInvoiced ? 'rgb(45,156,219)': '#dedede'});
-      this.setState({status: status, spinner: false});
+      this.setState({Program: value, status: status, token: token, spinner: false});
+    }
 
-  // AsyncStorage.getItem('userToken').then(token => {
-  //   HttpService.GetAsync('api/program/'+this.state.Program.id, token)
-  //   .then(response => response.json().then(value => {
-  //     console.log(value)
-      
-  //     var status = this.state.status;
-  //     status.push({time: '14:00', title: 'Programmed', description: value.programDate, adddescription: '', lineColor:'rgb(45,156,219)', circleColor:'rgb(45,156,219)'});
-  //     status.push({time: '14:00', title: 'Loading Ticket Ready', description: value.loadingDate, adddescription: value.loadingTicketNo ? 'Ticket No: '+value.loadingTicketNo: '', lineColor:value.loadingTicketNo ? 'rgb(45,156,219)': '#dedede', circleColor:value.loadingTicketNo ? 'rgb(45,156,219)': '#dedede'});
-  //     status.push({time: '14:00', title: 'Dispatched', description: value.dispatchDate, adddescription: '', lineColor:value.quantityShipped ? 'rgb(45,156,219)': '#dedede', circleColor:value.quantityShipped ? 'rgb(45,156,219)': '#dedede'});
-  //     status.push({time: '14:00', title: 'Waybill Generated', description: value.waybillDate, adddescription: value.waybillNo ? 'Waybill No: '+value.waybillNo: '', lineColor:value.quantityInvoiced ? 'rgb(45,156,219)': '#dedede', circleColor:value.quantityInvoiced ? 'rgb(45,156,219)': '#dedede'});
-  //     this.setState({Program: value, status: status, token: token, spinner: false});
-  //   }
-
-  //   ))
-  // })
+    ))
+  })
   
 }
 
@@ -152,10 +145,10 @@ renderOption = (label, value) => {
                 textContent={'Loading...'}
                 textStyle={styles.spinnerTextStyle}
               />
-          {/* {this.renderOption("Order Number", this.state.Program.orderNumber)}
-          {this.renderOption("Product", this.state.Program.product)} */}
-          {this.renderOption("Order Number", "DFG54DF")}
-          {this.renderOption("Product", "PMS")}
+          {this.renderOption("Order Number", this.state.Program.orderNumber)}
+          {this.renderOption("Product", this.state.Program.product)}
+          {/* {this.renderOption("Order Number", "DFG54DF")}
+          {this.renderOption("Product", "PMS")} */}
           {this.renderFeatures()}
           {this.renderStatus()}
           </Block>)

@@ -19,21 +19,60 @@ const chartConfigs = {
 class Insight extends BaseComponent {
     
     state = {
-        Marketers: prod.Orders,
+        Marketers: [],
         renderAccountVisible: false,
         showFromDatePicker: false,
         showToDatePicker: false,
         FromDate: new Date(),
         ToDate: new Date(),
+        currentNo: '',
+        account: [],
         Data: {
             labels: ["Confirmed Order", "Unconfirmed Order"],
             datasets: [
               {
-                data: [prod.Orders.filter(c=>c.Status == "Confirmed").length, prod.Orders.filter(c=>c.Status == "Unconfirmed").length]
+                data: [0, 0]
               }
             ]
           }
     }
+    getChart =() => {
+      AsyncStorage.getItem('userToken').then(token => {
+          HttpService.GetAsync('api/order', token).then(resp => resp.json()
+            .then(_value => {
+              var chart = {
+                  labels: ["Confirmed Order", "Unconfirmed Order"],
+                  datasets: [
+                    {
+                      data: [_value.filter(c=>c.status == 1).length, _value.filter(c=>c.status == 0).length]
+                    }
+                  ]
+                }
+            this.setState({Data: chart});
+            }))
+          })
+  }
+  componentDidMount(){
+      AsyncStorage.getItem('userToken').then(token => {
+        HttpService.GetAsync('api/Account/LinkedAccount', value).then(response => {
+          response.json().then(act => {
+            var account = act.map((d, i) => {
+                return { key: act.no, label: act.name, creaditLimit: act.creditLimitLcy, creditBalance: act.balanceLcy}
+            })
+            this.setState({ account: account, currenctNo: account[0].key })
+            HttpService.GetAsync('api/order/history?No='+account[0].key, token).then(resp => {
+              if(resp.status == 200){
+              resp.json()
+          .then(_value => {
+          this.setState({Marketers: _value});
+          })
+        }
+        })
+          })
+        });
+            
+        })
+  }
     componentDidMount () {
         this.props.navigation.setParams({onChangeAccountMethod: this.setModalAccountVisible });
       }
@@ -66,17 +105,18 @@ class Insight extends BaseComponent {
       }
     renderFeatures = () => {
         return (
-          <Block>
-            <Text size={16} style={{fontFamily: 'HKGrotesk-BoldLegacy', lineHeight: 16, color: '#919191', marginTop: 10, marginHorizontal: 10}}>Linked Accounts</Text>
-          <ScrollView horizontal={true}>
-            {this.renderFeature()}
-          </ScrollView>
-          </Block>
+          this.state.account.length > 0 ? 
+      <Block>
+        <Text size={16} style={{fontFamily: 'HKGrotesk-BoldLegacy', lineHeight: 16, color: '#919191', marginTop: 10, marginHorizontal: 10}}>Linked Accounts</Text>
+      <ScrollView horizontal={true}>
+        {this.renderFeature()}
+      </ScrollView>
+      </Block> : <Block />
         )
       }
     
       renderFeature = () => {
-        return prod.Accounts.map((v,i) => {
+        return this.state.account.map((v,i) => {
           let index = i++
           return (<AccountCard item={v} total={prod.Accounts.length} index={index} onPress={this.changeAccount}/>)
         })
@@ -198,7 +238,7 @@ class Insight extends BaseComponent {
     }
     changeAccount = (item, index) => {
         //this.setState({Marketers: prod.Orders.filter(c=>c.account == item.key)})
-        //AsyncStorage.setItem('Account', JSON.stringify(item))
+        AsyncStorage.setItem('currentNo', item.key)
     }
     render () {
         const graphStyle = {
@@ -215,7 +255,7 @@ class Insight extends BaseComponent {
                   textStyle={styles.spinnerTextStyle}
                 />
                     {/* {this.renderAccount(this.changeAccount)} */}
-                    
+                    { this.state.account.length > 0 ? 
                     <Block flex space="between">
                         <Block flex={0.3}>
                         {this.renderFeatures()}
@@ -235,6 +275,9 @@ class Insight extends BaseComponent {
                         />
                         </Block>
                     </Block>
+                    : <Block style={{alignItems: 'center', marginTop: 30}}>
+                        <Text size={16} style={{fontFamily: 'HKGrotesk-BoldLegacy', lineHeight: 16, marginHorizontal: 10}}>Account have not approved yet</Text>
+                    </Block> }
             </Block>
             </ScrollView>
         )

@@ -1,4 +1,4 @@
-const baseUrl = 'https://nepalog.azurewebsites.net/';
+const baseUrl = 'http://megtestvm.westeurope.cloudapp.azure.com:82/';
 const GetAsync = (resourceUrl, token) => {
     return fetch(
         baseUrl + resourceUrl, {
